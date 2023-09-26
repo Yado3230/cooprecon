@@ -22,102 +22,13 @@ export function MainNav({
   const params = useParams();
   const routes = [
     {
-      href: `/dashboard`,
-      label: "Overview",
-      active: pathname === `/dashboard`,
+      href: `/dashboard/client`,
+      label: "Client",
+      active: pathname === `/dashboard/client`,
       icon: (
         <LayoutDashboard
           size={15}
-          color={`${pathname === `/dashboard` ? "#0EB8D5" : "#707E94"}`}
-        />
-      ),
-    },
-    {
-      href: `/dashboard/challenges`,
-      label: "Challenges",
-      active: pathname === `/dashboard/challenges`,
-      icon: (
-        <Gamepad2
-          size={15}
-          color={`${
-            pathname === `/dashboard/challenges` ? "#0EB8D5" : "#707E94"
-          }`}
-        />
-      ),
-    },
-    {
-      href: `/dashboard/transactionrule`,
-      label: "Transaction Rules",
-      active: pathname === `/dashboard/transactionrule`,
-      icon: (
-        <DollarSignIcon
-          size={15}
-          color={`${
-            pathname === `/dashboard/transactionrule` ? "#0EB8D5" : "#707E94"
-          }`}
-        />
-      ),
-    },
-    {
-      href: `/dashboard/customers`,
-      label: "Customers",
-      active: pathname === `/dashboard/customers`,
-      icon: (
-        <User
-          size={15}
-          color={`${
-            pathname === `/dashboard/customers` ? "#0EB8D5" : "#707E94"
-          }`}
-        />
-      ),
-    },
-    {
-      href: `/dashboard/packages`,
-      label: "Packages",
-      active: pathname === `/dashboard/packages`,
-      icon: (
-        <Package
-          size={15}
-          color={`${
-            pathname === `/dashboard/packages` ? "#0EB8D5" : "#707E94"
-          }`}
-        />
-      ),
-    },
-    {
-      href: `/dashboard/levels`,
-      label: "Levels",
-      active: pathname === `/dashboard/levels`,
-      icon: (
-        <LucideShovel
-          size={15}
-          color={`${pathname === `/dashboard/levels` ? "#0EB8D5" : "#707E94"}`}
-        />
-      ),
-    },
-    {
-      href: `/dashboard/transactions`,
-      label: "Transactions",
-      active: pathname === `/dashboard/transactions`,
-      icon: (
-        <DollarSign
-          size={15}
-          color={`${
-            pathname === `/dashboard/transactions` ? "#0EB8D5" : "#707E94"
-          }`}
-        />
-      ),
-    },
-    {
-      href: `/dashboard/settings`,
-      label: "Settings",
-      active: pathname === `/dashboard/settings`,
-      icon: (
-        <Settings
-          size={15}
-          color={`${
-            pathname === `/dashboard/settings` ? "#0EB8D5" : "#707E94"
-          }`}
+          color={`${pathname === `/dashboard/client` ? "#0EB8D5" : "#707E94"}`}
         />
       ),
     },
