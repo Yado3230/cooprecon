@@ -1,5 +1,5 @@
 export interface Challenge {
-  challengeId: number;
+  clientId: number;
   challengeName: string;
   description?: string;
   icon: string;
