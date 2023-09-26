@@ -43,7 +43,7 @@ export default function RootLayout({
         <Navbar />
         <div className="">
           <Sidebar />
-          <div className="mt-16 ml-72 p-5 bg-muted h-full">{children}</div>
+          <div className="mt-16 ml-72 p-5 h-full">{children}</div>
         </div>
       </div>
     </>

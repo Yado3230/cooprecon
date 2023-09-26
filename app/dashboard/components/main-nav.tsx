@@ -22,13 +22,13 @@ export function MainNav({
   const params = useParams();
   const routes = [
     {
-      href: `/dashboard/client`,
+      href: `/dashboard`,
       label: "Client",
-      active: pathname === `/dashboard/client`,
+      active: pathname === `/dashboard`,
       icon: (
         <LayoutDashboard
           size={15}
-          color={`${pathname === `/dashboard/client` ? "#0EB8D5" : "#707E94"}`}
+          color={`${pathname === `/dashboard` ? "#0EB8D5" : "#707E94"}`}
         />
       ),
     },

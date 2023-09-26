@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <div className="fixed z-10 shadow-sm bg-background opacity-90 px- top-0 right-0 left-0">
       <div className="border-b">
-        <div className="flex h-16 items-center px-4">
+        <div className="flex h-16 items-center px-10">
           <div className="flex items-center justify-start space-x-2">
             <div>
               <Image

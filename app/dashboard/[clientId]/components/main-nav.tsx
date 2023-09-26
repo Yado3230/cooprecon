@@ -1,16 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  DollarSign,
-  DollarSignIcon,
-  Gamepad2,
-  LayoutDashboard,
-  LucideShovel,
-  Package,
-  Settings,
-  User,
-} from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
@@ -22,37 +12,36 @@ export function MainNav({
   const params = useParams();
   const routes = [
     {
-      href: `/dashboard/client`,
-      label: "Client",
-      active: pathname === `/dashboard/client`,
-      icon: (
-        <LayoutDashboard
-          size={15}
-          color={`${pathname === `/dashboard/client` ? "#0EB8D5" : "#707E94"}`}
-        />
-      ),
+      href: `/dashboard/${params.clientId}`,
+      label: "Reconciliation",
+      active: pathname === `/dashboard/${params.clientId}`,
+    },
+    {
+      href: `/dashboard/${params.clientId}/clientinfo`,
+      label: "Client Info",
+      active: pathname === `/dashboard/${params.clientId}/clientinfo`,
+    },
+    {
+      href: `/dashboard/${params.clientId}/reports`,
+      label: "Reports",
+      active: pathname === `/dashboard/${params.clientId}/reports`,
     },
   ];
   return (
-    <nav
-      className={cn("flex flex-col justify-center space-y-2 mt-3", className)}
-    >
-      <div className="font-semibold">Menu</div>
+    <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       {routes.map((route) => (
-        <div className="flex p-1 items-center space-x-2" key={route.href}>
-          <span className="">{route?.icon}</span>
-          <Link
-            href={route.href}
-            className={cn(
-              "text-base font-medium transition-colors hover:text-primary",
-              route.active
-                ? "text-cyan-500 dark:text-white"
-                : "text-muted-foreground"
-            )}
-          >
-            {route.label}
-          </Link>
-        </div>
+        <Link
+          key={route.href}
+          href={route.href}
+          className={cn(
+            "text font-medium transition-colors hover:text-primary",
+            route.active
+              ? "text-cyan-500 dark:text-white"
+              : "text-muted-foreground"
+          )}
+        >
+          {route.label}
+        </Link>
       ))}
     </nav>
   );

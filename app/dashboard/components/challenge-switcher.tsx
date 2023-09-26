@@ -57,7 +57,7 @@ export default function ChallengeSwitcher({
 
   const onProductSelect = (product: { value: number; label: string }) => {
     setOpen(false);
-    router.push(`/${product.value}`);
+    router.push(`/dashboard/${product.value}`);
   };
 
   return (
@@ -80,7 +80,7 @@ export default function ChallengeSwitcher({
         <Command>
           <CommandList>
             <CommandInput placeholder="Search challenge..." />
-            <CommandEmpty>No product found.</CommandEmpty>
+            <CommandEmpty>No client found.</CommandEmpty>
             <CommandGroup heading="Challenges">
               {formattedItems.map((product) => (
                 <CommandItem
