@@ -53,13 +53,15 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   return (
     <>
       <div>
-        <ExcelFileUploader onDataUpload={handleDataUpload} />
+        <div className="flex  h-40 items-center justify-center">
+          <ExcelFileUploader onDataUpload={handleDataUpload} />
+        </div>
         <span className="flex text-xl items-center justify-center">
           {uploadedData.length} Files Found
         </span>
-        {successful && (
+        {successful > 0 && (
           <span className="flex text-xl items-center justify-center">
-            {successful} Data Uploaded Successfully
+            Data Uploaded Successfully
           </span>
         )}
       </div>

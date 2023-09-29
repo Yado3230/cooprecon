@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Import, Plus } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ClientColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
@@ -19,6 +19,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
   const reconciliationModal = useReconciliationModal();
   // const clientModal = useClientModal();
   const params = useParams();
+  const router = useRouter();
   return (
     <>
       <ReconciliationModal clientId={params.clientId} />
@@ -26,14 +27,14 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         {/* <Heading title={`Transactions`} description="Manage clients" /> */}
         <div></div>
         <div>
-          {/* <Button
+          <Button
             size="sm"
             className="bg-muted text-foreground mr-2"
-            // onClick={() => router.push(`/dashboard/clients/new`)}
+            onClick={() => router.push(`/dashboard/${params.clientId}/upload`)}
           >
             <Import className="mr-2 h-4 w-4" />
             Import
-          </Button> */}
+          </Button>
           <Button
             size="sm"
             className="bg-cyan-500"

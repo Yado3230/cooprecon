@@ -40,11 +40,11 @@ export const statuses = [
     label: "Success",
     icon: CheckCircledIcon,
   },
-  //   {
-  //     value: "failed",
-  //     label: "Failed",
-  //     icon: CrossCircledIcon,
-  //   },
+  {
+    value: "failed",
+    label: "Failed",
+    icon: CrossCircledIcon,
+  },
 ];
 
 export const priorities = [

@@ -65,13 +65,7 @@ const ExcelFileUploader: React.FC<ExcelFileUploaderProps> = ({
     }
   };
 
-  return (
-    <Input
-      type="file"
-      className="flex w-full h-40"
-      onChange={handleFileUpload}
-    />
-  );
+  return <Input type="file" onChange={handleFileUpload} />;
 };
 
 export default ExcelFileUploader;
