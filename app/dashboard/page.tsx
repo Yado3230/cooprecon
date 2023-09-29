@@ -1,30 +1,34 @@
 "use client";
-import React from "react";
+
+import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
 import ClientReconciliation from "./components/client";
 import { ClientColumn } from "./components/columns";
+import { Client } from "@prisma/client";
+import axios from "axios";
 
-const page = async ({ params }: { params: { clientId: string } }) => {
-  const clients = [
-    {
-      clientId: 1,
-      clientName: "q",
-      accountNo: "Q",
-      description: "ew",
-    },
-    {
-      clientId: 2,
-      clientName: "q",
-      accountNo: "Q",
-      description: "ew",
-    },
-  ];
+const Page = () => {
+  const [clients, setClients] = useState<Client[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: Client[] = await axios
+          .get("/api/clients")
+          .then((res) => res.data);
+        setClients(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const formattedclients: ClientColumn[] = clients.map((item) => ({
-    clientId: item.clientId?.toString() || "00",
+  const formattedclients: ClientColumn[] = clients?.map((item) => ({
+    id: item.id,
     clientName: item.clientName,
-    accountNo: item.accountNo,
+    accountNumber: item.accountNumber,
     description: item.description,
-    // createdAt: format(item.createdAt, "MMMM do, yyyy"),
+    createdAt: format(new Date(item.createdAt), "MMMM do, yyyy"),
   }));
   return (
     <div>
@@ -33,4 +37,4 @@ const page = async ({ params }: { params: { clientId: string } }) => {
   );
 };
 
-export default page;
+export default Page;

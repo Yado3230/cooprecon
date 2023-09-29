@@ -9,10 +9,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type ClientColumn = {
-  clientId: string;
-  clientName: string;
-  description: string;
-  points: string;
+  id: string;
+  transactionReference: string;
+  amount: string;
+  customerAccountNumber: string;
+  date: string;
+  status: string;
 };
 
 export const columns: ColumnDef<ClientColumn>[] = [
@@ -36,8 +38,7 @@ export const columns: ColumnDef<ClientColumn>[] = [
     enableHiding: false,
   },
   {
-    id: "clientName",
-    accessorKey: "clientName",
+    accessorKey: "transactionReference",
     header: ({ column }) => {
       return (
         <Button
@@ -51,52 +52,35 @@ export const columns: ColumnDef<ClientColumn>[] = [
     },
   },
   {
-    id: "product",
-    accessorKey: "product",
+    accessorKey: "customerAccountNumber",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Account Holder
+          Customer Account Number
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    id: "category",
-    accessorKey: "category",
+    accessorKey: "amount",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Account Number
+          Amount
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    id: "points",
-    accessorKey: "points",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amounts
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
+    accessorKey: "date",
     header: ({ column }) => {
       return (
         <Button
@@ -109,6 +93,21 @@ export const columns: ColumnDef<ClientColumn>[] = [
       );
     },
   },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,

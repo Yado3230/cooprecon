@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { clientColumn } from "./columns";
+import { ClientColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -17,7 +17,7 @@ import { useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 
 interface CellActionProps {
-  data: clientColumn;
+  data: ClientColumn;
 }
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onCopy = (id: string) => {
@@ -63,15 +63,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(data.clientId)}>
+          <DropdownMenuItem onClick={() => onCopy(data.id)}>
             <Copy className="mr-2 h-4 w-4" />
             Copy ID
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/clients/${data.clientId}`)}
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" />

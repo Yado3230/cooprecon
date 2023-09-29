@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ProductModal } from "@/components/modals/product-modal";
+import { ClientModal } from "@/components/modals/client-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -17,7 +17,7 @@ export const ModalProvider = () => {
 
   return (
     <>
-      <ProductModal />
+      <ClientModal />
     </>
   );
 };

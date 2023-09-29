@@ -26,36 +26,36 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { client } from "@/types";
+import { Client } from "@prisma/client";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
 interface clientSwitcherProps extends PopoverTriggerProps {
-  items: client[];
+  items: Client[];
 }
 
 export default function ClientSwitcher({
   className,
   items,
 }: clientSwitcherProps) {
-  const productModal = useClientModal();
+  const clientModal = useClientModal();
   const params = useParams();
   const router = useRouter();
 
-  const formattedItems = items.map((item) => ({
+  const formattedItems = items?.map((item) => ({
     label: item.clientName,
-    value: item.clientId,
+    value: item.id,
   }));
 
-  const currentclient = formattedItems.find(
+  const currentclient = formattedItems?.find(
     (item) => item.value.toString() === params.clientId
   );
 
   const [open, setOpen] = useState(false);
 
-  const onProductSelect = (product: { value: number; label: string }) => {
+  const onProductSelect = (product: { value: string; label: string }) => {
     setOpen(false);
     router.push(`/dashboard/${product.value}`);
   };
@@ -82,7 +82,7 @@ export default function ClientSwitcher({
             <CommandInput placeholder="Search client..." />
             <CommandEmpty>No client found.</CommandEmpty>
             <CommandGroup heading="clients">
-              {formattedItems.map((product) => (
+              {formattedItems?.map((product) => (
                 <CommandItem
                   key={product.value}
                   onSelect={() => onProductSelect(product)}
@@ -107,7 +107,7 @@ export default function ClientSwitcher({
             <CommandItem
               onSelect={() => {
                 setOpen(false);
-                productModal.onOpen();
+                clientModal.onOpen();
               }}
             >
               <PlusCircle className="mr-2 h-5 w-5" />

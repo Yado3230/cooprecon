@@ -1,12 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { Import, Plus } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 import { ClientColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
+import { useClientModal } from "@/hooks/use-client-modal";
 
 interface ClientReconciliationProps {
   data: ClientColumn[];
@@ -15,27 +13,31 @@ interface ClientReconciliationProps {
 const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
   data,
 }) => {
-  const router = useRouter();
-  const params = useParams();
+  const clientModal = useClientModal();
 
   return (
     <>
       <div className="flex border-b pb-2 items-center justify-between">
-        {/* <Heading title={`Transactions`} description="Manage clients" /> */}
         <div></div>
         <div>
           <Button
             size="sm"
             className="bg-cyan-500"
-            // onClick={() => router.push(`/dashboard/clients/new`)}
+            onClick={() => {
+              clientModal.onOpen();
+            }}
           >
             <Plus className="mr-2 h-4 w-4" />
-            Add New
+            Add Client
           </Button>
         </div>
       </div>
-      {/* <Separator className="my-4" /> */}
-      <DataTable searchKey="clientName" columns={columns} data={data} />
+      <DataTable
+        searchKey="clientName"
+        clickable={true}
+        columns={columns}
+        data={data}
+      />
     </>
   );
 };

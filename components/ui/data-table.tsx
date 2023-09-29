@@ -1,30 +1,20 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
 import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import {
   Table,
@@ -33,95 +23,132 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "./table";
+import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTablePagination } from "./data-table-pagination";
+import { useParams, useRouter } from "next/navigation";
+import { Input } from "./input";
+import { Button } from "./button";
+import axios from "axios";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
+  clickable: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
+  clickable,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [searchKeyNew, setSearchKeyNew] = React.useState(searchKey);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const router = useRouter();
+  // const params = useParams();
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
-      columnFilters,
+      columnVisibility,
       rowSelection,
+      columnFilters,
     },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const handleCheckButton = async () => {
+    //   await axios.post("http://10.1.245.150:7081/v1/cbo/", {
+    //     AwachFundTransferRequest: {
+    //       ESBHeader: {
+    //         serviceCode: "630000",
+    //         channel: "USSD",
+    //         Service_name: "AwachFundTransfer",
+    //         Message_Id: "FT82040900",
+    //       },
+    //       FundsTransfer: {
+    //         CreditAcctNo: "1000427051",
+    //         CreditAmount: "50",
+    //       },
+    //     },
+    //   });
+    // };
+    async function fetchData(item: any) {
+      try {
+        await axios
+          .post("http://10.1.245.150:7081/v1/cbo/", {
+            AwachFundTransferRequest: {
+              ESBHeader: {
+                serviceCode: "630000",
+                channel: "USSD",
+                Service_name: "AwachFundTransfer",
+                Message_Id: item.transactionReference,
+              },
+              FundsTransfer: {
+                CreditAcctNo: item.customerAccountNumber,
+                CreditAmount: item.amount,
+              },
+            },
+          })
+          .then((res) => res.data);
+        // console.log("success", item);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    async function fetchDataLoop() {
+      for (const item of table.getFilteredSelectedRowModel().rows) {
+        await fetchData(item.original);
+      }
+    }
+    fetchDataLoop();
+  };
+
   return (
-    <div>
+    <div className="space-y-4">
       <div className="flex items-center py-4">
-        {/* <Select
-          className="mr-2"
-          value={searchKeyNew}
-          onChange={(e) => setSearchKeyNew(e.target.value)}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Search by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Search by</SelectLabel>
-              {columns
-                .filter(
-                  (item) =>
-                    item.id && item.id !== "actions" && item.id !== "select"
-                )
-                .map((item) => (
-                  <SelectItem value={item.id}>{item.id}</SelectItem>
-                ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
-        <select
-          id="countries"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          value={searchKeyNew}
-          onChange={(e) => setSearchKeyNew(e.target.value)}
-        >
-          <option selected disabled>
-            search by
-          </option>
-          {columns
-            .filter(
-              (item) => item.id && item.id !== "actions" && item.id !== "select"
-            )
-            .map((item) => (
-              <option value={item.id}>{item.id}</option>
-            ))}
-        </select>
         <Input
           placeholder="Search ..."
-          value={
-            (table.getColumn(searchKeyNew)?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn(searchKeyNew)?.setFilterValue(event.target.value)
+            table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }
           className="max-w-sm ml-2"
         />
+        {!clickable && (
+          <div className="flex w-full items-center justify-between">
+            <div className="ml-2">
+              <DataTableToolbar table={table} />
+            </div>
+            {table.getFilteredSelectedRowModel().rows.length > 0 && (
+              <div>
+                <Button onClick={handleCheckButton} variant="secondary">
+                  Check
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>
@@ -148,6 +175,11 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  className={`${clickable && "cursor-pointer"}`}
+                  onClick={() =>
+                    clickable &&
+                    router.push(`/dashboard/${row._valuesCache.id}`)
+                  }
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -173,24 +205,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }

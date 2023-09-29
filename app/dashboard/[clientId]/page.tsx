@@ -1,29 +1,36 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ClientReconciliation from "./components/client";
 import { ClientColumn } from "./components/columns";
+import prismadb from "@/lib/prismadb";
+import { Reconciliation } from "@prisma/client";
+import axios from "axios";
 
-const page = async ({ params }: { params: { clientId: string } }) => {
-  const clients = [
-    {
-      clientId: 1,
-      clientName: "q",
-      description: "Q",
-      points: "ew",
-    },
-    {
-      clientId: 2,
-      clientName: "qfdsf",
-      description: "Qdfs",
-      points: "ewdsf",
-    },
-  ];
+const Page = ({ params }: { params: { clientId: string } }) => {
+  const [reconcilioations, setReconcilioations] = useState<Reconciliation[]>(
+    []
+  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: Reconciliation[] = await axios
+          .get(`/api/${params.clientId}/reconciliations`)
+          .then((res) => res.data);
+        setReconcilioations(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const formattedclients: ClientColumn[] = clients.map((item) => ({
-    clientId: item.clientId?.toString() || "00",
-    clientName: item.clientName,
-    description: item.description,
-    points: item.points,
+  const formattedclients: ClientColumn[] = reconcilioations?.map((item) => ({
+    id: item.id,
+    transactionReference: item.transactionReference,
+    amount: item.amount,
+    customerAccountNumber: item.customerAccountNumber,
+    date: item.date,
+    status: item.status,
     // createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
   return (
@@ -33,4 +40,4 @@ const page = async ({ params }: { params: { clientId: string } }) => {
   );
 };
 
-export default page;
+export default Page;
