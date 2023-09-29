@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { useProductModal } from "@/hooks/use-challenge-modal";
+import { useClientModal } from "@/hooks/use-client-modal";
 import { Textarea } from "@/components/ui/textarea";
 import { ChangeEvent, useState } from "react";
 import { AddProduct } from "@/actions/product-ation";
@@ -33,7 +33,7 @@ const formSchema = z.object({
 export const ProductModal = () => {
   const router = useRouter();
   const params = useParams();
-  const ProductModal = useProductModal();
+  const ProductModal = useClientModal();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File>();
   const [error, setError] = useState<string>("");

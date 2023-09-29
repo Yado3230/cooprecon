@@ -1,15 +1,15 @@
-import ChallengeSwitcher from "./challenge-switcher";
+import ClientSwitcher from "./client-switcher";
 import { Search } from "./search";
 import { UserNav } from "./user-nav";
 import { AlertCircle, Menu } from "lucide-react";
 import Image from "next/image";
 
 const Navbar = () => {
-  // const challenges = await getChallenges();
+  // const clients = await getclients();
   const items = [
     {
       clientId: 1,
-      challengeName: "awach",
+      clientName: "awach",
       description: "awach",
       icon: "sdsd",
       isEnabled: true,
@@ -29,19 +29,10 @@ const Navbar = () => {
                 alt="img"
               />
             </div>
-            {/* <div className="flex flex-col">
-              <span className="font-bold text-cyan-500 text-lg">
-                Cooperative Bank of oromia
-              </span>
-              <span className="text-xs text-orange-400">
-                Cooperative bank of oromia
-              </span>
-            </div> */}
           </div>
           <Menu className="absolute left-64 cursor-pointer" />
           <div className="ml-auto flex items-center space-x-4">
-            {/* <Search /> */}
-            <ChallengeSwitcher items={items} />
+            <ClientSwitcher items={items} />
             <UserNav />
           </div>
         </div>

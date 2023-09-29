@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useProductModal } from "@/hooks/use-challenge-modal";
+import { useClientModal } from "@/hooks/use-client-modal";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -26,30 +26,30 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { Challenge } from "@/types";
+import { client } from "@/types";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
-interface ChallengeSwitcherProps extends PopoverTriggerProps {
-  items: Challenge[];
+interface clientSwitcherProps extends PopoverTriggerProps {
+  items: client[];
 }
 
-export default function ChallengeSwitcher({
+export default function ClientSwitcher({
   className,
   items,
-}: ChallengeSwitcherProps) {
-  const productModal = useProductModal();
+}: clientSwitcherProps) {
+  const productModal = useClientModal();
   const params = useParams();
   const router = useRouter();
 
   const formattedItems = items.map((item) => ({
-    label: item.challengeName,
+    label: item.clientName,
     value: item.clientId,
   }));
 
-  const currentChallenge = formattedItems.find(
+  const currentclient = formattedItems.find(
     (item) => item.value.toString() === params.clientId
   );
 
@@ -72,16 +72,16 @@ export default function ChallengeSwitcher({
           className={cn("w-[200px] justify-between", className)}
         >
           <Gamepad2 className="mr-2 h-4 w-4" />
-          {currentChallenge?.label}
+          {currentclient?.label}
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandList>
-            <CommandInput placeholder="Search challenge..." />
+            <CommandInput placeholder="Search client..." />
             <CommandEmpty>No client found.</CommandEmpty>
-            <CommandGroup heading="Challenges">
+            <CommandGroup heading="clients">
               {formattedItems.map((product) => (
                 <CommandItem
                   key={product.value}
@@ -93,7 +93,7 @@ export default function ChallengeSwitcher({
                   <Check
                     className={cn(
                       "ml-auto h-4 w-4",
-                      currentChallenge?.value === product.value
+                      currentclient?.value === product.value
                         ? "opacity-100"
                         : "opacity-0"
                     )}
@@ -111,7 +111,7 @@ export default function ChallengeSwitcher({
               }}
             >
               <PlusCircle className="mr-2 h-5 w-5" />
-              Create Challenge
+              Create client
             </CommandItem>
           </CommandGroup>
         </Command>

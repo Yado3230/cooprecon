@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { useProductModal } from "@/hooks/use-challenge-modal";
+import { useClientModal } from "@/hooks/use-client-modal";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -28,7 +28,7 @@ const formSchema = z.object({
 });
 
 export const ProductModal = () => {
-  const ProductModal = useProductModal();
+  const ProductModal = useClientModal();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -71,7 +71,7 @@ export const ProductModal = () => {
                   <FormItem>
                     <FormLabel>Name:</FormLabel>
                     <FormControl>
-                      <Input placeholder="Challenge name" {...field} />
+                      <Input placeholder="client name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

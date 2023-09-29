@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-interface useProductModalStore {
+interface useClientModalStore {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
 
-export const useProductModal = create<useProductModalStore>((set) => ({
+export const useClientModal = create<useClientModalStore>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),

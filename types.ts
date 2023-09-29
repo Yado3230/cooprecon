@@ -1,6 +1,6 @@
-export interface Challenge {
+export interface client {
   clientId: number;
-  challengeName: string;
+  clientName: string;
   description?: string;
   icon: string;
   isEnabled: boolean;

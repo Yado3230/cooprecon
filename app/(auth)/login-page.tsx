@@ -59,7 +59,7 @@ export function LoginPage() {
     console.log(data);
     try {
       setLoading(true);
-      // await AddChallenge(data);
+      // await Addclient(data);
       const response = await logUser(data);
       if (response.access_token) {
         login(response.access_token, response.refresh_token);
@@ -84,7 +84,7 @@ export function LoginPage() {
       setLoading(false);
     }
 
-    // revalidateTag("challenges");
+    // revalidateTag("clients");
   };
   return (
     <Card>

@@ -1,51 +1,36 @@
 "use client";
+import React from "react";
+import ClientReconciliation from "./components/client";
+import { ClientColumn } from "./components/columns";
 
-import Navbar from "./components/navbar";
-import { useEffect, useState } from "react";
-import Sidebar from "./components/sidebar";
-import Head from "next/head";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/(auth)/contexts/AuthContext";
+const page = async ({ params }: { params: { clientId: string } }) => {
+  const clients = [
+    {
+      clientId: 1,
+      clientName: "q",
+      accountNo: "Q",
+      description: "ew",
+    },
+    {
+      clientId: 2,
+      clientName: "q",
+      accountNo: "Q",
+      description: "ew",
+    },
+  ];
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [domLoaded, setDomLoaded] = useState(false);
-
-  useEffect(() => {
-    setDomLoaded(true);
-  }, []);
-
-  const { accessToken } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!domLoaded) {
-      return;
-    }
-
-    if (!accessToken) {
-      // Redirect to login page if not authenticated
-      router.push("/");
-    }
-  }, [domLoaded, accessToken, router]);
-
-  if (!domLoaded) {
-    return null;
-  }
-
+  const formattedclients: ClientColumn[] = clients.map((item) => ({
+    clientId: item.clientId?.toString() || "00",
+    clientName: item.clientName,
+    accountNo: item.accountNo,
+    description: item.description,
+    // createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }));
   return (
-    <>
-      <Head>Coop | Admin</Head>
-      <div>
-        <Navbar />
-        <div className="">
-          <Sidebar />
-          <div className="mt-16 ml-72 p-5 h-full">{children}</div>
-        </div>
-      </div>
-    </>
+    <div>
+      <ClientReconciliation data={formattedclients} />
+    </div>
   );
-}
+};
+
+export default page;
