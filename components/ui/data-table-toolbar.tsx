@@ -3,7 +3,7 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
-import { statuses } from "./data/data";
+import { statuses, operations } from "./data/data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { Button } from "./button";
 import { DataTableViewOptions } from "./data-table-view-options";
@@ -27,6 +27,13 @@ export function DataTableToolbar<TData>({
             options={statuses}
           />
         )}
+        {table.getColumn("operation") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("operation")}
+            title="Operation"
+            options={operations}
+          />
+        )}
         {isFiltered && (
           <Button
             variant="ghost"
@@ -38,7 +45,9 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <div className="ml-2">
+        <DataTableViewOptions table={table} />
+      </div>
     </div>
   );
 }

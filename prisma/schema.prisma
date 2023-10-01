@@ -13,7 +13,7 @@ datasource db {
 model Client {
   id                String              @id @default(uuid())
   clientName        String              @unique
-  accountNumber     String              @unique
+  logoUrl           String              
   description       String
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
@@ -28,10 +28,23 @@ model Reconciliation {
   amount                  String
   customerAccountNumber   String
   date                    String
+  reversalReference       String
+  interestReference       String
+  letterNo                String
+  operation               String            
   status                  String
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @updatedAt
   client                  Client            @relation("ClientToReconciliation", fields: [clientId], references: [id])
 
   @@index([clientId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }

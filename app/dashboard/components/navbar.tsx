@@ -3,17 +3,10 @@ import { Menu } from "lucide-react";
 import Image from "next/image";
 import ClientSwitcher from "./client-switcher";
 import prismadb from "@/lib/prismadb";
-import { useEffect, useState } from "react";
 import { Client } from "@prisma/client";
 
 const Navbar = async () => {
-  const [clients, setClients] = useState<Client[]>([]);
-  useEffect(() => {
-    fetch("/api/clients")
-      .then((response) => response.json())
-      .then((data: Client[]) => setClients(data))
-      .catch((error) => console.error(error));
-  }, []);
+  const clients: Client[] = await prismadb.client.findMany();
 
   return (
     <div className="fixed z-10 shadow-sm bg-background opacity-90 px- top-0 right-0 left-0">

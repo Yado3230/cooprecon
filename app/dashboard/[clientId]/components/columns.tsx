@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { CellAction } from "./cell-actions";
 import { Checkbox } from "@/components/ui/checkbox";
-import { statuses } from "@/components/ui/data/data";
+import { operations, statuses } from "@/components/ui/data/data";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -15,6 +15,7 @@ export type ClientColumn = {
   amount: string;
   customerAccountNumber: string;
   date: string;
+  operation: string;
   status: string;
 };
 
@@ -107,9 +108,29 @@ export const columns: ColumnDef<ClientColumn>[] = [
 
       return (
         <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-primary" />
-          )}
+          {status.icon && <status.icon className="mr-2 h-4 w-4 text-primary" />}
+          <span>{status.label}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "operation",
+    cell: ({ row }) => {
+      const status = operations.find(
+        (status) => status.value === row.getValue("operation")
+      );
+
+      if (!status) {
+        return null;
+      }
+
+      return (
+        <div className="flex w-[100px] items-center">
+          {status.icon && <status.icon className="mr-2 h-4 w-4 text-primary" />}
           <span>{status.label}</span>
         </div>
       );

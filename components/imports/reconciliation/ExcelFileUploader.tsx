@@ -44,6 +44,20 @@ const ExcelFileUploader: React.FC<ExcelFileUploaderProps> = ({
               ?.toLowerCase()
               .includes("Customer Awach Account No".toLowerCase())
         );
+        const reversalReferenceIndex = firstRow.findIndex(
+          (cell: string | undefined) =>
+            cell?.toLowerCase().includes("Reversal Reference".toLowerCase())
+        );
+        const letterNoIndex = firstRow.findIndex((cell: string | undefined) =>
+          cell?.toLowerCase().includes("Letter No".toLowerCase())
+        );
+        const interestReferenceIndex = firstRow.findIndex(
+          (cell: string | undefined) =>
+            cell?.toLowerCase().includes("Interest Reference".toLowerCase())
+        );
+        const operationIndex = firstRow.findIndex((cell: string | undefined) =>
+          cell?.toLowerCase().includes("Opration".toLowerCase())
+        );
         const dateIndex = firstRow.findIndex((cell: string | undefined) =>
           cell?.toLowerCase().includes("Date".toLowerCase())
         );
@@ -52,9 +66,13 @@ const ExcelFileUploader: React.FC<ExcelFileUploaderProps> = ({
           .slice(1) // Exclude the first row
           .map((row: any[]) => ({
             transactionReference: row[txnIdIndex]?.toString(),
-            amount: row[amountIndex]?.toString(),
-            customerAccountNumber: row[accountNumberIndex]?.toString(),
-            date: row[dateIndex]?.toString(),
+            amount: row[amountIndex]?.toString() || "",
+            customerAccountNumber: row[accountNumberIndex]?.toString() || "",
+            reversalReference: row[reversalReferenceIndex]?.toString() || "",
+            letterNo: row[letterNoIndex]?.toString() || "",
+            interestReference: row[interestReferenceIndex]?.toString() || "",
+            operation: row[operationIndex]?.toString()?.toLowerCase() || "",
+            date: row[dateIndex]?.toString() || "",
             status: "pending",
           }));
 

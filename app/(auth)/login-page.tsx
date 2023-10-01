@@ -28,14 +28,15 @@ import {
 } from "@/components/ui/form";
 import { useAuth } from "./contexts/AuthContext";
 import { Loader } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 interface Login {
-  username: string;
+  email: string;
   password: string;
 }
 
 const formSchema = z.object({
-  username: z.string().min(1),
+  email: z.string().min(1),
   password: z.string().min(1),
 });
 
@@ -50,7 +51,7 @@ export function LoginPage() {
   const form = useForm<LevelFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -60,19 +61,28 @@ export function LoginPage() {
     try {
       setLoading(true);
       // await Addclient(data);
-      const response = await logUser(data);
-      if (response.access_token) {
-        login(response.access_token, response.refresh_token);
-        router.push(`/dashboard`);
-        router.refresh();
-        toast.success("Login success");
-      }
+      // const response = await logUser(data);
+      signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+        // @ts-ignore
+      }).then(({ error }) => {
+        if (error) {
+          setLoading(false);
+          toast.error(error);
+        } else {
+          router.refresh();
+          router.push("/dashboard");
+        }
+      });
+
       // console.log(response);
     } catch (error: any) {
       console.error("Error:", error);
 
-      if (error.message === "Please check your username and password.") {
-        toast.error("Invalid username or password");
+      if (error.message === "Please check your email and password.") {
+        toast.error("Invalid email or password");
       } else if (
         error.message === "Network error: Unable to connect to the server."
       ) {
@@ -89,12 +99,9 @@ export function LoginPage() {
   return (
     <Card>
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl text-cyan-500 font-semibold flex items-center justify-center">
-          Login to Coop Loyalty
+        <CardTitle className="text-2xl w-80 text-cyan-500 font-semibold flex items-center justify-center">
+          Sign In
         </CardTitle>
-        <CardDescription>
-          Enter your username and password below to login
-        </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="grid grid-cols-2 gap-6">
@@ -126,14 +133,14 @@ export function LoginPage() {
             <div className="grid grid-cols-1 gap-4">
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name:</FormLabel>
+                    <FormLabel>Email:</FormLabel>
                     <FormControl>
                       <Input
-                        type="text"
-                        placeholder="09XXXXXXXX"
+                        type="email"
+                        placeholder="johndoe@example.com"
                         disabled={loading}
                         {...field}
                       />

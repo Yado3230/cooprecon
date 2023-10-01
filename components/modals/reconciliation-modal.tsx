@@ -22,11 +22,16 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
 import { useRouter } from "next/navigation";
+import { AddReconciliation } from "@/actions/reconciliation-action";
 
 const formSchema = z.object({
   transactionReference: z.string().min(1),
-  amount: z.string().min(1),
-  customerAccountNumber: z.string().min(1),
+  amount: z.string(),
+  customerAccountNumber: z.string(),
+  reversalReference: z.string(),
+  interestReference: z.string(),
+  letterNo: z.string(),
+  operation: z.string(),
   date: z.string().min(1),
   status: z.string().default("pending"),
 });
@@ -48,6 +53,10 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
       transactionReference: "",
       amount: "",
       customerAccountNumber: "",
+      reversalReference: "",
+      interestReference: "",
+      letterNo: "",
+      operation: "",
       date: "",
       status: "pending",
     },
@@ -56,10 +65,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        `/api/${clientId}/reconciliations`,
-        values
-      );
+      await AddReconciliation(values);
       router.refresh();
       reconciliationModal.onClose();
       toast.success("Reconciliation Created");
@@ -115,6 +121,58 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
                     <FormLabel>Amount:</FormLabel>
                     <FormControl>
                       <Input placeholder="amount" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="reversalReference"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Reversal Reference:</FormLabel>
+                    <FormControl>
+                      <Input placeholder="reversal reference" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="interestReference"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Interest Reference:</FormLabel>
+                    <FormControl>
+                      <Input placeholder="interest reference" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="letterNo"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Letter No:</FormLabel>
+                    <FormControl>
+                      <Input placeholder="letterNo" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="operation"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Operation:</FormLabel>
+                    <FormControl>
+                      <Input placeholder="operation" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

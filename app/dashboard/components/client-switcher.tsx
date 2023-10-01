@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { useClientModal } from "@/hooks/use-client-modal";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Check,
@@ -27,6 +27,8 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Client } from "@prisma/client";
+import { ModalProvider } from "@/providers/modal-provider";
+import Image from "next/image";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -47,6 +49,7 @@ export default function ClientSwitcher({
   const formattedItems = items?.map((item) => ({
     label: item.clientName,
     value: item.id,
+    logoUrl: item.logoUrl,
   }));
 
   const currentclient = formattedItems?.find(
@@ -54,6 +57,15 @@ export default function ClientSwitcher({
   );
 
   const [open, setOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const onProductSelect = (product: { value: string; label: string }) => {
     setOpen(false);
@@ -61,61 +73,76 @@ export default function ClientSwitcher({
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
-        <Button
-          variant="outline"
-          size="sm"
-          role="combobox"
-          aria-expanded={open}
-          aria-label="Select a product"
-          className={cn("w-[200px] justify-between", className)}
-        >
-          <Gamepad2 className="mr-2 h-4 w-4" />
-          {currentclient?.label}
-          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandList>
-            <CommandInput placeholder="Search client..." />
-            <CommandEmpty>No client found.</CommandEmpty>
-            <CommandGroup heading="clients">
-              {formattedItems?.map((product) => (
-                <CommandItem
-                  key={product.value}
-                  onSelect={() => onProductSelect(product)}
-                  className="text-sm"
-                >
-                  <Gamepad2 className="mr-2 h-4 w-4" />
-                  {product.label}
-                  <Check
-                    className={cn(
-                      "ml-auto h-4 w-4",
-                      currentclient?.value === product.value
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
+    <>
+      <ModalProvider />
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger>
+          <Button
+            variant="outline"
+            size="sm"
+            role="combobox"
+            aria-expanded={open}
+            aria-label="Select a product"
+            className={cn("w-[200px] justify-between", className)}
+          >
+            {currentclient?.logoUrl && (
+              <Image
+                src={currentclient?.logoUrl}
+                alt="logo"
+                width={40}
+                height={40}
+              />
+            )}
+            {currentclient?.label}
+            <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[200px] p-0">
+          <Command>
+            <CommandList>
+              <CommandInput placeholder="Search client..." />
+              <CommandEmpty>No client found.</CommandEmpty>
+              <CommandGroup heading="clients">
+                {formattedItems?.map((product) => (
+                  <CommandItem
+                    key={product.value}
+                    onSelect={() => onProductSelect(product)}
+                    className="text-sm"
+                  >
+                    <Image
+                      src={product.logoUrl}
+                      alt="logo"
+                      width={40}
+                      height={40}
+                    />
+                    {product.label}
+                    <Check
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        currentclient?.value === product.value
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+            <CommandSeparator />
+            <CommandGroup>
+              <CommandItem
+                onSelect={() => {
+                  setOpen(false);
+                  clientModal.onOpen();
+                }}
+              >
+                <PlusCircle className="mr-2 h-5 w-5" />
+                Create client
+              </CommandItem>
             </CommandGroup>
-          </CommandList>
-          <CommandSeparator />
-          <CommandGroup>
-            <CommandItem
-              onSelect={() => {
-                setOpen(false);
-                clientModal.onOpen();
-              }}
-            >
-              <PlusCircle className="mr-2 h-5 w-5" />
-              Create client
-            </CommandItem>
-          </CommandGroup>
-        </Command>
-      </PopoverContent>
-    </Popover>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </>
   );
 }

@@ -30,6 +30,8 @@ import { useParams, useRouter } from "next/navigation";
 import { Input } from "./input";
 import { Button } from "./button";
 import axios from "axios";
+// import { Loader } from "lucide-react";
+import Loading from "@/app/loading";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,11 +50,12 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [loading, setLoading] = React.useState(false);
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const router = useRouter();
-  // const params = useParams();
+  const params = useParams();
 
   const table = useReactTable({
     data,
@@ -76,116 +79,91 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const handleFTButton = async () => {
-    async function fetchData(item: any) {
+  const handleProcessClick = async () => {
+    setLoading(true);
+
+    // @ts-ignore
+    async function fetchDataForOperation(item, requestData) {
       try {
-        await axios
-          .post("http://10.1.245.150:7081/v1/cbo/", {
+        const response = await axios.post(
+          "http://10.1.245.150:7081/v1/cbo/",
+          requestData
+        );
+
+        if (response.status === 200) {
+          // axios.patch(`/api/${params.clientId}/reconciliations/${requestData.id}`, {
+          //   status:
+          //     response.data.AwachFundTransferResponse.ESBStatus.status?.toLowerCase(),
+          // });
+          fetch(`/api/${params.clientId}/reconciliations/${item.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              status:
+                response.data.AwachFundTransferResponse?.ESBStatus.status?.toLowerCase() ||
+                response.data.AwachFTReversalResponse?.ESBStatus.status?.toLowerCase() ||
+                response.data.AwachFTRevesalNextDayResponse?.ESBStatus.status?.toLowerCase() ||
+                response.data.AwachFTLumpSumResponse?.ESBStatus.status?.toLowerCase() ||
+                response.data.AwachFTIntResponse?.ESBStatus.status?.toLowerCase(),
+            }),
+          }).catch((error) => {
+            console.log(error);
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // @ts-ignore
+    async function fetchData(item) {
+      switch (item.operation) {
+        case "ft":
+          await fetchDataForOperation(item, {
             AwachFundTransferRequest: {
               ESBHeader: {
                 serviceCode: "630000",
                 channel: "USSD",
                 Service_name: "AwachFundTransfer",
-                Message_Id: "FT82040900",
+                Message_Id: item.transactionReference,
               },
               FundsTransfer: {
                 CreditAcctNo: item.customerAccountNumber,
                 CreditAmount: item.amount,
               },
             },
-          })
-          .then((res) => res.data);
-        // console.log("success", item);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
+          });
+          break;
 
-    async function fetchDataLoop() {
-      for (const item of table.getFilteredSelectedRowModel().rows) {
-        await fetchData(item.original);
-      }
-    }
-    fetchDataLoop();
-  };
-
-  const handleFTInterestButton = async () => {
-    async function fetchData(item: any) {
-      try {
-        await axios
-          .post("http://10.1.245.150:7081/v1/cbo/", {
+        case "ft interest":
+          await fetchDataForOperation(item, {
             AwachFTIntRequest: {
               ESBHeader: {
                 serviceCode: "640000",
                 channel: "USSD",
                 Service_name: "AwachFTInt",
-                Message_Id: "FT98195",
+                Message_Id: item.transactionReference,
               },
               FundsTransferInt: {
                 CreditAmount: item.amount,
                 Ref: item.transactionReference,
               },
             },
-          })
-          .then((res) => res.data);
-        // console.log("success", item);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
+          });
+          break;
 
-    async function fetchDataLoop() {
-      for (const item of table.getFilteredSelectedRowModel().rows) {
-        await fetchData(item.original);
-      }
-    }
-    fetchDataLoop();
-  };
-
-  const handleFTLumpSumButton = async () => {
-    async function fetchData(item: any) {
-      try {
-        await axios
-          .post("http://10.1.245.150:7081/v1/cbo/", {
-            AwachFTLumpSumRequest: {
-              ESBHeader: {
-                serviceCode: "830000",
-                channel: "USSD",
-                Service_name: "AwachFTLumpSum",
-                Message_Id: "FT121622",
-              },
-              FundsTransferLumpSum: {
-                CreditAmount: item.amount,
-                LetterNo: "12345",
-              },
-            },
-          })
-          .then((res) => res.data);
-        // console.log("success", item);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-
-    async function fetchDataLoop() {
-      for (const item of table.getFilteredSelectedRowModel().rows) {
-        await fetchData(item.original);
-      }
-    }
-    fetchDataLoop();
-  };
-
-  const handleFTReversalNDButton = async () => {
-    async function fetchData(item: any) {
-      try {
-        await axios
-          .post("http://10.1.245.150:7081/v1/cbo/", {
+        case "ft reversal next day":
+          await fetchDataForOperation(item, {
             AwachAwachFTRevesalNextDayRequest: {
               ESBHeader: {
                 serviceCode: "870000",
                 channel: "USSD",
                 Service_name: "AwachFTRevesalNextDay",
-                Message_Id: "FT2119450",
+                Message_Id: item.transactionReference,
               },
               Reversal: {
                 DebitAcctNo: "1000427051",
@@ -194,52 +172,55 @@ export function DataTable<TData, TValue>({
                 LetterNo: "9078",
               },
             },
-          })
-          .then((res) => res.data);
-        // console.log("success", item);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
+          });
+          break;
 
-    async function fetchDataLoop() {
-      for (const item of table.getFilteredSelectedRowModel().rows) {
-        await fetchData(item.original);
-      }
-    }
-    fetchDataLoop();
-  };
-
-  const handleFTReversalButton = async () => {
-    async function fetchData(item: any) {
-      try {
-        await axios
-          .post("http://10.1.245.150:7081/v1/cbo/", {
+        case "ft reversal":
+          await fetchDataForOperation(item, {
             AwachFTReversalRequest: {
               ESBHeader: {
                 serviceCode: "850000",
                 channel: "USSD",
                 Service_name: "AwachFTReversal",
-                Message_Id: "FT980223",
+                Message_Id: item.transactionReference,
               },
               Revesal: {
                 transactionId: item.transactionReference,
               },
             },
-          })
-          .then((res) => res.data);
-        // console.log("success", item);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+          });
+          break;
+
+        case "ft lump sum":
+          await fetchDataForOperation(item, {
+            AwachFTLumpSumRequest: {
+              ESBHeader: {
+                serviceCode: "830000",
+                channel: "USSD",
+                Service_name: "AwachFTLumpSum",
+                Message_Id: item.transactionReference,
+              },
+              FundsTransferLumpSum: {
+                CreditAmount: item.amount,
+                LetterNo: "12345",
+              },
+            },
+          });
+          break;
+
+        default:
+          console.log("Unknown operation:", item.operation);
       }
     }
 
-    async function fetchDataLoop() {
+    try {
       for (const item of table.getFilteredSelectedRowModel().rows) {
         await fetchData(item.original);
       }
+      router.refresh();
+    } catch (error) {
+      console.error("Error processing data:", error);
     }
-    fetchDataLoop();
   };
 
   return (
@@ -261,39 +242,14 @@ export function DataTable<TData, TValue>({
             {table.getFilteredSelectedRowModel().rows.length > 0 && (
               <div className="">
                 <Button
-                  className="ml-2"
-                  onClick={handleFTReversalButton}
+                  className="ml-2 border"
+                  size="sm"
+                  onClick={handleProcessClick}
                   variant="secondary"
+                  disabled={loading}
                 >
-                  FT Reversal
-                </Button>
-                <Button
-                  className="ml-2"
-                  onClick={handleFTReversalNDButton}
-                  variant="secondary"
-                >
-                  FT Reversal ND
-                </Button>
-                <Button
-                  className="ml-2"
-                  onClick={handleFTLumpSumButton}
-                  variant="secondary"
-                >
-                  FT Lump Sum
-                </Button>
-                <Button
-                  className="ml-2"
-                  onClick={handleFTInterestButton}
-                  variant="secondary"
-                >
-                  FT Interest
-                </Button>
-                <Button
-                  className="ml-2"
-                  onClick={handleFTButton}
-                  variant="secondary"
-                >
-                  FT
+                  Process
+                  {loading && <Loading />}
                 </Button>
               </div>
             )}

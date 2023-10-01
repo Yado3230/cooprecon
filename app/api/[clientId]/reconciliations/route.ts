@@ -16,6 +16,10 @@ export async function POST(
       customerAccountNumber,
       date,
       status,
+      operation,
+      reversalReference,
+      interestReference,
+      letterNo,
     } = body;
 
     // if (!userId) {
@@ -27,14 +31,12 @@ export async function POST(
         status: 400,
       });
     }
-    if (!amount) {
-      return new NextResponse("amount is required", { status: 400 });
-    }
-    if (!customerAccountNumber) {
-      return new NextResponse("customerAccountNumber is required", {
+    if (!operation) {
+      return new NextResponse("operation is required", {
         status: 400,
       });
     }
+
     if (!date) {
       return new NextResponse("date is required", { status: 400 });
     }
@@ -50,6 +52,10 @@ export async function POST(
         amount,
         customerAccountNumber,
         date,
+        reversalReference,
+        interestReference,
+        letterNo,
+        operation,
         status,
       },
     });

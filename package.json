@@ -2,6 +2,9 @@
   "name": "reconciliation",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -22,20 +25,28 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-table": "^8.10.3",
+    "@types/bcrypt": "^5.0.0",
+    "@types/formidable": "^3.4.3",
     "axios": "^1.5.1",
+    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "formidable": "^3.5.1",
     "lucide-react": "^0.279.0",
     "moment": "^2.29.4",
+    "multer": "^1.4.5-lts.1",
     "next": "latest",
+    "next-auth": "^4.23.1",
+    "next-connect": "^1.0.0",
     "react": "latest",
     "react-dom": "latest",
     "react-hook-form": "^7.46.2",
     "react-hot-toast": "^2.4.1",
     "react-spinners": "^0.13.8",
     "semantic-ui-react": "^2.1.4",
+    "sharp": "^0.32.6",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "xlsx": "^0.18.5",
@@ -43,7 +54,8 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@types/node": "latest",
+    "@types/multer": "^1.4.8",
+    "@types/node": "^20.8.0",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
@@ -51,6 +63,7 @@
     "eslint-config-next": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
-    "typescript": "latest"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   }
 }

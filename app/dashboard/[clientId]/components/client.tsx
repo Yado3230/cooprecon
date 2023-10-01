@@ -29,7 +29,8 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         <div>
           <Button
             size="sm"
-            className="bg-muted text-foreground mr-2"
+            variant="outline"
+            className="mr-2"
             onClick={() => router.push(`/dashboard/${params.clientId}/upload`)}
           >
             <Import className="mr-2 h-4 w-4" />
@@ -47,7 +48,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
       </div>
       {/* <Separator className="my-4" /> */}
       <DataTable
-        searchKey="clientName"
+        searchKey="transactionReference"
         clickable={false}
         columns={columns}
         data={data}

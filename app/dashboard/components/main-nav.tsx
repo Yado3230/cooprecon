@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import {
+  BookTemplate,
   DollarSign,
   DollarSignIcon,
   Gamepad2,
@@ -10,6 +11,7 @@ import {
   Package,
   Settings,
   User,
+  User2,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
@@ -26,7 +28,18 @@ export function MainNav({
       label: "Client",
       active: pathname === `/dashboard`,
       icon: (
-        <LayoutDashboard
+        <User2
+          size={15}
+          color={`${pathname === `/dashboard` ? "#0EB8D5" : "#707E94"}`}
+        />
+      ),
+    },
+    {
+      href: `/dashboard/template`,
+      label: "Template",
+      active: pathname === `/dashboard/template`,
+      icon: (
+        <BookTemplate
           size={15}
           color={`${pathname === `/dashboard` ? "#0EB8D5" : "#707E94"}`}
         />

@@ -41,26 +41,36 @@ export const statuses = [
     icon: CheckCircledIcon,
   },
   {
-    value: "failed",
-    label: "Failed",
+    value: "failure",
+    label: "Failure",
     icon: CrossCircledIcon,
   },
 ];
 
-export const priorities = [
+export const operations = [
   {
-    label: "Low",
-    value: "low",
+    label: "FT",
+    value: "ft",
     icon: ArrowDownIcon,
   },
   {
-    label: "Medium",
-    value: "medium",
+    label: "FT Reversal",
+    value: "ft reversal",
     icon: ArrowRightIcon,
   },
   {
-    label: "High",
-    value: "high",
+    label: "FT Reversal ND",
+    value: "ft reversal next day",
+    icon: ArrowUpIcon,
+  },
+  {
+    label: "FT Lump Sum",
+    value: "ft lump sum",
+    icon: ArrowUpIcon,
+  },
+  {
+    label: "FT Interest",
+    value: "ft interest",
     icon: ArrowUpIcon,
   },
 ];

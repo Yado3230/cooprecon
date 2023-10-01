@@ -1,40 +1,40 @@
-"use client";
+// "use client";
 
 import Navbar from "./components/navbar";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Sidebar from "./components/sidebar";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/(auth)/contexts/AuthContext";
+// import { useRouter } from "next/navigation";
+// import { useAuth } from "@/app/(auth)/contexts/AuthContext";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [domLoaded, setDomLoaded] = useState(false);
+  // const [domLoaded, setDomLoaded] = useState(false);
 
-  useEffect(() => {
-    setDomLoaded(true);
-  }, []);
+  // useEffect(() => {
+  //   setDomLoaded(true);
+  // }, []);
 
-  const { accessToken } = useAuth();
-  const router = useRouter();
+  // const { accessToken } = useAuth();
+  // const router = useRouter();
 
-  useEffect(() => {
-    if (!domLoaded) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!domLoaded) {
+  //     return;
+  //   }
 
-    if (!accessToken) {
-      // Redirect to login page if not authenticated
-      router.push("/");
-    }
-  }, [domLoaded, accessToken, router]);
+  //   if (!accessToken) {
+  //     // Redirect to login page if not authenticated
+  //     router.push("/");
+  //   }
+  // }, [domLoaded, accessToken, router]);
 
-  if (!domLoaded) {
-    return null;
-  }
+  // if (!domLoaded) {
+  //   return null;
+  // }
 
   return (
     <>
