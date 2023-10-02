@@ -1,5 +1,6 @@
-import React from "react";
+"use client";
 import { Button } from "@/components/ui/button";
+import React from "react";
 import { writeFile, utils } from "xlsx";
 
 const TemplateFormat = () => {
@@ -22,23 +23,6 @@ const TemplateFormat = () => {
   ];
 
   const ws = utils.aoa_to_sheet(wsData);
-
-  // Set header format
-  const headerFormat = {
-    bold: true,
-    fgColor: "#ffcccc",
-    border: 1,
-  };
-
-  // Set header width
-  const headerWidth = 15;
-
-  // Apply header format to each header cell
-  // @ts-ignore
-  ws.getRow(0).eachCell((cell) => {
-    cell.applyFormat(headerFormat);
-    cell.width = headerWidth;
-  });
 
   // Convert worksheet to workbook
   const wb = utils.book_new();
