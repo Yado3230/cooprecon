@@ -8,7 +8,7 @@ import prismadb from "@/lib/prismadb";
 const Page = async () => {
   const clients: Client[] = await prismadb.client.findMany();
 
-  const formattedclients: ClientColumn[] = clients?.map((item) => ({
+  const formattedclients: ClientColumn[] = clients.map((item) => ({
     id: item.id,
     clientName: item.clientName,
     logoUrl: item.logoUrl,

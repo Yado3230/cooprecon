@@ -150,7 +150,7 @@ export function DataTable<TData, TValue>({
               },
               FundsTransferInt: {
                 CreditAmount: item.amount,
-                Ref: item.transactionReference,
+                Ref: item.interestReference,
               },
             },
           });
@@ -166,10 +166,10 @@ export function DataTable<TData, TValue>({
                 Message_Id: item.transactionReference,
               },
               Reversal: {
-                DebitAcctNo: "1000427051",
+                DebitAcctNo: item.customerAccountNumber,
                 CreditAmount: item.amount,
-                Ref: "FT82040900",
-                LetterNo: "9078",
+                Ref: item.reversalReference,
+                LetterNo: item.letterNo,
               },
             },
           });
@@ -185,7 +185,7 @@ export function DataTable<TData, TValue>({
                 Message_Id: item.transactionReference,
               },
               Revesal: {
-                transactionId: item.transactionReference,
+                transactionId: item.reversalReference,
               },
             },
           });
@@ -202,7 +202,7 @@ export function DataTable<TData, TValue>({
               },
               FundsTransferLumpSum: {
                 CreditAmount: item.amount,
-                LetterNo: "12345",
+                LetterNo: item.letterNo,
               },
             },
           });
