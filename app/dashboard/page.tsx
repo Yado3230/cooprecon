@@ -1,12 +1,23 @@
+"use client";
 import { format } from "date-fns";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ClientReconciliation from "./components/client";
 import { ClientColumn } from "./components/columns";
 import { Client } from "@prisma/client";
-import prismadb from "@/lib/prismadb";
+// import { getAllClients } from "@/actions/client.action";
+
+async function getData() {
+  const res = await fetch("/api/clients", { cache: "no-store" });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
 
 const Page = async () => {
-  const clients: Client[] = await prismadb.client.findMany();
+  const clients: Client[] = await getData();
 
   const formattedclients: ClientColumn[] = clients.map((item) => ({
     id: item.id,
