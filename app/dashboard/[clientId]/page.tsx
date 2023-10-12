@@ -1,17 +1,32 @@
+"use client";
+
 import { Reconciliation } from "@prisma/client";
 import ClientReconciliation from "./components/client";
 import { ClientColumn } from "./components/columns";
-import prismadb from "@/lib/prismadb";
+// import prismadb from "@/lib/prismadb";
+import { useEffect, useState } from "react";
+// import axios from "axios";
+import { getAllReconciliations } from "@/actions/reconciliation-action";
 
-const Page = async ({ params }: { params: { clientId: string } }) => {
-  const reconciliations: Reconciliation[] =
-    await prismadb.reconciliation.findMany({
-      where: {
-        clientId: params.clientId,
-      },
-    });
+const Page = ({ params }: { params: { clientId: string } }) => {
+  // const reconciliationss: Reconciliation[] =
+  //   await prismadb.reconciliation.findMany({
+  //     where: {
+  //       clientId: params.clientId,
+  //     },
+  //   });
 
-  const formattedclients: ClientColumn[] = reconciliations?.map((item) => ({
+  const [reconciliations, setReconciliations] = useState<Reconciliation[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAllReconciliations(params.clientId.toString());
+      setReconciliations(res);
+    };
+    fetchData();
+  }, []);
+
+  const formattedclients: ClientColumn[] = reconciliations.map((item) => ({
     id: item.id,
     transactionReference: item.transactionReference,
     amount: item.amount,

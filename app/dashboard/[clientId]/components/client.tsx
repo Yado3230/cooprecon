@@ -7,7 +7,6 @@ import { ClientColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
 import { ReconciliationModal } from "@/components/modals/reconciliation-modal";
-import ReconciliationExcelModalCaller from "@/components/imports/reconciliation/ReconciliationModalCaller";
 
 interface ClientReconciliationProps {
   data: ClientColumn[];

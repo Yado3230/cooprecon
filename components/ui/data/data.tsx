@@ -28,21 +28,25 @@ export const statuses = [
   {
     value: "pending",
     label: "Pending",
+    color: "#5A5A5A",
     icon: QuestionMarkCircledIcon,
   },
-  //   {
-  //     value: "in progress",
-  //     label: "In Progress",
-  //     icon: StopwatchIcon,
-  //   },
+  {
+    value: "inprogress",
+    label: "In Progress",
+    color: "#5A5A5A",
+    icon: StopwatchIcon,
+  },
   {
     value: "success",
     label: "Success",
+    color: "#0000FF",
     icon: CheckCircledIcon,
   },
   {
     value: "failure",
     label: "Failure",
+    color: "#FF0000",
     icon: CrossCircledIcon,
   },
 ];

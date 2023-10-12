@@ -4,10 +4,11 @@ import { useParams } from "next/navigation";
 const URL = `/api`;
 const API_URL = "http://10.1.245.150:7081/v1/cbo/";
 
-export const getAllReconciliations = async (): Promise<Reconciliation[]> => {
-  const params = useParams();
+export const getAllReconciliations = async (
+  clientId: String
+): Promise<Reconciliation[]> => {
   try {
-    const res = await fetch(`${URL}/${params.clientId}/reconciliations`, {
+    const res = await fetch(`${URL}/${clientId}/reconciliations`, {
       cache: "no-cache",
       next: { tags: ["reconciliations"] },
     });

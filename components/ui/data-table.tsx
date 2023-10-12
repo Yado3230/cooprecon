@@ -190,7 +190,6 @@ export function DataTable<TData, TValue>({
             },
           });
           break;
-
         case "ft lump sum":
           await fetchDataForOperation(item, {
             AwachFTLumpSumRequest: {

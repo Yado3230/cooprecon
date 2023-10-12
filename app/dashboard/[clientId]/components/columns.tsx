@@ -61,7 +61,7 @@ export const columns: ColumnDef<ClientColumn>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Customer Account Number
+          Customer Acc Number
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -107,8 +107,11 @@ export const columns: ColumnDef<ClientColumn>[] = [
       }
 
       return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && <status.icon className="mr-2 h-4 w-4 text-primary" />}
+        <div
+          className={`flex w-[100px] items-center`}
+          style={{ color: status.color }}
+        >
+          {status.icon && <status.icon className="mr-2 h-4 w-4" />}
           <span>{status.label}</span>
         </div>
       );
@@ -129,7 +132,7 @@ export const columns: ColumnDef<ClientColumn>[] = [
       }
 
       return (
-        <div className="flex w-[100px] items-center">
+        <div className="whitespace-nowrap flex w-[130px] items-center">
           {status.icon && <status.icon className="mr-2 h-4 w-4 text-primary" />}
           <span>{status.label}</span>
         </div>
