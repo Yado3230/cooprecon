@@ -94,9 +94,11 @@ export const ClientModal = () => {
           method: "POST",
           body: formData,
         });
+        if (response) {
+          toast.success("Client Created");
+          window.location.reload();
+        }
       }
-      toast.success("Client Created");
-      router.refresh();
       clientModal.onClose();
     } catch (error) {
       toast.error("Something went wrong!");
