@@ -34,6 +34,10 @@ export const columns: ColumnDef<ClientColumn>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        disabled={
+          row.original.status === "success" ||
+          row.original.status === "inprogress"
+        }
       />
     ),
     enableSorting: false,

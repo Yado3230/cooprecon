@@ -55,7 +55,12 @@ export function UserNav() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()}>
+          <DropdownMenuItem
+            onClick={async () => {
+              await signOut();
+              router.push("/");
+            }}
+          >
             Log out
             <DropdownMenuShortcut>⇧Q</DropdownMenuShortcut>
           </DropdownMenuItem>
