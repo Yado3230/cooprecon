@@ -35,6 +35,19 @@ export function MainNav({
       ),
     },
     {
+      href: `/dashboard/operations`,
+      label: "Operations",
+      active: pathname === `/dashboard/operations`,
+      icon: (
+        <User2
+          size={15}
+          color={`${
+            pathname === `/dashboard/operations` ? "#0EB8D5" : "#707E94"
+          }`}
+        />
+      ),
+    },
+    {
       href: `/dashboard/template`,
       label: "Template",
       active: pathname === `/dashboard/template`,
