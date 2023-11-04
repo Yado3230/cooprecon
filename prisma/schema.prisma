@@ -18,7 +18,8 @@ model Client {
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   reconciliations   Reconciliation[]    @relation("ClientToReconciliation")
-
+  operations        Operation[]         @relation("ClientToOperation")
+  clientapis        ClientAPI[]         @relation("ClientToClientAPI")
 }
 
 model Reconciliation {
@@ -47,4 +48,29 @@ model User {
   password      String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Operation {
+  id                      String            @id @default(uuid())
+  clientId                String
+  operation               String            @unique
+  bodyData                Json
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  client                  Client            @relation("ClientToOperation", fields: [clientId], references: [id])
+  
+  @@index([clientId])
+}
+
+model ClientAPI {
+  id                      String            @id @default(uuid())
+  clientId                String
+  domain                  String            
+  port                    String            
+  endpoint                String            
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  client                  Client            @relation("ClientToClientAPI", fields: [clientId], references: [id])
+  
+  @@index([clientId])
 }

@@ -1,27 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  BookTemplate,
-  DollarSign,
-  DollarSignIcon,
-  Gamepad2,
-  LayoutDashboard,
-  LucideShovel,
-  Package,
-  Settings,
-  User,
-  User2,
-} from "lucide-react";
+import { BookTemplate, FileJson, Link2Icon, User2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
-export function MainNav({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLElement>) {
+export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
-  const params = useParams();
   const routes = [
     {
       href: `/dashboard`,
@@ -35,11 +20,24 @@ export function MainNav({
       ),
     },
     {
+      href: `/dashboard/clientapi`,
+      label: "Client API",
+      active: pathname === `/dashboard/clientapi`,
+      icon: (
+        <Link2Icon
+          size={15}
+          color={`${
+            pathname === `/dashboard/clientapi` ? "#0EB8D5" : "#707E94"
+          }`}
+        />
+      ),
+    },
+    {
       href: `/dashboard/operations`,
       label: "Operations",
       active: pathname === `/dashboard/operations`,
       icon: (
-        <User2
+        <FileJson
           size={15}
           color={`${
             pathname === `/dashboard/operations` ? "#0EB8D5" : "#707E94"

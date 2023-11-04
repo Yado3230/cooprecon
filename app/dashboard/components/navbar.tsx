@@ -1,24 +1,18 @@
-"use client";
 import { UserNav } from "./user-nav";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import ClientSwitcher from "./client-switcher";
-// import prismadb from "@/lib/prismadb";
-import { Client } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { getAllClients } from "@/actions/client.action";
+import prismadb from "@/lib/prismadb";
+
+async function getClients() {
+  const feed = await prismadb.client.findMany();
+  return feed;
+}
+
+export const revalidate = 1;
 
 const Navbar = async () => {
-  // const clients: Client[] = await prismadb.client.findMany();
-  const [clients, setClients] = useState<Client[]>([]);
-  // const clients: Client[] = await prismadb.client.findMany();
-  useEffect(() => {
-    const fetchData = async () => {
-      const clients: Client[] = await getAllClients();
-      setClients(clients);
-    };
-    fetchData();
-  }, []);
+  const clients = await getClients();
 
   return (
     <div className="fixed z-10 shadow-sm bg-background opacity-90 px- top-0 right-0 left-0">

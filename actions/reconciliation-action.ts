@@ -8,10 +8,7 @@ export const getAllReconciliations = async (
   clientId: String
 ): Promise<Reconciliation[]> => {
   try {
-    const res = await fetch(`${URL}/${clientId}/reconciliations`, {
-      cache: "no-cache",
-      next: { tags: ["reconciliations"] },
-    });
+    const res = await fetch(`${URL}/${clientId}/reconciliations`);
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -23,10 +20,7 @@ export const getReconsiliation = async (
   id: string
 ): Promise<Reconciliation> => {
   try {
-    const res = await fetch(`${URL}/${id}`, {
-      cache: "no-cache",
-      next: { tags: ["reconciliations"] },
-    });
+    const res = await fetch(`${URL}/${id}`);
     return res.json();
   } catch (error) {
     console.error("Error:", error);

@@ -1,8 +1,8 @@
-import { Client } from "@prisma/client";
+import { ClientAPI } from "@prisma/client";
 
-export const getAllClients = async (): Promise<Client[]> => {
+export const getAllClientApis = async (): Promise<ClientAPI[]> => {
   try {
-    const res = await fetch(`/api/clients`);
+    const res = await fetch(`/api/clientapi`);
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -10,16 +10,11 @@ export const getAllClients = async (): Promise<Client[]> => {
   }
 };
 
-export const AddClient = async (data: any, file: File): Promise<Client> => {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("clientName", data.clientName);
-  formData.append("description", data.description);
-
+export const AddClientApi = async (data: any): Promise<ClientAPI> => {
   try {
-    const response = await fetch(`/api/clients`, {
+    const response = await fetch(`/api/clientapi`, {
       method: "POST",
-      body: formData,
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
