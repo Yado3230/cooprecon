@@ -8,7 +8,6 @@ async function getClients() {
   const feed = await prismadb.client.findMany();
   return feed;
 }
-
 export const revalidate = 1;
 
 const Page = async () => {

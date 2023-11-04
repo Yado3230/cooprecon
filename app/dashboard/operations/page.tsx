@@ -1,6 +1,7 @@
 "use client";
+
 import { getAllClients } from "@/actions/client.action";
-import { AddOperation } from "@/actions/operation.action";
+import { AddOperation, getAllOperations } from "@/actions/operation.action";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,22 +19,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import prismadb from "@/lib/prismadb";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Client, Operation } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-async function getClients() {
-  const feed = await prismadb.client.findMany();
-  return feed;
-}
-export const revalidate = 1;
-
-const DynamicJSONForm: React.FC = async () => {
-  const clients = await getClients();
+const DynamicJSONForm: React.FC = () => {
+  const [clients, setClients] = useState<Client[]>([]);
+  const [operations, setOperations] = useState<Operation[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const clients = await getAllClients();
+      const operations = await getAllOperations();
+      setClients(clients);
+      setOperations(operations);
+    };
+    fetchData();
+  }, []);
   // State variables
   const [formData, setFormData] = useState<{
     [topLevelKey: string]: {
