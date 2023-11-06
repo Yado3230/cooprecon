@@ -10,6 +10,18 @@ export const getAllOperations = async (): Promise<Operation[]> => {
   }
 };
 
+export const getOperationsByClientId = async (
+  id: string
+): Promise<Operation[]> => {
+  try {
+    const res = await fetch(`/api/operations${id}`);
+    return res.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
+
 export const AddOperation = async (
   data: any,
   bodyData: object
