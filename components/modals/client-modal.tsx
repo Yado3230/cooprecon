@@ -19,7 +19,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { AddClient } from "@/actions/client.action";
 import NextImage from "next/image";
 
 const formSchema = z.object({
@@ -128,8 +127,6 @@ export const ClientModal = () => {
                     type="file"
                     id="dropzone-file"
                     hidden
-                    // required
-                    // onChange={props.handleChange}
                     onChange={handleFileChange}
                   />
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
