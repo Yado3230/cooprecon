@@ -28,6 +28,8 @@ const Page = async ({ params }: { params: { clientId: string } }) => {
     operation: item.operation,
     status: item.status,
   }));
+
+  
   return (
     <div>
       <ClientReconciliation data={formattedclients} />

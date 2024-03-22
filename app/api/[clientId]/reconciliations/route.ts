@@ -22,10 +22,6 @@ export async function POST(
       letterNo,
     } = body;
 
-    // if (!userId) {
-    //   return new NextResponse("Unauthorized", { status: 401 });
-    // }
-
     if (!transactionReference) {
       return new NextResponse("Transaction Reference is required", {
         status: 400,

@@ -26,7 +26,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useAuth } from "./contexts/AuthContext";
 import { Loader } from "lucide-react";
 import { signIn } from "next-auth/react";
 
@@ -43,7 +42,6 @@ const formSchema = z.object({
 type LevelFormValues = z.infer<typeof formSchema>;
 
 export function LoginPage() {
-  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const router = useRouter();

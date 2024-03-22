@@ -13,15 +13,13 @@ export const revalidate = 1;
 const Page = async () => {
   const clients = await getClients();
 
-  const formattedclients: ClientColumn[] = clients.map(
-    (item: ClientColumn) => ({
-      id: item.id,
-      clientName: item.clientName,
-      logoUrl: item.logoUrl,
-      description: item.description,
-      createdAt: format(new Date(item.createdAt), "MMMM do, yyyy"),
-    })
-  );
+  const formattedclients: ClientColumn[] = clients.map((item) => ({
+    id: item.id,
+    clientName: item.clientName,
+    logoUrl: item.logoUrl,
+    description: item.description,
+    createdAt: new Date(item.createdAt).toISOString().split("T")[0],
+  }));
   return (
     <div>
       <ClientReconciliation data={formattedclients} />

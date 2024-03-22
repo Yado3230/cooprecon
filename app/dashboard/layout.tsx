@@ -5,7 +5,6 @@ import Navbar from "./components/navbar";
 import Sidebar from "./components/sidebar";
 import Head from "next/head";
 // import { useRouter } from "next/navigation";
-// import { useAuth } from "@/app/(auth)/contexts/AuthContext";
 
 export default function RootLayout({
   children,

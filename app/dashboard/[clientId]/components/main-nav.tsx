@@ -17,6 +17,11 @@ export function MainNav({
       active: pathname === `/dashboard/${params.clientId}`,
     },
     {
+      href: `/dashboard/${params.clientId}/templateheader`,
+      label: "Upload Template Header",
+      active: pathname === `/dashboard/${params.clientId}/templateheader`,
+    },
+    {
       href: `/dashboard/${params.clientId}/clientinfo`,
       label: "Client Info",
       active: pathname === `/dashboard/${params.clientId}/clientinfo`,
