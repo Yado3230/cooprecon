@@ -6,3 +6,5 @@ export default withAuth({
     signIn: "/",
   },
 });
+
+export const config = { matcher: ["/admin"] };
