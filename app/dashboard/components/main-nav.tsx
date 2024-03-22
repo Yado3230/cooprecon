@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { BookTemplate, FileJson, Link2Icon, User2 } from "lucide-react";
+import { BookTemplate, FileJson, Link2Icon, User, User2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
@@ -53,6 +53,17 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
         <BookTemplate
           size={15}
           color={`${pathname === `/dashboard` ? "#0EB8D5" : "#707E94"}`}
+        />
+      ),
+    },
+    {
+      href: `/dashboard/users`,
+      label: "Users",
+      active: pathname === `/dashboard/users`,
+      icon: (
+        <User
+          size={15}
+          color={`${pathname === `/dashboard/users` ? "#0EB8D5" : "#707E94"}`}
         />
       ),
     },

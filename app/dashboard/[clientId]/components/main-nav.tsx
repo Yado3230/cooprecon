@@ -18,7 +18,7 @@ export function MainNav({
     },
     {
       href: `/dashboard/${params.clientId}/templateheader`,
-      label: "Upload Template Header",
+      label: "Header Template",
       active: pathname === `/dashboard/${params.clientId}/templateheader`,
     },
     {
