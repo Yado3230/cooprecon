@@ -1,6 +1,6 @@
 // import { UserRequest, UserResponse } from "@/types/types";
 
-import { UserRequest, UserResponse } from "@/types/types";
+import { EditUserRequest, UserRequest, UserResponse } from "@/types/types";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -62,34 +62,59 @@ export const createUser = async (data: UserRequest): Promise<UserResponse> => {
     throw error;
   }
 };
+export const editUser = async (
+  data: EditUserRequest
+): Promise<UserResponse> => {
+  const access_token = localStorage.getItem("access_token");
+  try {
+    const response = await fetch(`${API_URL}api/v1/users`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+      },
+      body: JSON.stringify(data),
+    });
 
-// export const resetPassword = async (
-//   password: String,
-//   access_token: string | null
-// ): Promise<UserResponse> => {
-//   try {
-//     const response = await fetch(`${API_URL}api/v1/accounts/reset-password`, {
-//       method: "PUT",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${access_token}`,
-//       },
-//       body: JSON.stringify({
-//         password: password,
-//       }),
-//     });
+    if (!response.ok) {
+      throw new Error(`Request failed with status: ${response.status}`);
+    }
 
-//     if (!response.ok) {
-//       throw new Error(`Request failed with status: ${response.status}`);
-//     }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 
-//     const responseData = await response.json();
-//     return responseData;
-//   } catch (error) {
-//     console.error("Error:", error);
-//     throw error; // Rethrow the error to handle it in the caller
-//   }
-// };
+export const resetPassword = async (
+  password: String,
+  username: string
+): Promise<UserResponse> => {
+  try {
+    const response = await fetch(`${API_URL}api/v1/accounts/reset-password`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password,
+        username,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
 
 export const getMe = async (
   access_token: string | null
@@ -114,21 +139,21 @@ export const getMe = async (
   }
 };
 
-// export const deleteUser = async (id: string): Promise<Boolean> => {
-//   try {
-//     const res = await fetch(`${API_URL}api/v1/users/delete/${id}`, {
-//       method: "POST",
-//     });
-//     if (!res.ok) {
-//       throw new Error(`Request failed with status: ${res.status}`);
-//     }
-//     const responseData = res.ok;
-//     return responseData;
-//   } catch (error) {
-//     console.error("Error:", error);
-//     throw error; // Rethrow the error to handle it in the caller
-//   }
-// };
+export const deleteUser = async (id: string): Promise<Boolean> => {
+  try {
+    const res = await fetch(`${API_URL}api/v1/users/${id}`, {
+      method: "POST",
+    });
+    if (!res.ok) {
+      throw new Error(`Request failed with status: ${res.status}`);
+    }
+    const responseData = res.ok;
+    return responseData;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
 
 export const logUser = async (data: Login): Promise<LoginResponse> => {
   try {
@@ -149,6 +174,7 @@ export const logUser = async (data: Login): Promise<LoginResponse> => {
     return responseData;
   } catch (error) {
     if (error instanceof TypeError) {
+      console.log(error);
       throw new Error("Network error: Unable to connect to the server.");
     } else {
       console.error("Error:", error);

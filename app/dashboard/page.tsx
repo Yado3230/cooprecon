@@ -2,21 +2,11 @@ import { format } from "date-fns";
 import React from "react";
 import ClientReconciliation from "./components/client";
 import { ClientColumn } from "./components/columns";
-import prismadb from "@/lib/prismadb";
+import { getAllClients } from "@/actions/client.action";
 
 async function getClients() {
-  // const feed = await prismadb.client.findMany();
-  return [
-    {
-      id: "1",
-      transactionReference: "1",
-      amount: "1",
-      customerAccountNumber: "1",
-      date: "2022/12/12",
-      operation: "1",
-      status: "1",
-    },
-  ];
+  const feed = await getAllClients();
+  return feed;
 }
 export const revalidate = 1;
 
@@ -28,7 +18,7 @@ const Page = async () => {
     clientName: item.clientName,
     logoUrl: item.logoUrl,
     description: item.description,
-    createdAt: new Date(item.createdAt),
+    createdAt: new Date(item.createdAt).toISOString().split("T")[0],
   }));
   return (
     <div>

@@ -2,7 +2,7 @@ import { Client } from "@prisma/client";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const getAllClients = async (): Promise<Client[]> => {
+export const getAllBanks = async (): Promise<Client[]> => {
   try {
     const res = await fetch(`${API_URL}api/v1/clients`);
     return res.json();
@@ -12,7 +12,7 @@ export const getAllClients = async (): Promise<Client[]> => {
   }
 };
 
-export const getClientById = async (clientId: number): Promise<Client[]> => {
+export const getBanksByClientId = async (clientId: number): Promise<Client[]> => {
   try {
     const res = await fetch(`${API_URL}api/v1/clients/${clientId}`);
     return res.json();
@@ -22,7 +22,7 @@ export const getClientById = async (clientId: number): Promise<Client[]> => {
   }
 };
 
-export const AddClient = async (data: any, file: File): Promise<Client> => {
+export const addBank = async (data: any, file: File): Promise<Client> => {
   const token = localStorage.getItem("access_token");
   const formData = new FormData();
   formData.append("logo", file);

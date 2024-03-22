@@ -20,6 +20,7 @@ import { ChangeEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import NextImage from "next/image";
+import { AddClient } from "@/actions/client.action";
 
 const formSchema = z.object({
   clientName: z.string().min(1),
@@ -79,20 +80,17 @@ export const ClientModal = () => {
       toast.error("Please select a file");
       return;
     }
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("clientName", values.clientName);
-    formData.append("description", values.description);
+    // const formData = new FormData();
+    // formData.append("file", file);
+    // formData.append("clientName", values.clientName);
+    // formData.append("description", values.description);
 
     try {
       setLoading(true);
       if (!file) {
         return toast.error("Please select file");
       } else {
-        const response = await fetch(`api/clients`, {
-          method: "POST",
-          body: formData,
-        });
+        const response = await AddClient(values, file);
         if (response) {
           toast.success("Client Created");
           window.location.reload();

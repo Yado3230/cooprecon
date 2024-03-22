@@ -2,7 +2,7 @@ import { Reconciliation } from "@prisma/client";
 import { useParams } from "next/navigation";
 
 const URL = `/api`;
-const API_URL = "http://10.1.245.150:7081/v1/cbo/";
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllReconciliations = async (
   clientId: String

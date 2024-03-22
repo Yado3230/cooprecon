@@ -16,7 +16,7 @@ export const revalidate = 1;
 
 const Page = async ({ params }: { params: { clientId: string } }) => {
   const reconciliations: Reconciliation[] = await getReconciliations(
-    params.clientId.toString()
+    params.clientId?.toString()
   );
 
   const formattedclients: ClientColumn[] = reconciliations.map((item) => ({

@@ -4,7 +4,7 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllRoles = async (): Promise<Role[]> => {
   try {
-    const res = await fetch(`${API_URL}api/roles?size=1000`);
+    const res = await fetch(`${API_URL}api/v1/roles?size=1000`);
     const responseData = await res.json();
     return responseData;
   } catch (error) {

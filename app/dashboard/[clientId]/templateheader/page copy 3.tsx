@@ -7,27 +7,22 @@ import { Label } from "@/components/ui/label";
 import * as XLSX from "xlsx";
 import { Ticket, Trash } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useParams } from "next/navigation";
-import { AddTemplateHeader } from "@/actions/header-template.action";
-import toast from "react-hot-toast";
 
 interface Template {
-  templateName: string;
+  name: string;
   file: File | null;
   headers: string[];
-  rrn: string;
+  selectedKey: string | null;
 }
 
 const ReconciliationExcelModalCaller: React.FC = () => {
   const [templates, setTemplates] = useState<Template[]>([
-    { templateName: "", file: null, headers: [], rrn: "" },
+    { name: "", file: null, headers: [], selectedKey: null },
   ]);
-
-  const params = useParams();
 
   const handleTemplateNameChange = (index: number, value: string) => {
     const updatedTemplates = [...templates];
-    updatedTemplates[index].templateName = value;
+    updatedTemplates[index].name = value;
     setTemplates(updatedTemplates);
   };
 
@@ -41,17 +36,16 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setTemplates(updatedTemplates);
   };
 
-  const handleKeySelect = (index: number, rrn: string) => {
-    console.log(index, rrn);
+  const handleKeySelect = (index: number, selectedKey: string) => {
     const updatedTemplates = [...templates];
-    updatedTemplates[index].rrn = rrn;
+    updatedTemplates[index].selectedKey = selectedKey;
     setTemplates(updatedTemplates);
   };
 
   const handleAddTemplate = () => {
     setTemplates([
       ...templates,
-      { templateName: "", file: null, headers: [], rrn: "" },
+      { name: "", file: null, headers: [], selectedKey: null },
     ]);
   };
 
@@ -59,22 +53,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     const updatedTemplates = [...templates];
     updatedTemplates.splice(index, 1);
     setTemplates(updatedTemplates);
-  };
-
-  const hanleSaveAll = async () => {
-    const response = await AddTemplateHeader({
-      clientId: params?.clientId,
-      fileTemplates: templates,
-    });
-    if (response) {
-      toast.success("Created Succesfully");
-      setTemplates([                                                   
-        ...templates,
-        { templateName: "", file: null, headers: [], rrn: "" },
-      ]);
-    } else {
-      toast.error("failed to add header template");
-    }
   };
 
   const parseExcelFile = async (file: File): Promise<string[]> => {
@@ -116,7 +94,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
               <Input
                 id={`templateName-${index}`}
                 placeholder="Name"
-                value={template.templateName}
+                value={template.name}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleTemplateNameChange(index, e.target.value)
                 }
@@ -155,34 +133,19 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                   Select RRN
                 </Label>
                 <div>
-                  <div className="grid grid-cols-3">
-                    {template.headers.map((header, index2) => (
-                      <div key={index2} className="">
+                  <RadioGroup
+                    defaultValue="comfortable"
+                    className="grid grid-cols-3"
+                  >
+                    {template.headers.map((header, index) => (
+                      <div key={index} className="">
                         <div className="flex items-center space-x-2">
-                          {/* <RadioGroupItem value={header} id="r1" />
-                          <Label htmlFor="r1">{header}</Label> */}
-                          <div className="flex items-center mb-4">
-                            <input
-                              id={`default-radio-${index2 + 1}`}
-                              type="radio"
-                              value={header}
-                              name={`header`}
-                              onChange={(e) =>
-                                handleKeySelect(index, e.target.value)
-                              }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                            <label
-                              htmlFor={`default-radio-${index + 1}`}
-                              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                            >
-                              {header}
-                            </label>
-                          </div>
+                          <RadioGroupItem value={header} id="r1" />
+                          <Label htmlFor="r1">{header}</Label>
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </RadioGroup>
                 </div>
               </div>
             )}
@@ -197,7 +160,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
           </Button>
           <Button
             className="bg-cyan-500 text-white"
-            onClick={() => hanleSaveAll()}
+            onClick={handleAddTemplate}
           >
             Save All
           </Button>

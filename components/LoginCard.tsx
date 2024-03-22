@@ -54,7 +54,7 @@ function LoginCard() {
       const response = await logUser(data);
       if (response.access_token) {
         login(response.access_token, response.refresh_token);
-        router.push(`/admin`);
+        router.push(`/dashboard`);
         router.refresh();
         toast.success("Login success");
       }
