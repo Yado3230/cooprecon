@@ -5,8 +5,18 @@ import { ClientColumn } from "./components/columns";
 import prismadb from "@/lib/prismadb";
 
 async function getClients() {
-  const feed = await prismadb.client.findMany();
-  return feed;
+  // const feed = await prismadb.client.findMany();
+  return [
+    {
+      id: "1",
+      transactionReference: "1",
+      amount: "1",
+      customerAccountNumber: "1",
+      date: "2022/12/12",
+      operation: "1",
+      status: "1",
+    },
+  ];
 }
 export const revalidate = 1;
 
@@ -18,7 +28,7 @@ const Page = async () => {
     clientName: item.clientName,
     logoUrl: item.logoUrl,
     description: item.description,
-    createdAt: new Date(item.createdAt).toISOString().split("T")[0],
+    createdAt: new Date(item.createdAt),
   }));
   return (
     <div>

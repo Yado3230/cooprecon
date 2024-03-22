@@ -10,13 +10,13 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { clientId: string };
 }) {
-  const client = await prismadb.client.findFirst({
-    where: {
-      id: clientId,
-    },
-  });
+  // const client = await prismadb.client.findFirst({
+  //   where: {
+  //     id: clientId,
+  //   },
+  // });
 
-  if (!client) redirect("/dashboard");
+  // if (!client) redirect("/dashboard");
   return (
     <div>
       <MainNav className="mb-5" />

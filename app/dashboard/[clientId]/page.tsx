@@ -4,12 +4,22 @@ import { ClientColumn } from "./components/columns";
 import prismadb from "@/lib/prismadb";
 
 async function getReconciliations(id: string) {
-  const feed = await prismadb.reconciliation.findMany({
-    where: {
-      clientId: id,
+  // const feed = await prismadb.reconciliation.findMany({
+  //   where: {
+  //     clientId: id,
+  //   },
+  // });
+  return [
+    {
+      id: "1",
+      transactionReference: "1",
+      amount: "1",
+      customerAccountNumber: "1",
+      date: "2022/12/12",
+      operation: "1",
+      status: "1",
     },
-  });
-  return feed;
+  ];
 }
 
 export const revalidate = 1;
@@ -29,7 +39,6 @@ const Page = async ({ params }: { params: { clientId: string } }) => {
     status: item.status,
   }));
 
-  
   return (
     <div>
       <ClientReconciliation data={formattedclients} />
