@@ -42,6 +42,7 @@
     "next-connect": "^1.0.0",
     "prisma": "^5.10.2",
     "react": "latest",
+    "react-day-picker": "^8.10.0",
     "react-dom": "latest",
     "react-hook-form": "^7.46.2",
     "react-hot-toast": "^2.4.1",

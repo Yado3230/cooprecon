@@ -6,11 +6,13 @@ import axios from "axios";
 // import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 
 import { Modal } from "@/components/ui/modal";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,17 +25,19 @@ import { toast } from "react-hot-toast";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
 import { useRouter } from "next/navigation";
 import { AddReconciliation } from "@/actions/reconciliation-action";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
 const formSchema = z.object({
-  transactionReference: z.string().min(1),
-  amount: z.string(),
-  customerAccountNumber: z.string(),
-  reversalReference: z.string(),
-  interestReference: z.string(),
-  letterNo: z.string(),
-  operation: z.string(),
-  date: z.string().min(1),
-  status: z.string().default("pending"),
+  date: z.date(),
+  cbs: z.string(),
+  eth: z.string(),
+  coop: z.string(),
 });
 
 interface ReconciliationModalProps {
@@ -49,31 +53,27 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      transactionReference: "",
-      amount: "",
-      customerAccountNumber: "",
-      reversalReference: "",
-      interestReference: "",
-      letterNo: "",
-      operation: "",
-      date: "",
-      status: "pending",
-    },
+    // defaultValues: {
+    //   date: null,
+    //   cbs: "",
+    //   eth: "",
+    //   coop: "",
+    // },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setLoading(true);
-      await AddReconciliation(values);
-      router.refresh();
-      reconciliationModal.onClose();
-      toast.success("Reconciliation Created");
-    } catch (error) {
-      toast.error("Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   setLoading(true);
+    //   await AddReconciliation(values);
+    //   router.refresh();
+    //   reconciliationModal.onClose();
+    //   toast.success("Reconciliation Created");
+    // } catch (error) {
+    //   toast.error("Something went wrong!");
+    // } finally {
+    //   setLoading(false);
+    // }
+    console.log(values);
   };
 
   return (
@@ -84,115 +84,90 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
       onClose={reconciliationModal.onClose}
     >
       <div>
-        <div className="spaye-y-4 py-2 pb-4">
+        <div className="py-2 pb-4 space-x-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                name="transactionReference"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>TXN ID:</FormLabel>
-                    <FormControl>
-                      <Input placeholder="transaction id" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="customerAccountNumber"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Account Number:</FormLabel>
-                    <FormControl>
-                      <Input placeholder="customer account number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="amount"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Amount:</FormLabel>
-                    <FormControl>
-                      <Input placeholder="amount" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="reversalReference"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Reversal Reference:</FormLabel>
-                    <FormControl>
-                      <Input placeholder="reversal reference" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="interestReference"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Interest Reference:</FormLabel>
-                    <FormControl>
-                      <Input placeholder="interest reference" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="letterNo"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Letter No:</FormLabel>
-                    <FormControl>
-                      <Input placeholder="letterNo" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="operation"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Operation:</FormLabel>
-                    <FormControl>
-                      <Input placeholder="operation" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 name="date"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Date:</FormLabel>
+                    <FormLabel>Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date: number) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="cbs"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>CBS:</FormLabel>
                     <FormControl>
-                      <Input placeholder="Date" {...field} />
+                      <Input id="picture" type="file" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              <div className="pt-6 space-x-2 flex items-center justify-end w-full">
+              <FormField
+                name="eth"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>EthSwitch:</FormLabel>
+                    <FormControl>
+                      <Input id="picture" type="file" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="coop"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>CoopSwitch:</FormLabel>
+                    <FormControl>
+                      <Input id="picture" type="file" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center justify-end w-full pt-6 space-x-2">
                 <Button
                   variant="outline"
                   type="button"
