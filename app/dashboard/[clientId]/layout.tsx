@@ -1,6 +1,6 @@
+import { ReconciliationModalExisting } from "@/components/modals/reconciliation-modal-existing";
 import { MainNav } from "./components/main-nav";
 import { Separator } from "@/components/ui/separator";
-import { redirect } from "next/navigation";
 
 export default async function RootLayout({
   children,
@@ -11,6 +11,7 @@ export default async function RootLayout({
 }) {
   return (
     <div>
+      <ReconciliationModalExisting clientId={Number(clientId)} />
       <MainNav className="mb-5" />
       <Separator className="my-4" />
       {children}

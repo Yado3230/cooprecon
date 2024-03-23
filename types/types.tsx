@@ -157,8 +157,6 @@ export interface ReconProcessTracker {
   coopSwitchFile: string;
   status: string;
   addedAt: string;
-  addedBy: UserResponse;
   processingStartedAt: string;
   processingEndedAt: string;
-  processedBy: UserResponse;
 }

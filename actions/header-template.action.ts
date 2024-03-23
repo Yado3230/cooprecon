@@ -1,4 +1,8 @@
-import { HeaderTemplate, HeaderTemplateRequest } from "@/types/types";
+import {
+  HeaderTemplate,
+  HeaderTemplateRequest,
+  ReconProcessTracker,
+} from "@/types/types";
 import { Client } from "@prisma/client";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -6,8 +10,8 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const getTemplateHeaderByClientId = async (
   clientId: number
 ): Promise<HeaderTemplate[]> => {
-  const token = 
-  typeof window !== "undefined" && localStorage.getItem("access_token");
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
   try {
     const res = await fetch(
       `${API_URL}api/v1/file-upload/templates?clientId=${clientId}`,
@@ -24,11 +28,33 @@ export const getTemplateHeaderByClientId = async (
   }
 };
 
+export const getReconsilationProcessingTracker = async (
+  clientId: number
+):
+Promise<ReconProcessTracker[]> => {
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
+  try {
+    const res = await fetch(
+      `${API_URL}api/v1/recon-processing/trackers?size=1000`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
+
 export const AddTemplateHeader = async (
   data: any
 ): Promise<HeaderTemplateRequest> => {
-  const token = 
-  typeof window !== "undefined" && localStorage.getItem("access_token");
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
   try {
     const response = await fetch(`${API_URL}api/v1/file-upload/templates`, {
       method: "POST",
@@ -36,6 +62,33 @@ export const AddTemplateHeader = async (
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
+
+export const UploadExcelFile = async (
+  data: FormData
+): Promise<HeaderTemplateRequest> => {
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
+  try {
+    const response = await fetch(`${API_URL}api/v1/file-uploads/read-excel`, {
+      method: "POST",
+      body: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // "Content-Type": "application/json",
       },
     });
 

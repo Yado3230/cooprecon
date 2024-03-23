@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as XLSX from "xlsx";
-import { Ticket, Trash } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Trash } from "lucide-react";
 import { useParams } from "next/navigation";
 import {
   AddTemplateHeader,
@@ -45,6 +44,8 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     };
     fetchData();
   }, [updated]);
+
+  console.log(templates);
 
   const handleTemplateNameChange = (index: number, value: string) => {
     const updatedTemplates = [...templates];
@@ -182,7 +183,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                     index,
                     e.target.files ? e.target.files[0] : null
                   );
-                  console.log(e.target.files);
                 }}
               />
             </div>

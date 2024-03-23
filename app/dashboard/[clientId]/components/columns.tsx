@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import { CellAction } from "./cell-actions";
 import { Checkbox } from "@/components/ui/checkbox";
-import { operations, statuses } from "@/components/ui/data/data";
 import { ReconProcessTracker } from "@/types/types";
+import { useReconciliationModalExisting } from "@/hooks/use-reconciliation-modal-esisting";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -92,17 +91,29 @@ export const columns: ColumnDef<ReconProcessTracker>[] = [
       );
     },
     cell: ({ row }) => {
+      const reconciliationModal = useReconciliationModalExisting();
       return (
         <div>
-          {!row.original.ethSwitchFile ? (
-            <Button className="w-full" variant="outline" size="sm">
-              Upload File
-            </Button>
-          ) : (
-            <div className="w-full">
-              <span>{row.original.ethSwitchFile}</span>
-            </div>
-          )}
+          <div>
+            {!row.original.ethSwitchFile ? (
+              <Button
+                className="w-full"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  localStorage.setItem("fileUploadDate", row.original.date);
+                  localStorage.setItem("fileTypeProps", "ETH-SWITCH");
+                  reconciliationModal.onOpen();
+                }}
+              >
+                Upload File
+              </Button>
+            ) : (
+              <div className="w-full">
+                <span>{row.original.ethSwitchFile}</span>
+              </div>
+            )}
+          </div>
         </div>
       );
     },

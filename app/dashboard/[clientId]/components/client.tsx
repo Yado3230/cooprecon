@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Import, Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import {  columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
 import { ReconciliationModal } from "@/components/modals/reconciliation-modal";
@@ -22,12 +22,14 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
   const router = useRouter();
   return (
     <>
-      <ReconciliationModal clientId={params.clientId} />
+      <ReconciliationModal
+        clientId={Number(params.clientId)}
+      />
       <div className="flex border-b pb-2 items-center justify-between">
         {/* <Heading title={`Transactions`} description="Manage clients" /> */}
         <div></div>
         <div>
-          <Button
+          {/* <Button
             size="sm"
             variant="outline"
             className="mr-2"
@@ -35,7 +37,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
           >
             <Import className="mr-2 h-4 w-4" />
             Import
-          </Button>
+          </Button> */}
           <Button
             size="sm"
             className="bg-cyan-500"

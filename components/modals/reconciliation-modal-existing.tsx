@@ -12,8 +12,6 @@ import { Modal } from "@/components/ui/modal";
 import {
   Form,
   FormControl,
-  FormDescription,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -21,42 +19,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
-import { useParams, useRouter } from "next/navigation";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
+import { useReconciliationModalExisting } from "@/hooks/use-reconciliation-modal-esisting";
+import { useRouter } from "next/navigation";
 import {
   UploadExcelFile,
   getTemplateHeaderByClientId,
 } from "@/actions/header-template.action";
 import { HeaderTemplate } from "@/types/types";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import toast from "react-hot-toast";
 const formSchema = z.object({
-  date: z.date(),
-  fileType: z.string(),
+  date: z.date().optional(),
+  fileType: z.string().optional(),
 });
 
 interface ReconciliationModalProps {
   clientId: number;
 }
 
-export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
-  clientId,
-}) => {
-  const reconciliationModal = useReconciliationModal();
+export const ReconciliationModalExisting: React.FC<
+  ReconciliationModalProps
+> = ({ clientId }) => {
+  const reconciliationModal = useReconciliationModalExisting();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -112,6 +95,10 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const fileTypeProps =
+      typeof window !== "undefined" && localStorage.getItem("fileTypeProps");
+    const fileUploadDate =
+      typeof window !== "undefined" && localStorage.getItem("fileUploadDate");
     try {
       setLoading(true);
       // Read the selected file
@@ -143,14 +130,15 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
         setMatcherMessage("");
         console.log(values);
         const formData = new FormData();
-        formData.append("date", new Date(values.date).toISOString());
-        formData.append("fileType", values.fileType);
+        formData.append("date", new Date(fileUploadDate || "").toISOString());
+        formData.append("fileType", fileTypeProps || "");
         formData.append("file", file);
-        const response = await UploadExcelFile(formData);
-        if (response) {
-          toast.success("File Uploaded");
-          window.location.reload();
-        }
+        console.log("files", fileTypeProps, "another", fileUploadDate);
+        // const response = await UploadExcelFile(formData);
+        // if (response) {
+        //   toast.success("File Uploaded");
+        //   window.location.reload();
+        // }
         // reconciliationModal.onClose();
       } else {
         setMatcherMessage("File headers do not match expected headers");
@@ -174,82 +162,6 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
       <div className="spaye-y-4 py-2 pb-4 w-[400px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              name="date"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date: Date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="fileType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>File Type:</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field?.onChange || ""}
-                    value={field.value?.toString()}
-                    defaultValue={field.value?.toString() || ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select a file type"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {headerTemplates.map((role) => (
-                        <SelectItem
-                          key={role.id}
-                          value={role.templateName || ""}
-                        >
-                          {role.templateName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormItem>
               <FormLabel>Excel File:</FormLabel>
               <FormControl>

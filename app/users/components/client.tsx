@@ -17,24 +17,25 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
 }) => {
   const reconciliationModal = useReconciliationModal();
   // const clientModal = useClientModal();
-  const params = useParams();
+  const clientId =
+    typeof window !== "undefined" && localStorage.getItem("clientId");
   const router = useRouter();
   return (
     <>
-      <ReconciliationModal clientId={params.clientId} />
+      <ReconciliationModal clientId={Number(clientId)} />
       <div className="flex border-b pb-2 items-center justify-between">
         {/* <Heading title={`Transactions`} description="Manage clients" /> */}
         <div></div>
         <div>
-          <Button
+          {/* <Button
             size="sm"
             variant="outline"
             className="mr-2"
-            onClick={() => router.push(`/dashboard/${params.clientId}/upload`)}
+            onClick={() => router.push(`/dashboard/${clientId}/upload`)}
           >
             <Import className="mr-2 h-4 w-4" />
             Import
-          </Button>
+          </Button> */}
           <Button
             size="sm"
             className="bg-cyan-500"
