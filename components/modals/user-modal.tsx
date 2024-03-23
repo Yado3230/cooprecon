@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useUserModal } from "@/hooks/use-user-modal";
 import {
@@ -33,9 +33,14 @@ const formSchema = z.object({
   email: z.string().default(""),
   password: z.string().default(""),
   roleId: z.string(),
+  clientId: z.coerce.number(),
 });
 
-export const UserModal = () => {
+type UserModalProps = {
+  clientId: number;
+};
+
+export const UserModal: FC<UserModalProps> = ({ clientId }) => {
   const userModal = useUserModal();
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(false);
@@ -56,6 +61,7 @@ export const UserModal = () => {
       email: "",
       password: "",
       roleId: "",
+      clientId: clientId,
     },
   });
 

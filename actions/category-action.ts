@@ -1,10 +1,10 @@
-import { BankRequest, BankResponse } from "@/types/types";
+import { CategoryRequest, CategoryResponse } from "@/types/types";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const getAllBanks = async (): Promise<BankResponse[]> => {
+export const getAllCategories = async (): Promise<CategoryResponse[]> => {
   try {
-    const res = await fetch(`${API_URL}api/v1/clients`);
+    const res = await fetch(`${API_URL}api/v1/categories`);
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -12,11 +12,11 @@ export const getAllBanks = async (): Promise<BankResponse[]> => {
   }
 };
 
-export const getBanksByClientId = async (
+export const getCategoriesByClientId = async (
   clientId: number
-): Promise<BankResponse[]> => {
+): Promise<CategoryResponse[]> => {
   try {
-    const res = await fetch(`${API_URL}api/v1/clients/${clientId}`);
+    const res = await fetch(`${API_URL}api/v1/categories/${clientId}`);
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -24,11 +24,13 @@ export const getBanksByClientId = async (
   }
 };
 
-export const addBank = async (data: BankRequest): Promise<BankResponse> => {
+export const addCategory = async (
+  data: CategoryRequest
+): Promise<CategoryResponse> => {
   const token = localStorage.getItem("access_token");
 
   try {
-    const response = await fetch(`${API_URL}api/v1/clients`, {
+    const response = await fetch(`${API_URL}api/v1/categories`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

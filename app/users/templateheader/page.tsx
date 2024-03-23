@@ -1,15 +1,20 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as XLSX from "xlsx";
-import { Ticket, Trash } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Trash } from "lucide-react";
 import { useParams } from "next/navigation";
-import { AddTemplateHeader } from "@/actions/header-template.action";
+import {
+  AddTemplateHeader,
+  getTemplateHeaderByClientId,
+} from "@/actions/header-template.action";
 import toast from "react-hot-toast";
+import ClientReconciliation from "./components/client";
+import { HeaderTemplate } from "@/types/types";
+import { ClientColumn } from "./components/columns";
 
 interface Template {
   templateName: string;
@@ -22,8 +27,19 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const [templates, setTemplates] = useState<Template[]>([
     { templateName: "", file: null, headers: [], rrn: "" },
   ]);
+  const [headerTemplates, setHeaderTemplates] = useState<HeaderTemplate[] | []>(
+    []
+  );
+  const [updated, setUpdated] = useState(false);
 
-  const params = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getTemplateHeaderByClientId(Number(54));
+      const data = response instanceof Array ? response : [];
+      setHeaderTemplates(data);
+    };
+    fetchData();
+  }, [updated]);
 
   const handleTemplateNameChange = (index: number, value: string) => {
     const updatedTemplates = [...templates];
@@ -61,22 +77,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setTemplates(updatedTemplates);
   };
 
-  const hanleSaveAll = async () => {
-    const response = await AddTemplateHeader({
-      clientId: params?.clientId,
-      fileTemplates: templates,
-    });
-    if (response) {
-      toast.success("Created Succesfully");
-      setTemplates([                                                   
-        ...templates,
-        { templateName: "", file: null, headers: [], rrn: "" },
-      ]);
-    } else {
-      toast.error("failed to add header template");
-    }
-  };
-
   const parseExcelFile = async (file: File): Promise<string[]> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -103,15 +103,60 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     });
   };
 
+  const validateTemplates = (): boolean => {
+    for (const template of templates) {
+      if (
+        template.templateName === "" ||
+        template.file === null ||
+        template.rrn === ""
+      ) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const hanleSaveAll = async () => {
+    if (!validateTemplates()) {
+      toast.error("Please fill out all fields before saving.");
+      return;
+    }
+
+    const response = await AddTemplateHeader({
+      clientId: 54,
+      fileTemplates: templates,
+    });
+    if (response) {
+      setUpdated(!updated);
+      toast.success("Created Succesfully");
+      setTemplates([{ templateName: "", file: null, headers: [], rrn: "" }]);
+    } else {
+      toast.error("failed to add header template");
+    }
+  };
+
+  const formattedclients: ClientColumn[] = headerTemplates.map((item) => ({
+    id: item.id,
+    templateName: item.templateName,
+    rrn: item.rrn,
+    createdAt: new Date(item.createdAt).toISOString().split("T")[0],
+  }));
+
   return (
-    <>
-      <div className="border rounded shadow grid grid-cols-4 gap-6 p-5 bg-gray-50 pb-20">
+    <div className="grid grid-cols-5 gap-4">
+      <div className="col-span-3">
+        <ClientReconciliation data={formattedclients} />
+      </div>
+      <div className="border col-span-2 rounded shadow grid grid-cols-12 gap-6 p-5 bg-gray-50 pb-20">
+        <div className="col-span-12 text-xl text-cyan-600 border-b">
+          Create New Template
+        </div>
         {templates.map((template, index) => (
           <div
-            className="grid gap-4 grid-cols-12 col-span-4 items-end space-x-4"
+            className="grid gap-2 grid-cols-12 col-span-12 items-end space-x-4"
             key={index}
           >
-            <div className="col-span-3">
+            <div className="col-span-5">
               <Label htmlFor={`templateName-${index}`}>Template Name</Label>
               <Input
                 id={`templateName-${index}`}
@@ -122,7 +167,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                 }
               />
             </div>
-            <div className="col-span-3">
+            <div className="col-span-6">
               <Label htmlFor={`templateFile-${index}`}>Header Template</Label>
               <Input
                 id={`templateFile-${index}`}
@@ -155,7 +200,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                   Select RRN
                 </Label>
                 <div>
-                  <div className="grid grid-cols-3">
+                  <div className="grid grid-cols-2">
                     {template.headers.map((header, index2) => (
                       <div key={index2} className="">
                         <div className="flex items-center space-x-2">
@@ -188,7 +233,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
             )}
           </div>
         ))}
-        <div className="col-span-4 space-x-2 flex justify-center mt-6">
+        <div className="col-span-12 space-x-2 flex justify-end mt-6">
           <Button
             className="bg-green-500 text-white"
             onClick={handleAddTemplate}
@@ -203,7 +248,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

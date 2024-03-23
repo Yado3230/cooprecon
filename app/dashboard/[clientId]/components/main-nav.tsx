@@ -27,6 +27,11 @@ export function MainNav({
       active: pathname === `/dashboard/${params.clientId}/clientinfo`,
     },
     {
+      href: `/dashboard/${params.clientId}/users`,
+      label: "Users",
+      active: pathname === `/dashboard/${params.clientId}/users`,
+    },
+    {
       href: `/dashboard/${params.clientId}/reports`,
       label: "Reports",
       active: pathname === `/dashboard/${params.clientId}/reports`,
