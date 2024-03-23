@@ -31,8 +31,8 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     []
   );
   const [updated, setUpdated] = useState(false);
-  const clientId = localStorage.getItem("clientId");
-
+  const clientId =
+    typeof window !== "undefined" && localStorage.getItem("clientId");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,7 +123,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
       toast.error("Please fill out all fields before saving.");
       return;
     }
-    const clientId = localStorage.getItem("clientId");
 
     const response = await AddTemplateHeader({
       clientId: Number(clientId),
@@ -156,7 +155,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
         </div>
         {templates.map((template, index) => (
           <div
-            className="grid gap-2 grid-cols-12 col-span-12 items-end space-x-4"
+            className="grid gap-2 grid-cols-12 col-span-12 space-x-4"
             key={index}
           >
             <div className="col-span-5">

@@ -29,7 +29,8 @@ export const getAllUsers = async (
   clientId: number
 ): Promise<UserResponse[]> => {
   try {
-    const token = localStorage.getItem("access_token");
+    const token = 
+    typeof window !== "undefined" && localStorage.getItem("access_token");
     const res = await fetch(
       `${API_URL}api/v1/users?clientId=${clientId}&size=1000`,
       {
@@ -70,7 +71,8 @@ export const createUser = async (data: UserRequest): Promise<UserResponse> => {
 export const editUser = async (
   data: EditUserRequest
 ): Promise<UserResponse> => {
-  const access_token = localStorage.getItem("access_token");
+  const access_token = 
+  typeof window !== "undefined" && localStorage.getItem("access_token");
   try {
     const response = await fetch(`${API_URL}api/v1/users`, {
       method: "PUT",

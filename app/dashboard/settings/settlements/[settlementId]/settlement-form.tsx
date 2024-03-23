@@ -92,7 +92,7 @@ export function SettlementForm() {
 
       const response = await addSettlement(data);
       if (response) {
-        toast.success("User Created");
+        toast.success("Settlement Created");
         router;
       }
     } catch (error) {

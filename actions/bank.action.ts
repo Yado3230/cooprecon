@@ -29,7 +29,8 @@ export const getBanksByClientId = async (
 };
 
 export const addBank = async (data: BankRequest): Promise<BankResponse> => {
-  const token = localStorage.getItem("access_token");
+  const token = 
+  typeof window !== "undefined" && localStorage.getItem("access_token");
 
   try {
     const response = await fetch(`${API_URL}api/v1/banks`, {

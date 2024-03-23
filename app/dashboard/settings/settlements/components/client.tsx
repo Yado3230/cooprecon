@@ -18,12 +18,13 @@ interface UserClientProps {
 const UserClient: React.FC<UserClientProps> = ({ data }) => {
   const userModal = useUserModal();
   const router = useRouter();
-  const clientId = localStorage.getItem("clientId")
+  const clientId = 
+  typeof window !== "undefined" && localStorage.getItem("clientId");
   // const { data: session } = useSession();
 
   return (
     <>
-      <UserModal clientId={} />
+      <UserModal clientId={Number(clientId)} />
       <div className="flex border-b pb-2 mb-3 items-center justify-between">
         <Heading
           title={`Settlements (${data.length})`}

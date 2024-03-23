@@ -51,7 +51,7 @@ export function AccountForm() {
 
       const response = await addCategory(data);
       if (response) {
-        toast.success("User Created");
+        toast.success("Category Created");
         window.location.reload();
       }
     } catch (error) {

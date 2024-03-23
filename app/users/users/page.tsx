@@ -7,7 +7,8 @@ import { getAllUsers } from "@/actions/user-actions";
 
 const Page = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
-  const clientId = localStorage.getItem("clientId");
+  const clientId =
+    typeof window !== "undefined" && localStorage.getItem("clientId");
 
   useEffect(() => {
     const fetchData = async () => {

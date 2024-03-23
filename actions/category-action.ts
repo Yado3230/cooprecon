@@ -27,7 +27,8 @@ export const getCategoriesByClientId = async (
 export const addCategory = async (
   data: CategoryRequest
 ): Promise<CategoryResponse> => {
-  const token = localStorage.getItem("access_token");
+  const token =
+  typeof window !== "undefined" && localStorage.getItem("access_token");
 
   try {
     const response = await fetch(`${API_URL}api/v1/categories`, {

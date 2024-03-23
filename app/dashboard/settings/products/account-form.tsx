@@ -50,7 +50,7 @@ export function AccountForm() {
 
       const response = await addProduct(data);
       if (response) {
-        toast.success("User Created");
+        toast.success("Product Created");
         window.location.reload();
       }
     } catch (error) {

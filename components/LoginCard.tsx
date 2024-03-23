@@ -44,12 +44,10 @@ function LoginCard() {
   });
 
   const onSubmit = async (data: Login) => {
-    localStorage.removeItem("passwordChanged");
-    localStorage.removeItem("fullName");
-    localStorage.removeItem("email");
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    localStorage.removeItem("authorities");
+    localStorage.removeItem("role");
+    localStorage.removeItem("clientId");
     try {
       setLoading(true);
       const response = await logUser(data);

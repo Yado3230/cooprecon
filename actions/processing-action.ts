@@ -34,7 +34,8 @@ export const getProcessingTypeByClientId = async (
 export const addProcessingType = async (
   data: ProcessingTransactionTypeRequest
 ): Promise<ProcessingTransactionTypeResponse> => {
-  const token = localStorage.getItem("access_token");
+  const token = 
+  typeof window !== "undefined" && localStorage.getItem("access_token");
 
   try {
     const response = await fetch(
@@ -44,6 +45,7 @@ export const addProcessingType = async (
         body: JSON.stringify(data),
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       }
     );

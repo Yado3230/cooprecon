@@ -3,7 +3,8 @@ import { Client } from "@/types/types";
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllClients = async (): Promise<Client[]> => {
-  const token = localStorage.getItem("access_token");
+  const token = 
+  typeof window !== "undefined" && localStorage.getItem("access_token");
 
   try {
     const res = await fetch(`${API_URL}api/v1/clients`, {
@@ -29,7 +30,8 @@ export const getClientById = async (clientId: number): Promise<Client[]> => {
 };
 
 export const AddClient = async (data: any, file: File): Promise<Client> => {
-  const token = localStorage.getItem("access_token");
+  const token = 
+  typeof window !== "undefined" && localStorage.getItem("access_token");
   const formData = new FormData();
   formData.append("logo", file);
   formData.append("clientName", data.clientName);

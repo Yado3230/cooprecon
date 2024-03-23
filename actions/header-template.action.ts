@@ -6,7 +6,8 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const getTemplateHeaderByClientId = async (
   clientId: number
 ): Promise<HeaderTemplate[]> => {
-  const token = localStorage.getItem("access_token");
+  const token = 
+  typeof window !== "undefined" && localStorage.getItem("access_token");
   try {
     const res = await fetch(
       `${API_URL}api/v1/file-upload/templates?clientId=${clientId}`,
@@ -26,7 +27,8 @@ export const getTemplateHeaderByClientId = async (
 export const AddTemplateHeader = async (
   data: any
 ): Promise<HeaderTemplateRequest> => {
-  const token = localStorage.getItem("access_token");
+  const token = 
+  typeof window !== "undefined" && localStorage.getItem("access_token");
   try {
     const response = await fetch(`${API_URL}api/v1/file-upload/templates`, {
       method: "POST",

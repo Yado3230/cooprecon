@@ -12,7 +12,8 @@ const Page = () => {
   const [settlements, setSettlements] = useState<SettlementSettingResponse[]>(
     []
   );
-  const clientId = localStorage.getItem("clientId");
+  const clientId = 
+  typeof window !== "undefined" && localStorage.getItem("clientId");
 
   useEffect(() => {
     const fetchData = async () => {

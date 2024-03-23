@@ -26,7 +26,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { Client } from "@prisma/client";
+import { Client } from "@/types/types";
 import { ModalProvider } from "@/providers/modal-provider";
 import Image from "next/image";
 
@@ -48,8 +48,8 @@ export default function ClientSwitcher({
 
   const formattedItems = items?.map((item) => ({
     label: item.clientName,
-    value: item.id,
-    logoUrl: item.logoUrl,
+    value: item.id.toString(),
+    logo: item.logo,
   }));
 
   const currentclient = formattedItems?.find(
@@ -85,9 +85,9 @@ export default function ClientSwitcher({
             aria-label="Select a product"
             className={cn("w-[200px] justify-between", className)}
           >
-            {currentclient?.logoUrl && (
+            {currentclient?.logo && (
               <Image
-                src={currentclient?.logoUrl}
+                src={currentclient?.logo}
                 alt="logo"
                 width={40}
                 height={40}
@@ -110,7 +110,7 @@ export default function ClientSwitcher({
                     className="text-sm"
                   >
                     <Image
-                      src={product.logoUrl}
+                      src={product.logo}
                       alt="logo"
                       width={40}
                       height={40}

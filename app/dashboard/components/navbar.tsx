@@ -1,26 +1,24 @@
+"use client";
+
 import { UserNav } from "./user-nav";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import ClientSwitcher from "./client-switcher";
+import { useEffect, useState } from "react";
+import { Client } from "@/types/types";
+import { getAllClients } from "@/actions/client.action";
 
-async function getClients() {
-  return [
-    {
-      id: "1",
-      transactionReference: "1",
-      amount: "1",
-      customerAccountNumber: "1",
-      date: "2022/12/12",
-      operation: "1",
-      status: "1",
-    },
-  ];
-}
+const Navbar = () => {
+  const [clients, setClients] = useState<Client[]>([]);
 
-export const revalidate = 1;
-
-const Navbar = async () => {
-  const clients = await getClients();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAllClients();
+      const data = res instanceof Array ? res : [];
+      setClients(data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-10 shadow-sm bg-background opacity-90 px-">
@@ -38,7 +36,10 @@ const Navbar = async () => {
           </div>
           <Menu className="absolute cursor-pointer left-64" />
           <div className="flex items-center ml-auto space-x-4">
-            <ClientSwitcher items={clients} />
+            {typeof window !== "undefined" &&
+              localStorage.getItem("role")?.includes("SUPER-ADMIN") && (
+                <ClientSwitcher items={clients} />
+              )}
             <UserNav />
           </div>
         </div>

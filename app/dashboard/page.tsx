@@ -16,9 +16,6 @@ const Page = () => {
     fetchData();
   }, []);
 
-  const memoizedClients = useMemo(() => clients, [clients]);
-
-  // const token = localStorage.getItem("access_token");
 
   const formattedclients: Client[] = clients.map((item) => ({
     id: item.id,

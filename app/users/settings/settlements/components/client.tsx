@@ -19,7 +19,8 @@ const UserClient: React.FC<UserClientProps> = ({ data }) => {
   const userModal = useUserModal();
   const router = useRouter();
   // const { data: session } = useSession();
-  const clientId = localStorage.getItem("clientId");
+  const clientId = 
+  typeof window !== "undefined" && localStorage.getItem("clientId");
 
 
   return (

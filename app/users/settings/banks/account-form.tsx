@@ -58,7 +58,7 @@ export function AccountForm() {
 
       const response = await addBank(data);
       if (response) {
-        toast.success("User Created");
+        toast.success("Bank Created");
         window.location.reload();
       }
     } catch (error) {

@@ -51,7 +51,7 @@ export function AccountForm() {
 
       const response = await addProcessingType(data);
       if (response) {
-        toast.success("User Created");
+        toast.success("Processing Type Created");
         window.location.reload();
       }
     } catch (error) {
