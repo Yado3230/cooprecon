@@ -33,28 +33,6 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
       ),
     },
     {
-      href: `/users/profile`,
-      label: "Profile",
-      active: pathname === `/users/profile`,
-      icon: (
-        <FileJson
-          size={15}
-          color={`${pathname === `/users/profile` ? "#0EB8D5" : "#707E94"}`}
-        />
-      ),
-    },
-    {
-      href: `/users/reports`,
-      label: "Reports",
-      active: pathname === `/users/reports`,
-      icon: (
-        <BookTemplate
-          size={15}
-          color={`${pathname === `/users/reports` ? "#0EB8D5" : "#707E94"}`}
-        />
-      ),
-    },
-    {
       href: `/users/users`,
       label: "Users",
       active: pathname === `/users/users`,
@@ -73,6 +51,17 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
         <User
           size={15}
           color={`${pathname === `/users/settings` ? "#0EB8D5" : "#707E94"}`}
+        />
+      ),
+    },
+    {
+      href: `/users/reports`,
+      label: "Reports",
+      active: pathname === `/users/reports`,
+      icon: (
+        <BookTemplate
+          size={15}
+          color={`${pathname === `/users/reports` ? "#0EB8D5" : "#707E94"}`}
         />
       ),
     },

@@ -34,8 +34,8 @@ export const getSettlementByClientId = async (
 export const addSettlement = async (
   data: SettlementSettingRequest
 ): Promise<SettlementSettingResponse> => {
-  const token = 
-  typeof window !== "undefined" && localStorage.getItem("access_token");
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
 
   try {
     const response = await fetch(`${API_URL}api/v1/settlement-Settings`, {
@@ -43,6 +43,7 @@ export const addSettlement = async (
       body: JSON.stringify(data),
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
 

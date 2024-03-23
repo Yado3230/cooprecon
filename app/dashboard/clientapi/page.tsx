@@ -2,11 +2,17 @@ import { format } from "date-fns";
 import APIClient from "./components/client";
 import { ClientApiColumn } from "./components/columns";
 
-async function getClientApis() {
-  
-
 const ClientApiPage = async () => {
-  const clientApis = await getClientApis();
+  const clientApis = [
+    {
+      id: "1",
+      clientId: "Awach",
+      domain: "http://localhost.com",
+      port: "9000",
+      endpoint: "/v1/cbo",
+      createdAt: "2024-12-12",
+    },
+  ];
 
   const formattedClientApis: ClientApiColumn[] = clientApis.map((item) => ({
     id: item.id?.toString() || "00",

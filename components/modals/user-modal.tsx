@@ -33,7 +33,7 @@ const formSchema = z.object({
   email: z.string().default(""),
   password: z.string().default(""),
   roleId: z.string(),
-  clientId: z.coerce.number(),
+  clientId: z.coerce.number().optional(),
 });
 
 type UserModalProps = {
@@ -61,7 +61,6 @@ export const UserModal: FC<UserModalProps> = ({ clientId }) => {
       email: "",
       password: "",
       roleId: "",
-      clientId: clientId,
     },
   });
 
@@ -69,7 +68,13 @@ export const UserModal: FC<UserModalProps> = ({ clientId }) => {
     try {
       setLoading(true);
 
-      const response = await createUser(values);
+      const response = await createUser({
+        fullName: values.fullName,
+        email: values.email,
+        password: values.password,
+        roleId: values.roleId,
+        clientId: clientId || Number(localStorage.getItem("clientId")),
+      });
       if (response) {
         toast.success("User Created");
         window.location.reload();

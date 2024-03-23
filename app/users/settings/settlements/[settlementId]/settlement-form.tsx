@@ -48,7 +48,6 @@ const accountFormSchema = z.object({
   bankId: z.coerce.number(),
   productTypeId: z.coerce.number(),
   categoryId: z.coerce.number(),
-  clientId: z.coerce.number(),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
@@ -60,7 +59,8 @@ const defaultValues: Partial<AccountFormValues> = {
 };
 
 export function SettlementForm() {
-  const params = useParams();
+  const clientId =
+    typeof window !== "undefined" && localStorage.getItem("clientId");
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {
@@ -70,7 +70,6 @@ export function SettlementForm() {
       bankId: 0,
       productTypeId: 0,
       categoryId: 0,
-      clientId: Number(params.clientId),
     },
   });
   const router = useRouter();
@@ -99,10 +98,18 @@ export function SettlementForm() {
     try {
       setLoading(true);
 
-      const response = await addSettlement(data);
+      const response = await addSettlement({
+        accountName: data.accountName,
+        accountNumber: data.accountNumber,
+        accountOfficer: data.accountOfficer,
+        bankId: data.bankId,
+        productTypeId: data.productTypeId,
+        categoryId: data.categoryId,
+        clientId: Number(clientId),
+      });
       if (response) {
         toast.success("Settlement Created");
-        router;
+        router.push("/users/settings/settlements");
       }
     } catch (error) {
       toast.error("Something went wrong!");

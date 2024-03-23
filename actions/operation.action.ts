@@ -1,6 +1,4 @@
-import { Operation } from "@prisma/client";
-
-export const getAllOperations = async (): Promise<Operation[]> => {
+export const getAllOperations = async (): Promise<any[]> => {
   try {
     const res = await fetch(`/api/operations`);
     return res.json();
@@ -10,9 +8,7 @@ export const getAllOperations = async (): Promise<Operation[]> => {
   }
 };
 
-export const getOperationsByClientId = async (
-  id: string
-): Promise<Operation[]> => {
+export const getOperationsByClientId = async (id: string): Promise<any[]> => {
   try {
     const res = await fetch(`/api/operations${id}`);
     return res.json();
@@ -25,7 +21,7 @@ export const getOperationsByClientId = async (
 export const AddOperation = async (
   data: any,
   bodyData: object
-): Promise<Operation> => {
+): Promise<any> => {
   const newData = {
     clientId: data.clientId,
     operation: data.operation,
