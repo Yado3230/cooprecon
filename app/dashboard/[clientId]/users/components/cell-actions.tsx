@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { UserResponse } from "@/types/types";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 // import { deleteUser } from "@/actions/user-action";
 import { useUserModal } from "@/hooks/use-user-modal";
 import { UserModal } from "@/components/modals/user-modal";
@@ -47,6 +47,8 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     // }
   };
 
+  const params = useParams();
+
   return (
     <>
       <AlertModal
@@ -55,7 +57,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onConfirm={onDelete}
         loading={loading}
       />
-      <UserModal />
+      <UserModal clientId={Number(params.clientId)} />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">

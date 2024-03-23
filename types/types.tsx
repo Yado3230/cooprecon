@@ -148,3 +148,17 @@ export interface ProcessingTransactionTypeResponse {
 export interface ProcessingTransactionTypeRequest {
   name: string;
 }
+
+export interface ReconProcessTracker {
+  id: number;
+  date: string;
+  cbsFile: string;
+  ethSwitchFile: string;
+  coopSwitchFile: string;
+  status: string;
+  addedAt: string;
+  addedBy: UserResponse;
+  processingStartedAt: string;
+  processingEndedAt: string;
+  processedBy: UserResponse;
+}

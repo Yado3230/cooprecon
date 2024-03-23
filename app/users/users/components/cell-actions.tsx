@@ -47,6 +47,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     // }
   };
 
+  const clientId =
+    typeof window !== "undefined" && localStorage.getItem("clientId");
+
   return (
     <>
       <AlertModal
@@ -55,7 +58,8 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onConfirm={onDelete}
         loading={loading}
       />
-      <UserModal />
+
+      <UserModal clientId={Number(clientId)} />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">

@@ -21,8 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Client } from "@prisma/client";
 import { getAllClients } from "@/actions/client.action";
+import { Client } from "@/types/types";
 
 const FormSchema = z.object({
   clientId: z.string({
@@ -66,7 +66,7 @@ async function SelectForm() {
                 </FormControl>
                 <SelectContent>
                   {clients.map((item, index) => (
-                    <SelectItem key={index} value={item.id}>
+                    <SelectItem key={index} value={item.id?.toString()}>
                       {item.clientName}
                     </SelectItem>
                   ))}

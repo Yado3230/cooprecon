@@ -6,20 +6,12 @@ import { ArrowUpDown } from "lucide-react";
 import { CellAction } from "./cell-actions";
 import { Checkbox } from "@/components/ui/checkbox";
 import { operations, statuses } from "@/components/ui/data/data";
+import { ReconProcessTracker } from "@/types/types";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type ClientColumn = {
-  id: string;
-  transactionReference: string;
-  amount: string;
-  customerAccountNumber: string;
-  date: string;
-  operation: string;
-  status: string;
-};
 
-export const columns: ColumnDef<ClientColumn>[] = [
+export const columns: ColumnDef<ReconProcessTracker>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -44,48 +36,6 @@ export const columns: ColumnDef<ClientColumn>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "transactionReference",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          TXN ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "customerAccountNumber",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Customer Acc Number
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
     accessorKey: "date",
     header: ({ column }) => {
       return (
@@ -100,54 +50,205 @@ export const columns: ColumnDef<ClientColumn>[] = [
     },
   },
   {
-    accessorKey: "status",
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("status")
-      );
-
-      if (!status) {
-        return null;
-      }
-
+    accessorKey: "cbs",
+    header: ({ column }) => {
       return (
-        <div
-          className={`flex w-[100px] items-center`}
-          style={{ color: status.color }}
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {status.icon && <status.icon className="mr-2 h-4 w-4" />}
-          <span>{status.label}</span>
-        </div>
+          CBS File
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "operation",
     cell: ({ row }) => {
-      const status = operations.find(
-        (status) => status.value === row.getValue("operation")
-      );
-
-      if (!status) {
-        return null;
-      }
-
       return (
-        <div className="whitespace-nowrap flex w-[130px] items-center">
-          {status.icon && <status.icon className="mr-2 h-4 w-4 text-primary" />}
-          <span>{status.label}</span>
+        <div>
+          {!row.original.cbsFile ? (
+            <Button className="w-full" variant="outline" size="sm">
+              Upload File
+            </Button>
+          ) : (
+            <div className="w-full">
+              <span>{row.original.cbsFile}</span>
+            </div>
+          )}
         </div>
       );
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+  },
+  {
+    accessorKey: "ethswitch",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Eth-Switch File
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div>
+          {!row.original.ethSwitchFile ? (
+            <Button className="w-full" variant="outline" size="sm">
+              Upload File
+            </Button>
+          ) : (
+            <div className="w-full">
+              <span>{row.original.ethSwitchFile}</span>
+            </div>
+          )}
+        </div>
+      );
     },
   },
   {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    accessorKey: "coopswitch",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Coop-Switch File
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div>
+          {!row.original.coopSwitchFile ? (
+            <Button className="w-full" variant="outline" size="sm">
+              Upload File
+            </Button>
+          ) : (
+            <div className="w-full">
+              <span>{row.original.coopSwitchFile}</span>
+            </div>
+          )}
+        </div>
+      );
+    },
   },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "addedAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Added At
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  // {
+  //   accessorKey: "status",
+  //   cell: ({ row }) => {
+  //     const status = statuses.find(
+  //       (status) => status.value === row.getValue("status")
+  //     );
+
+  //     if (!status) {
+  //       return null;
+  //     }
+
+  //     return (
+  //       <div
+  //         className={`flex w-[100px] items-center`}
+  //         style={{ color: status.color }}
+  //       >
+  //         {status.icon && <status.icon className="mr-2 h-4 w-4" />}
+  //         <span>{status.label}</span>
+  //       </div>
+  //     );
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id));
+  //   },
+  // },
+  {
+    accessorKey: "processingStartedAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Process
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <>
+          {row.original.processingStartedAt.length === 0 ? (
+            <Button className="w-full" variant="default" size="sm">
+              Start Process
+            </Button>
+          ) : (
+            <div>
+              <span>{row.original.processingStartedAt}</span>
+            </div>
+          )}
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "details",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Details
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <>
+          {row.original.status?.toLowerCase() === "completed" ? (
+            <Button variant="secondary" size="sm">
+              Details
+            </Button>
+          ) : (
+            <Button disabled variant="secondary" size="sm">
+              Details
+            </Button>
+          )}
+        </>
+      );
+    },
+  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => <CellAction data={row.original} />,
+  // },
 ];

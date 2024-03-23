@@ -3,13 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Import, Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { ClientColumn, columns } from "./columns";
+import {  columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
 import { ReconciliationModal } from "@/components/modals/reconciliation-modal";
+import { ReconProcessTracker } from "@/types/types";
 
 interface ClientReconciliationProps {
-  data: ClientColumn[];
+  data: ReconProcessTracker[];
 }
 
 const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
