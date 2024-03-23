@@ -25,14 +25,19 @@ interface LoginResponse {
 //   }
 // };
 
-export const getAllUsers = async (): Promise<UserResponse[]> => {
+export const getAllUsers = async (
+  clientId: number
+): Promise<UserResponse[]> => {
   try {
     const token = localStorage.getItem("access_token");
-    const res = await fetch(`${API_URL}api/users?size=1000`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `${API_URL}api/v1/users?clientId=${clientId}&size=1000`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     const responseData = await res.json();
     return responseData;
   } catch (error) {

@@ -1,23 +1,19 @@
 import { Reconciliation } from "@prisma/client";
 import ClientReconciliation from "./components/client";
 import { ClientColumn } from "./components/columns";
-import prismadb from "@/lib/prismadb";
-
-async function getReconciliations(id: string) {
-  const feed = await prismadb.reconciliation.findMany({
-    where: {
-      clientId: id,
-    },
-  });
-  return feed;
-}
-
-export const revalidate = 1;
 
 const Page = async ({ params }: { params: { clientId: string } }) => {
-  const reconciliations: Reconciliation[] = await getReconciliations(
-    params.clientId.toString()
-  );
+  const reconciliations = [
+    {
+      id: "1",
+      transactionReference: "ew",
+      amount: "ew",
+      customerAccountNumber: "we",
+      date: "we",
+      operation: "we",
+      status: "we",
+    },
+  ];
 
   const formattedclients: ClientColumn[] = reconciliations.map((item) => ({
     id: item.id,

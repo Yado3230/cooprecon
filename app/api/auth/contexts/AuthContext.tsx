@@ -37,10 +37,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const decodedData = Jwt.decode(access) as JwtPayload;
     const role = decodedData.role;
+    const clientId = decodedData.clientId;
     // Save tokens to LocalStorage or cookies
     localStorage.setItem("access_token", access);
     localStorage.setItem("refresh_token", refresh);
     localStorage.setItem("role", role);
+    localStorage.setItem("clientId", clientId);
   };
 
   const logout = () => {
@@ -49,6 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("role");
+    localStorage.removeItem("clientId");
   };
 
   return (

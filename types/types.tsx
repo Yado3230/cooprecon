@@ -136,3 +136,15 @@ export interface Client {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface ProcessingTransactionTypeResponse {
+  id: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+}
+
+export interface ProcessingTransactionTypeRequest {
+  name: string;
+}

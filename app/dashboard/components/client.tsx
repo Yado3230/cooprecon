@@ -2,12 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { ClientColumn, columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useClientModal } from "@/hooks/use-client-modal";
+import { Client } from "@/types/types";
 
 interface ClientReconciliationProps {
-  data: ClientColumn[];
+  data: Client[];
 }
 
 const ClientReconciliation: React.FC<ClientReconciliationProps> = ({

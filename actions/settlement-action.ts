@@ -9,7 +9,7 @@ export const getAllSettlements = async (): Promise<
   SettlementSettingResponse[]
 > => {
   try {
-    const res = await fetch(`${API_URL}api/v1/product-types`);
+    const res = await fetch(`${API_URL}api/v1/settlement-Settings`);
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -21,7 +21,9 @@ export const getSettlementByClientId = async (
   clientId: number
 ): Promise<SettlementSettingResponse[]> => {
   try {
-    const res = await fetch(`${API_URL}api/v1/product-types/${clientId}`);
+    const res = await fetch(
+      `${API_URL}api/v1/settlement-Settings?clientId=${clientId}`
+    );
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -35,7 +37,7 @@ export const addSettlement = async (
   const token = localStorage.getItem("access_token");
 
   try {
-    const response = await fetch(`${API_URL}api/v1/product-types`, {
+    const response = await fetch(`${API_URL}api/v1/settlement-Settings`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

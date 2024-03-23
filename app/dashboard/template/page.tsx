@@ -21,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import prismadb from "@/lib/prismadb";
 import { Client } from "@prisma/client";
 import { getAllClients } from "@/actions/client.action";
 

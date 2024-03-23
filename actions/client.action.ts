@@ -1,14 +1,20 @@
-import { Client } from "@prisma/client";
+import { Client } from "@/types/types";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllClients = async (): Promise<Client[]> => {
+  const token = localStorage.getItem("access_token");
+
   try {
-    const res = await fetch(`${API_URL}api/v1/clients`);
+    const res = await fetch(`${API_URL}api/v1/clients`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.json();
   } catch (error) {
     console.error("Error:", error);
-    throw error; // Rethrow the error to handle it in the caller
+    throw error;
   }
 };
 

@@ -9,7 +9,7 @@ export const getTemplateHeaderByClientId = async (
   const token = localStorage.getItem("access_token");
   try {
     const res = await fetch(
-      `${API_URL}api/v1/file-upload/templates?clientId${clientId}`,
+      `${API_URL}api/v1/file-upload/templates?clientId=${clientId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -27,14 +27,13 @@ export const AddTemplateHeader = async (
   data: any
 ): Promise<HeaderTemplateRequest> => {
   const token = localStorage.getItem("access_token");
-  const contentType = "application/json";
   try {
     const response = await fetch(`${API_URL}api/v1/file-upload/templates`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": contentType,
+        "Content-Type": "application/json",
       },
     });
 

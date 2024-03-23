@@ -7,10 +7,11 @@ import { getAllUsers } from "@/actions/user-actions";
 
 const Page = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
+  const clientId = localStorage.getItem("clientId");
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllUsers();
+      const res = await getAllUsers(Number(clientId));
       const data = res instanceof Array ? res : [];
       setUsers(data);
     };

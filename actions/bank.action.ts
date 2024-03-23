@@ -4,7 +4,11 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllBanks = async (): Promise<BankResponse[]> => {
   try {
-    const res = await fetch(`${API_URL}api/v1/clients`);
+    const res = await fetch(`${API_URL}api/v1/banks`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -16,7 +20,7 @@ export const getBanksByClientId = async (
   clientId: number
 ): Promise<BankResponse[]> => {
   try {
-    const res = await fetch(`${API_URL}api/v1/clients/${clientId}`);
+    const res = await fetch(`${API_URL}api/v1/banks/${clientId}`);
     return res.json();
   } catch (error) {
     console.error("Error:", error);
@@ -28,11 +32,12 @@ export const addBank = async (data: BankRequest): Promise<BankResponse> => {
   const token = localStorage.getItem("access_token");
 
   try {
-    const response = await fetch(`${API_URL}api/v1/clients`, {
+    const response = await fetch(`${API_URL}api/v1/banks`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
 

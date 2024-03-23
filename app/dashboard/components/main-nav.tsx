@@ -57,13 +57,15 @@ export function MainNav({ className }: React.HTMLAttributes<HTMLElement>) {
       ),
     },
     {
-      href: `/dashboard/users`,
-      label: "Users",
-      active: pathname === `/dashboard/users`,
+      href: `/dashboard/settings`,
+      label: "Settings",
+      active: pathname === `/dashboard/settings`,
       icon: (
-        <User
+        <BookTemplate
           size={15}
-          color={`${pathname === `/dashboard/users` ? "#0EB8D5" : "#707E94"}`}
+          color={`${
+            pathname === `/dashboard/settings` ? "#0EB8D5" : "#707E94"
+          }`}
         />
       ),
     },

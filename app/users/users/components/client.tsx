@@ -17,10 +17,11 @@ interface UserClientProps {
 const UserClient: React.FC<UserClientProps> = ({ data }) => {
   const userModal = useUserModal();
   // const { data: session } = useSession();
+  const clientId = localStorage.getItem("clientId");
 
   return (
     <>
-      <UserModal clientId={54} />
+      <UserModal clientId={Number(clientId)} />
       <div className="flex border-b pb-2 mb-3 items-center justify-between">
         <Heading title={`Users (${data.length})`} description="Manage users" />
         <div></div>

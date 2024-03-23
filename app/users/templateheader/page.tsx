@@ -31,10 +31,12 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     []
   );
   const [updated, setUpdated] = useState(false);
+  const clientId = localStorage.getItem("clientId");
+
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getTemplateHeaderByClientId(Number(54));
+      const response = await getTemplateHeaderByClientId(Number(clientId));
       const data = response instanceof Array ? response : [];
       setHeaderTemplates(data);
     };
@@ -121,9 +123,10 @@ const ReconciliationExcelModalCaller: React.FC = () => {
       toast.error("Please fill out all fields before saving.");
       return;
     }
+    const clientId = localStorage.getItem("clientId");
 
     const response = await AddTemplateHeader({
-      clientId: 54,
+      clientId: Number(clientId),
       fileTemplates: templates,
     });
     if (response) {

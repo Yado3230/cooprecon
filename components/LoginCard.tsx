@@ -21,6 +21,7 @@ import {
 import { Login } from "@/types/types";
 import { useAuth } from "@/app/api/auth/contexts/AuthContext";
 import { getMe, logUser } from "@/actions/user-actions";
+import Jwt, { JwtPayload } from "jsonwebtoken";
 
 const formSchema = z.object({
   username: z.string().min(1),
@@ -53,8 +54,14 @@ function LoginCard() {
       setLoading(true);
       const response = await logUser(data);
       if (response.access_token) {
+        const decodedData = Jwt.decode(response.access_token) as JwtPayload;
+        const role = decodedData.role;
         login(response.access_token, response.refresh_token);
-        router.push(`/dashboard`);
+        if (role?.includes("SUPER-ADMIN")) {
+          router.push(`/dashboard`);
+        } else {
+          router.push(`/users`);
+        }
         router.refresh();
         toast.success("Login success");
       }

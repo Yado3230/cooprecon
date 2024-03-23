@@ -1,24 +1,33 @@
-import { format } from "date-fns";
-import React from "react";
+"use client";
+import React, { useEffect, useMemo, useState } from "react";
 import ClientReconciliation from "./components/client";
-import { ClientColumn } from "./components/columns";
 import { getAllClients } from "@/actions/client.action";
+import { Client } from "@/types/types";
 
-async function getClients() {
-  const feed = await getAllClients();
-  return feed;
-}
-export const revalidate = 1;
+const Page = () => {
+  const [clients, setClients] = useState<Client[]>([]);
 
-const Page = async () => {
-  const clients = await getClients();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAllClients();
+      const data = res instanceof Array ? res : [];
+      setClients(data);
+    };
+    fetchData();
+  }, []);
 
-  const formattedclients: ClientColumn[] = clients.map((item) => ({
+  const memoizedClients = useMemo(() => clients, [clients]);
+
+  // const token = localStorage.getItem("access_token");
+
+  const formattedclients: Client[] = clients.map((item) => ({
     id: item.id,
     clientName: item.clientName,
-    logoUrl: item.logoUrl,
+    logo: item.logo,
+    status: item.status,
     description: item.description,
-    createdAt: new Date(item.createdAt).toISOString().split("T")[0],
+    createdAt: new Date(item.createdAt),
+    updatedAt: new Date(item.updatedAt),
   }));
   return (
     <div>

@@ -1,4 +1,3 @@
-import prismadb from "@/lib/prismadb";
 import { MainNav } from "./components/main-nav";
 import { Separator } from "@/components/ui/separator";
 import { redirect } from "next/navigation";
@@ -12,13 +11,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { clientId: string };
 }) {
-  // const client = await prismadb.client.findFirst({
-  //   where: {
-  //     id: clientId,
-  //   },
-  // });
-
-  // if (!client) redirect("/dashboard");
   return (
     <div>
       <Navbar />

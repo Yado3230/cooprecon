@@ -2,10 +2,8 @@ import { UserNav } from "./user-nav";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import ClientSwitcher from "./client-switcher";
-import prismadb from "@/lib/prismadb";
 
 async function getClients() {
-  // const feed = await prismadb.client.findMany();
   return [
     {
       id: "1",

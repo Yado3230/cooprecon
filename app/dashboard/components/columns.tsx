@@ -5,20 +5,15 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
+import { Client } from "@/types/types";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type ClientColumn = {
-  id: string;
-  clientName: string;
-  logoUrl: string;
-  description: string;
-  createdAt: string;
-};
 
-export const columns: ColumnDef<ClientColumn>[] = [
+
+export const columns: ColumnDef<Client>[] = [
   {
-    accessorKey: "logoUrl",
+    accessorKey: "logo",
     header: ({ column }) => {
       return (
         <Button
@@ -31,9 +26,9 @@ export const columns: ColumnDef<ClientColumn>[] = [
       );
     },
     cell: ({ row }) => {
-      console.log("logo", row.original.logoUrl);
+      console.log("logo", row.original.logo);
       return (
-        <Image src={row.original.logoUrl} alt="logo" width={60} height={40} />
+        <Image src={row.original.logo} alt="logo" width={60} height={40} />
       );
     },
   },

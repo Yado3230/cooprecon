@@ -1,14 +1,9 @@
 import { format } from "date-fns";
 import APIClient from "./components/client";
 import { ClientApiColumn } from "./components/columns";
-import prismadb from "@/lib/prismadb";
 
 async function getClientApis() {
-  const feed = await prismadb.clientAPI.findMany();
-  return feed;
-}
-
-export const revalidate = 1;
+  
 
 const ClientApiPage = async () => {
   const clientApis = await getClientApis();

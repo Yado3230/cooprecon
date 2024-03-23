@@ -4,13 +4,15 @@ import { UserResponse } from "@/types/types";
 import UserClient from "./components/client";
 import { useEffect, useState } from "react";
 import { getAllUsers } from "@/actions/user-actions";
+import { useParams } from "next/navigation";
 
 const Page = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
+  const params = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllUsers();
+      const res = await getAllUsers(Number(params.clientId));
       const data = res instanceof Array ? res : [];
       setUsers(data);
     };

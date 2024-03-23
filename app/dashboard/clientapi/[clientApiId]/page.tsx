@@ -1,21 +1,9 @@
 import { ChallengeForm } from "./components/challenge-form";
-import prismadb from "@/lib/prismadb";
 
-async function getClients() {
-  const feed = await prismadb.client.findMany();
-  return feed;
-}
 
-async function getClientsApis(id: string) {
-  const clientapi = await prismadb.clientAPI.findUnique({
-    where: {
-      id,
-    },
-  });
-  return clientapi;
-}
 
-export const revalidate = 1;
+function getClientsApis(id: string) {
+ 
 
 const BillboardPage = async ({
   params,

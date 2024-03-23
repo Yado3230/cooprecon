@@ -14,18 +14,18 @@ const sidebarNavItems = [
     title: "Profile",
     href: "/users/settings",
   },
-  {
-    title: "Bank",
-    href: "/users/settings/banks",
-  },
-  {
-    title: "Category",
-    href: "/users/settings/categories",
-  },
-  {
-    title: "Product Type",
-    href: "/users/settings/products",
-  },
+  // {
+  //   title: "Bank",
+  //   href: "/users/settings/banks",
+  // },
+  // {
+  //   title: "Category",
+  //   href: "/users/settings/categories",
+  // },
+  // {
+  //   title: "Product Type",
+  //   href: "/users/settings/products",
+  // },
   {
     title: "Settlement",
     href: "/users/settings/settlements",
