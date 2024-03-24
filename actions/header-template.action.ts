@@ -116,7 +116,7 @@ export const reconTrackerApproval = async (
     );
 
     if (!response.ok) {
-      throw new Error(`Request failed with status: ${response.status}`);
+      throw new Error(`Request failed with status: ${response}`);
     }
 
     const responseData = await response.json();

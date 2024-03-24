@@ -1,16 +1,13 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Import, Plus } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
+import { useParams } from "next/navigation";
 import { Heading } from "@/components/ui/heading";
 import DataTable from "react-data-table-component";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
 import { ReconciliationModal } from "@/components/modals/reconciliation-modal";
-import { ReconProcessTracker, TransactionFile } from "@/types/types";
-import {
-  getReconsilationApprocalTracker,
-  reconTrackerApproval,
-} from "@/actions/header-template.action";
+import { ReconProcessTracker } from "@/types/types";
+import { reconTrackerApproval } from "@/actions/header-template.action";
 import toast from "react-hot-toast";
 
 interface ClientReconciliationProps {
@@ -25,28 +22,10 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
   setUpdated,
 }) => {
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
-  const [expandedData, setExpandedData] = useState<TransactionFile[]>([]);
+  // const [expandedData, setExpandedData] = useState<TransactionFile[]>([]);
 
   const reconciliationModal = useReconciliationModal();
   const params = useParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchExpandedData = async () => {
-      try {
-        const response = await getReconsilationApprocalTracker(
-          Number(expandedRowId)
-        ); // Call your API function here
-        setExpandedData(response);
-        console.log(response);
-      } catch (error) {
-        console.error("Error fetching expanded data:", error);
-      }
-    };
-    if (expandedRowId) {
-      fetchExpandedData();
-    }
-  }, [expandedRowId]);
 
   const columns = [
     {
@@ -208,12 +187,15 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
             <Button
               className="w-full my-1"
               onClick={async () => {
-                setUpdated(!updated);
-                const res = await reconTrackerApproval(Number(row.id));
-                if (res) {
-                  toast.success("approved");
-                } else {
-                  toast.error("failed");
+                try {
+                  const res = await reconTrackerApproval(Number(row.id));
+                  if (res) {
+                    toast.success("approved");
+                  }
+                } catch (error) {
+                  toast.error("Failed to approve");
+                } finally {
+                  setUpdated(!updated);
                 }
               }}
               variant="outline"

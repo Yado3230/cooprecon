@@ -25,6 +25,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 interface Template {
   templateName: string;
@@ -32,6 +42,10 @@ interface Template {
   headers: string[];
   rrn: string;
 }
+
+const FormSchema = z.object({
+  email: z.string().optional(),
+});
 
 const ReconciliationExcelModalCaller: React.FC = () => {
   const [templates, setTemplates] = useState<Template[]>([
@@ -41,6 +55,10 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     []
   );
   const params = useParams();
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
 
   const [updated, setUpdated] = useState(false);
   const [dateValue, setDateValue] = useState("");
@@ -56,8 +74,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     };
     fetchData();
   }, [updated]);
-
-  console.log(templates);
 
   const handleTemplateNameChange = (index: number, value: string) => {
     const updatedTemplates = [...templates];
@@ -134,7 +150,8 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     return true;
   };
 
-  const hanleSaveAll = async () => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    console.log("new one", data);
     if (!validateTemplates()) {
       toast.error("Please fill out all fields before saving.");
       return;
@@ -143,8 +160,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     const response = await AddTemplateHeader({
       clientId: params?.clientId,
       fileTemplates: templates,
-      dateValue,
-      amountValue,
     });
     if (response) {
       setUpdated(!updated);
@@ -254,56 +269,67 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                     ))}
                   </div>
                 </div>
-                <div className="grid grid-cols-2 w-full space-x-4">
-                  <Select onValueChange={(value) => setDateValue(value)}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a Date" />
-                    </SelectTrigger>
-                    <SelectContent className="h-72">
-                      <SelectGroup>
-                        <SelectLabel>Headers</SelectLabel>
-                        {template.headers.map((header, index3) => (
-                          <SelectItem key={index3} value={header}>
-                            {header}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <Select onValueChange={(value) => setAmountValue(value)}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a Amount Value" />
-                    </SelectTrigger>
-                    <SelectContent className="h-72">
-                      <SelectGroup>
-                        <SelectLabel>Headers</SelectLabel>{" "}
-                        {template.headers.map((header, index4) => (
-                          <SelectItem key={index4} value={header}>
-                            {header}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-2/3 space-y-6"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <Select>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Date" />
+                            </SelectTrigger>
+                            <SelectContent className="h-72">
+                              <SelectGroup>
+                                <SelectLabel>Headers</SelectLabel>
+                                {template.headers.map((header, index3) => (
+                                  <SelectItem key={index3} value={header}>
+                                    {header}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <Select>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Amount Value" />
+                            </SelectTrigger>
+                            <SelectContent className="h-72">
+                              <SelectGroup>
+                                <SelectLabel>Headers</SelectLabel>{" "}
+                                {template.headers.map((header, index4) => (
+                                  <SelectItem key={index4} value={header}>
+                                    {header}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
               </div>
             )}
           </div>
         ))}
-        <div className="col-span-12 space-x-2 flex justify-end mt-6">
-          <Button
-            className="bg-green-500 text-white"
-            onClick={handleAddTemplate}
-          >
-            Add New
-          </Button>
-          <Button
-            className="bg-cyan-500 text-white"
-            onClick={() => hanleSaveAll()}
-          >
-            Save
-          </Button>
-        </div>
       </div>
     </div>
   );
