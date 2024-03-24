@@ -7,8 +7,34 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ReconProcessTracker } from "@/types/types";
 import { useReconciliationModalExisting } from "@/hooks/use-reconciliation-modal-esisting";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+const ReconProcessCell = ({ row }: any) => {
+  const reconciliationModal = useReconciliationModalExisting();
+
+  return (
+    <div>
+      <div>
+        {!row.original.ethSwitchFile ? (
+          <Button
+            className="w-full"
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              localStorage.setItem("fileUploadDate", row.original.date);
+              localStorage.setItem("fileTypeProps", "ETH-SWITCH");
+              reconciliationModal.onOpen();
+            }}
+          >
+            Upload File
+          </Button>
+        ) : (
+          <div className="w-full">
+            <span>{row.original.ethSwitchFile}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export const columns: ColumnDef<ReconProcessTracker>[] = [
   {
@@ -90,33 +116,7 @@ export const columns: ColumnDef<ReconProcessTracker>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const reconciliationModal = useReconciliationModalExisting();
-      return (
-        <div>
-          <div>
-            {!row.original.ethSwitchFile ? (
-              <Button
-                className="w-full"
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  localStorage.setItem("fileUploadDate", row.original.date);
-                  localStorage.setItem("fileTypeProps", "ETH-SWITCH");
-                  reconciliationModal.onOpen();
-                }}
-              >
-                Upload File
-              </Button>
-            ) : (
-              <div className="w-full">
-                <span>{row.original.ethSwitchFile}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    },
+    cell: ({ row }) => <ReconProcessCell row={row} />,
   },
   {
     accessorKey: "coopswitch",

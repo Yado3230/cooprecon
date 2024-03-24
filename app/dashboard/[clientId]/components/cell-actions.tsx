@@ -7,7 +7,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ClientColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -15,9 +14,10 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 // import axios from "axios";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { ReconProcessTracker } from "@/types/types";
 
 interface CellActionProps {
-  data: ClientColumn;
+  data: ReconProcessTracker;
 }
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onCopy = (id: string) => {
@@ -63,7 +63,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(data.id)}>
+          <DropdownMenuItem onClick={() => onCopy(data.id.toString())}>
             <Copy className="mr-2 h-4 w-4" />
             Copy ID
           </DropdownMenuItem>
