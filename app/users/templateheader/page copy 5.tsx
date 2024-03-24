@@ -15,16 +15,6 @@ import toast from "react-hot-toast";
 import ClientReconciliation from "./components/client";
 import { HeaderTemplate } from "@/types/types";
 import { ClientColumn } from "./components/columns";
-import { Heading } from "@/components/ui/heading";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface Template {
   templateName: string;
@@ -40,10 +30,9 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const [headerTemplates, setHeaderTemplates] = useState<HeaderTemplate[] | []>(
     []
   );
+  const [updated, setUpdated] = useState(false);
   const clientId =
     typeof window !== "undefined" && localStorage.getItem("clientId");
-
-  const [updated, setUpdated] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,8 +42,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     };
     fetchData();
   }, [updated]);
-
-  console.log(templates);
 
   const handleTemplateNameChange = (index: number, value: string) => {
     const updatedTemplates = [...templates];
@@ -138,7 +125,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     }
 
     const response = await AddTemplateHeader({
-      clientId: clientId,
+      clientId: Number(clientId),
       fileTemplates: templates,
     });
     if (response) {
@@ -159,12 +146,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
 
   return (
     <div className="grid grid-cols-5 gap-4">
-      <div className="col-span-5">
-        <Heading
-          title={`File Template`}
-          description="Manage header file template"
-        />
-      </div>
       <div className="col-span-3">
         <ClientReconciliation data={formattedclients} />
       </div>
@@ -174,7 +155,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
         </div>
         {templates.map((template, index) => (
           <div
-            className="grid gap-2 grid-cols-12 col-span-12 items-end space-x-4"
+            className="grid gap-2 grid-cols-12 col-span-12 space-x-4"
             key={index}
           >
             <div className="col-span-5">
@@ -198,6 +179,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                     index,
                     e.target.files ? e.target.files[0] : null
                   );
+                  console.log(e.target.files);
                 }}
               />
             </div>
@@ -217,7 +199,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                   htmlFor={`headerSelect-${index}`}
                   className="text-cyan-500 text-xl py-2 my-2"
                 >
-                  Select Unique Key
+                  Select RRN
                 </Label>
                 <div>
                   <div className="grid grid-cols-2">
@@ -248,38 +230,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </div>
-                <div className="grid grid-cols-2 w-full space-x-4">
-                  <Select>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a Date" />
-                    </SelectTrigger>
-                    <SelectContent className="h-72">
-                      <SelectGroup>
-                        <SelectLabel>Headers</SelectLabel>
-                        {template.headers.map((header, index3) => (
-                          <SelectItem key={index3} value={header}>
-                            {header}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <Select>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a Amount Value" />
-                    </SelectTrigger>
-                    <SelectContent className="h-72">
-                      <SelectGroup>
-                        <SelectLabel>Headers</SelectLabel>{" "}
-                        {template.headers.map((header, index4) => (
-                          <SelectItem key={index4} value={header}>
-                            {header}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
                 </div>
               </div>
             )}

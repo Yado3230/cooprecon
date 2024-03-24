@@ -32,6 +32,8 @@ import { Button } from "./button";
 import axios from "axios";
 // import { Loader } from "lucide-react";
 import Loading from "@/app/loading";
+import { setClient } from "@/lib/features/client/clientSlice";
+import { useDispatch } from "react-redux";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -56,6 +58,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({});
   const router = useRouter();
   const params = useParams();
+  const dispatch = useDispatch();
 
   const table = useReactTable({
     data,
@@ -233,27 +236,6 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm ml-2"
         />
-        {!clickable && (
-          <div className="flex w-full items-center justify-between">
-            <div className="ml-2">
-              <DataTableToolbar table={table} />
-            </div>
-            {table.getFilteredSelectedRowModel().rows.length > 0 && (
-              <div className="">
-                <Button
-                  className="ml-2 border"
-                  size="sm"
-                  onClick={handleProcessClick}
-                  variant="secondary"
-                  disabled={loading}
-                >
-                  Process
-                  {loading && <Loading />}
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
       </div>
       <div className="rounded-md border">
         <Table>
@@ -281,10 +263,11 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   className={`${clickable && "cursor-pointer"}`}
-                  onClick={() =>
+                  onClick={() => {
+                    dispatch(setClient(row._valuesCache));
                     clickable &&
-                    router.push(`/dashboard/${row._valuesCache.id}`)
-                  }
+                      router.push(`/dashboard/${row._valuesCache.id}`);
+                  }}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (

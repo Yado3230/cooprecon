@@ -157,6 +157,24 @@ export interface ReconProcessTracker {
   coopSwitchFile: string;
   status: string;
   addedAt: string;
+  reconFileApprovalTrackers: TransactionFile[];
   processingStartedAt: string;
   processingEndedAt: string;
 }
+
+export interface NewReconProcessTracker {
+  reconProcessTrackers: ReconProcessTracker[];
+}
+
+export type TransactionFile = {
+  id: number;
+  fileType: string;
+  fileName: string;
+  totalTransactionNumber: number;
+  requiredApprovals: number;
+  approvalCount: number;
+  addedByUserFullName: string;
+  listOfApprover: string[];
+  createdAt: string;
+  updatedAt: string;
+};

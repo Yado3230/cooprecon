@@ -94,7 +94,7 @@ export const UserModal: FC<UserModalProps> = ({ clientId }) => {
       isOpen={userModal.isOpen}
       onClose={userModal.onClose}
     >
-      <div className="spaye-y-4 py-2 pb-4 w-full">
+      <div className="spaye-y-4 py-2 pb-4 w-[400px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField

@@ -1,7 +1,8 @@
 import {
   HeaderTemplate,
   HeaderTemplateRequest,
-  ReconProcessTracker,
+  NewReconProcessTracker,
+  TransactionFile,
 } from "@/types/types";
 import { Client } from "@prisma/client";
 
@@ -30,13 +31,33 @@ export const getTemplateHeaderByClientId = async (
 
 export const getReconsilationProcessingTracker = async (
   clientId: number
-):
-Promise<ReconProcessTracker[]> => {
+): Promise<NewReconProcessTracker> => {
   const token =
     typeof window !== "undefined" && localStorage.getItem("access_token");
   try {
     const res = await fetch(
-      `${API_URL}api/v1/recon-processing/trackers?size=1000`,
+      `${API_URL}api/v1/recon-trackers/process?size=1000`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
+
+export const getReconsilationApprocalTracker = async (
+  reconTrackerId: number
+): Promise<TransactionFile[]> => {
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
+  try {
+    const res = await fetch(
+      `${API_URL}api/v1/recon-processing/file-approvals?reconTrackerId=${reconTrackerId}&size=1000`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,6 +85,35 @@ export const AddTemplateHeader = async (
         "Content-Type": "application/json",
       },
     });
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
+
+export const reconTrackerApproval = async (
+  id: number
+): Promise<HeaderTemplateRequest> => {
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
+  try {
+    const response = await fetch(
+      `${API_URL}api/v1/recon-trackers/${id}/approve-file`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Request failed with status: ${response.status}`);

@@ -1,9 +1,13 @@
-// "use client";
+"use client";
 
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "./components/navbar";
 // import { useEffect, useState } from "react";
 import Sidebar from "./components/sidebar";
 import Head from "next/head";
+import { useEffect } from "react";
+import { setClient } from "@/lib/features/client/clientSlice";
+import { RootState } from "@/lib/store";
 // import { useRouter } from "next/navigation";
 
 export default function RootLayout({
@@ -11,6 +15,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const dispatch = useDispatch();
+
+  const activeClient = useSelector(
+    (state: RootState) => state.client.activeClient
+  );
+
+  useEffect(() => {
+    dispatch(setClient(""));
+  }, []);
+  console.log("from client", activeClient);
   // const [domLoaded, setDomLoaded] = useState(false);
 
   // useEffect(() => {

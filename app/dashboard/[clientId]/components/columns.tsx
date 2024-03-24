@@ -38,29 +38,6 @@ const ReconProcessCell = ({ row }: any) => {
 
 export const columns: ColumnDef<ReconProcessTracker>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        disabled={
-          row.original.status === "success" ||
-          row.original.status === "inprogress"
-        }
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "date",
     header: ({ column }) => {
       return (

@@ -17,6 +17,16 @@ export const getAllProcessingTypes = async (): Promise<
   }
 };
 
+export const getAllBanks = async (): Promise<string[]> => {
+  try {
+    const res = await fetch(`${API_URL}api/v1/recon/info/banks`);
+    return res.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
 export const getProcessingTypeByClientId = async (
   clientId: number
 ): Promise<ProcessingTransactionTypeResponse[]> => {
@@ -34,8 +44,8 @@ export const getProcessingTypeByClientId = async (
 export const addProcessingType = async (
   data: ProcessingTransactionTypeRequest
 ): Promise<ProcessingTransactionTypeResponse> => {
-  const token = 
-  typeof window !== "undefined" && localStorage.getItem("access_token");
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
 
   try {
     const response = await fetch(

@@ -14,18 +14,6 @@ const sidebarNavItems = [
     title: "Profile",
     href: "/users/settings",
   },
-  // {
-  //   title: "Bank",
-  //   href: "/users/settings/banks",
-  // },
-  // {
-  //   title: "Category",
-  //   href: "/users/settings/categories",
-  // },
-  // {
-  //   title: "Product Type",
-  //   href: "/users/settings/products",
-  // },
   {
     title: "Settlement",
     href: "/users/settings/settlements",
@@ -46,9 +34,9 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col space-y-4 w-full">
-          <aside className="-mx-4 w-full">
+          {/* <aside className="-mx-4 w-full">
             <SidebarNav items={sidebarNavItems} />
-          </aside>
+          </aside> */}
           <div className="flex-1">{children}</div>
         </div>
       </div>

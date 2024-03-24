@@ -29,6 +29,8 @@ import {
 import { Client } from "@/types/types";
 import { ModalProvider } from "@/providers/modal-provider";
 import Image from "next/image";
+import { setClient } from "@/lib/features/client/clientSlice";
+import { useDispatch } from "react-redux";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -66,9 +68,11 @@ export default function ClientSwitcher({
   if (!isMounted) {
     return null;
   }
+  const dispatch = useDispatch();
 
   const onProductSelect = (product: { value: string; label: string }) => {
     setOpen(false);
+    dispatch(setClient(product));
     router.push(`/dashboard/${product.value}`);
   };
 

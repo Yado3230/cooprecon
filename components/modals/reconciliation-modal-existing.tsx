@@ -49,6 +49,36 @@ export const ReconciliationModalExisting: React.FC<
     []
   );
 
+  // const [data, setData] = useState(null);
+
+  // // Function to fetch data from localStorage
+  // const fetchDataFromLocalStorage = () => {
+  //   const localStorageData = localStorage.getItem("fileUploadDate");
+  //   if (localStorageData) {
+  //     setData(JSON.parse(localStorageData));
+  //   }
+  // };
+
+  // // useEffect to fetch data from localStorage initially
+  // useEffect(() => {
+  //   fetchDataFromLocalStorage();
+  // }, []);
+
+  // // useEffect to re-fetch data from localStorage when it changes
+  // useEffect(() => {
+  //   const handleStorageChange = () => {
+  //     fetchDataFromLocalStorage();
+  //   };
+
+  //   // Listen for changes in localStorage
+  //   window.addEventListener("storage", handleStorageChange);
+
+  //   // Clean up event listener
+  //   return () => {
+  //     window.removeEventListener("storage", handleStorageChange);
+  //   };
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await getTemplateHeaderByClientId(Number(clientId));
@@ -162,6 +192,14 @@ export const ReconciliationModalExisting: React.FC<
       <div className="spaye-y-4 py-2 pb-4 w-[400px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+            {/* <div>
+              <span>Date:</span>
+              <span>{data}</span>
+            </div>
+            <div>
+              <span>File Type:</span>
+              <span>{data}</span>
+            </div> */}
             <FormItem>
               <FormLabel>Excel File:</FormLabel>
               <FormControl>

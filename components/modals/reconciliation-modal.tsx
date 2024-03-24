@@ -142,8 +142,13 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
       if (JSON.stringify(headers) === JSON.stringify(expectedHeaders)) {
         setMatcherMessage("");
         console.log(values);
+        const date = values.date;
+        const dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+
         const formData = new FormData();
-        formData.append("date", new Date(values.date).toISOString());
+        formData.append("date", dateString);
         formData.append("fileType", values.fileType);
         formData.append("file", file);
         const response = await UploadExcelFile(formData);

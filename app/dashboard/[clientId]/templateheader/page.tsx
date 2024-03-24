@@ -15,6 +15,16 @@ import toast from "react-hot-toast";
 import ClientReconciliation from "./components/client";
 import { HeaderTemplate } from "@/types/types";
 import { ClientColumn } from "./components/columns";
+import { Heading } from "@/components/ui/heading";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Template {
   templateName: string;
@@ -33,6 +43,8 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const params = useParams();
 
   const [updated, setUpdated] = useState(false);
+  const [dateValue, setDateValue] = useState("");
+  const [amountValue, setAmountValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,6 +135,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   };
 
   const hanleSaveAll = async () => {
+    console.log("new one", amountValue, dateValue);
     if (!validateTemplates()) {
       toast.error("Please fill out all fields before saving.");
       return;
@@ -150,6 +163,12 @@ const ReconciliationExcelModalCaller: React.FC = () => {
 
   return (
     <div className="grid grid-cols-5 gap-4">
+      <div className="col-span-5">
+        <Heading
+          title={`File Template`}
+          description="Manage header file template"
+        />
+      </div>
       <div className="col-span-3">
         <ClientReconciliation data={formattedclients} />
       </div>
@@ -202,7 +221,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                   htmlFor={`headerSelect-${index}`}
                   className="text-cyan-500 text-xl py-2 my-2"
                 >
-                  Select RRN
+                  Select Unique Key
                 </Label>
                 <div>
                   <div className="grid grid-cols-2">
@@ -233,6 +252,46 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                       </div>
                     ))}
                   </div>
+                </div>
+                <div className="grid grid-cols-2 w-full space-x-4">
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a Date" />
+                    </SelectTrigger>
+                    <SelectContent className="h-72">
+                      <SelectGroup>
+                        <SelectLabel>Headers</SelectLabel>
+                        {template.headers.map((header, index3) => (
+                          <SelectItem
+                            onChange={(e) => setDateValue(e.target.value)}
+                            key={index3}
+                            value={header}
+                          >
+                            {header}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a Amount Value" />
+                    </SelectTrigger>
+                    <SelectContent className="h-72">
+                      <SelectGroup>
+                        <SelectLabel>Headers</SelectLabel>{" "}
+                        {template.headers.map((header, index4) => (
+                          <SelectItem
+                            onChange={(e) => setAmountValue(e.target.value)}
+                            key={index4}
+                            value={header}
+                          >
+                            {header}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             )}
