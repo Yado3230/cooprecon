@@ -30,6 +30,8 @@ export interface BankResponse {
   status: string;
   name: string;
   code: string;
+  payableAccount: string;
+  receivableAccount: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,7 +39,10 @@ export interface BankResponse {
 export interface BankRequest {
   name: string;
   code: string;
+  payableAccount: string;
+  receivableAccount: string;
 }
+
 export interface CategoryResponse {
   id: number;
   status: string;
@@ -101,7 +106,9 @@ export interface HeaderTemplate {
   id: number;
   templateName: string;
   headers: string[];
-  rrn: string;
+  rrnColumn: string;
+  txAmountColumn: string;
+  dateValueColumn: string;
   status: string;
   client: {
     id: number;
@@ -177,4 +184,19 @@ export type TransactionFile = {
   listOfApprover: string[];
   createdAt: string;
   updatedAt: string;
+};
+
+export type ProcessingResponse = {
+  id: number;
+  bankName: number;
+  ethCheckEJCount: number;
+  doneCount: number;
+  cbsCheckEJBirrAmount: number;
+  cbsCheckEJCount: number;
+  doneBirrAmount: number;
+  ethCheckEJBirrAmount: number;
+  ethCheckCoopSwitchCount: number;
+  ethCheckCoopSwitchAmount: number;
+  cbsCheckCoopSwitchCount: number;
+  cbsCheckCoopSwitchBirrAmount: number;
 };

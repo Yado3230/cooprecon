@@ -21,10 +21,10 @@ export default function RootLayout({
     (state: RootState) => state.client.activeClient
   );
 
-  useEffect(() => {
-    dispatch(setClient(""));
-  }, []);
-  console.log("from client", activeClient);
+  // useEffect(() => {
+  //   dispatch(setClient(""));
+  // }, []);
+  // console.log("from client", activeClient);
   // const [domLoaded, setDomLoaded] = useState(false);
 
   // useEffect(() => {

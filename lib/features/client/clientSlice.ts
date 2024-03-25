@@ -1,4 +1,3 @@
-import { Client } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SidebarState {
@@ -6,7 +5,8 @@ interface SidebarState {
 }
 
 const initialState: SidebarState = {
-  activeClient: {},
+  activeClient: typeof window !== "undefined" && window.location.origin
+  ? window.location.origin: {},
 };
 
 const sidebarSlice = createSlice({
@@ -15,6 +15,7 @@ const sidebarSlice = createSlice({
   reducers: {
     setClient(state, action: PayloadAction<any>) {
       state.activeClient = action.payload;
+      localStorage.setItem("activeClient", action.payload);
     },
   },
 });

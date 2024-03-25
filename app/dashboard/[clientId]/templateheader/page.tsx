@@ -30,12 +30,21 @@ interface Template {
   templateName: string;
   file: File | null;
   headers: string[];
-  rrn: string;
+  rrnColumn: string;
+  dateValueColumn: string;
+  txAmountColumn: string;
 }
 
 const ReconciliationExcelModalCaller: React.FC = () => {
   const [templates, setTemplates] = useState<Template[]>([
-    { templateName: "", file: null, headers: [], rrn: "" },
+    {
+      templateName: "",
+      file: null,
+      headers: [],
+      rrnColumn: "",
+      txAmountColumn: "",
+      dateValueColumn: "",
+    },
   ]);
   const [headerTemplates, setHeaderTemplates] = useState<HeaderTemplate[] | []>(
     []
@@ -43,8 +52,8 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const params = useParams();
 
   const [updated, setUpdated] = useState(false);
-  const [dateValue, setDateValue] = useState("");
-  const [amountValue, setAmountValue] = useState("");
+  const [dateValueColumn, setDateValue] = useState("");
+  const [txAmountColumn, setAmountValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,17 +84,35 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setTemplates(updatedTemplates);
   };
 
-  const handleKeySelect = (index: number, rrn: string) => {
-    console.log(index, rrn);
+  const handleKeySelect = (index: number, rrnColumn: string) => {
     const updatedTemplates = [...templates];
-    updatedTemplates[index].rrn = rrn;
+    updatedTemplates[index].rrnColumn = rrnColumn;
+    setTemplates(updatedTemplates);
+  };
+
+  const handleDateValueSelect = (index: number, dateValue: string) => {
+    const updatedTemplates = [...templates];
+    updatedTemplates[index].dateValueColumn = dateValue;
+    setTemplates(updatedTemplates);
+  };
+
+  const handleAmountValueSelect = (index: number, txAmount: string) => {
+    const updatedTemplates = [...templates];
+    updatedTemplates[index].txAmountColumn = txAmount;
     setTemplates(updatedTemplates);
   };
 
   const handleAddTemplate = () => {
     setTemplates([
       ...templates,
-      { templateName: "", file: null, headers: [], rrn: "" },
+      {
+        templateName: "",
+        file: null,
+        headers: [],
+        rrnColumn: "",
+        txAmountColumn: "",
+        dateValueColumn: "",
+      },
     ]);
   };
 
@@ -126,7 +153,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
       if (
         template.templateName === "" ||
         template.file === null ||
-        template.rrn === ""
+        template.rrnColumn === ""
       ) {
         return false;
       }
@@ -143,13 +170,21 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     const response = await AddTemplateHeader({
       clientId: params?.clientId,
       fileTemplates: templates,
-      dateValue,
-      amountValue,
     });
+
     if (response) {
       setUpdated(!updated);
       toast.success("Created Succesfully");
-      setTemplates([{ templateName: "", file: null, headers: [], rrn: "" }]);
+      setTemplates([
+        {
+          templateName: "",
+          file: null,
+          headers: [],
+          rrnColumn: "",
+          txAmountColumn: "",
+          dateValueColumn: "",
+        },
+      ]);
     } else {
       toast.error("failed to add header template");
     }
@@ -158,7 +193,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const formattedclients: ClientColumn[] = headerTemplates.map((item) => ({
     id: item.id,
     templateName: item.templateName,
-    rrn: item.rrn,
+    rrnColumn: item.rrnColumn,
     createdAt: new Date(item.createdAt).toISOString().split("T")[0],
   }));
 
@@ -255,7 +290,11 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 w-full space-x-4">
-                  <Select onValueChange={(value) => setDateValue(value)}>
+                  <Select
+                    onValueChange={(value) =>
+                      handleDateValueSelect(index, value)
+                    }
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a Date" />
                     </SelectTrigger>
@@ -270,7 +309,11 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  <Select onValueChange={(value) => setAmountValue(value)}>
+                  <Select
+                    onValueChange={(value) =>
+                      handleAmountValueSelect(index, value)
+                    }
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a Amount Value" />
                     </SelectTrigger>

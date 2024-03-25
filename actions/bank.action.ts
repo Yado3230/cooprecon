@@ -16,6 +16,7 @@ export const getAllBanks = async (): Promise<BankResponse[]> => {
   }
 };
 
+
 export const getBanksByClientId = async (
   clientId: number
 ): Promise<BankResponse[]> => {

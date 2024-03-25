@@ -7,7 +7,7 @@ import { ArrowUpDown } from "lucide-react";
 export type ClientColumn = {
   id: number;
   templateName: string;
-  rrn: string;
+  rrnColumn: string;
   createdAt: string;
 };
 
@@ -42,7 +42,7 @@ export const columns: ColumnDef<ClientColumn>[] = [
     },
   },
   {
-    accessorKey: "rrn",
+    accessorKey: "rrnColumn",
     header: ({ column }) => {
       return (
         <Button
