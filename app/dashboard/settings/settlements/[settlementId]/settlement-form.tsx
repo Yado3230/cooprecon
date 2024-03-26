@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addSettlement } from "@/actions/settlement-action";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getAllCategories } from "@/actions/category-action";
 
 const accountFormSchema = z.object({
@@ -48,7 +48,6 @@ const accountFormSchema = z.object({
   bankId: z.coerce.number(),
   productTypeId: z.coerce.number(),
   categoryId: z.coerce.number(),
-  clientId: z.coerce.number(),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
@@ -60,9 +59,17 @@ const defaultValues: Partial<AccountFormValues> = {
 };
 
 export function SettlementForm() {
+  const params = useParams();
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues,
+    defaultValues: {
+      accountName: "",
+      accountNumber: "",
+      accountOfficer: "",
+      bankId: 0,
+      productTypeId: 0,
+      categoryId: 0,
+    },
   });
   const router = useRouter();
   const [banks, setBanks] = useState<BankResponse[]>([]);
@@ -90,10 +97,18 @@ export function SettlementForm() {
     try {
       setLoading(true);
 
-      const response = await addSettlement(data);
+      const response = await addSettlement({
+        accountName: data.accountName,
+        accountNumber: data.accountNumber,
+        accountOfficer: data.accountOfficer,
+        bankId: data.bankId,
+        productTypeId: data.productTypeId,
+        categoryId: data.categoryId,
+        clientId: Number(params.clientId),
+      });
       if (response) {
         toast.success("Settlement Created");
-        router;
+        router.push("/users/settings/settlements");
       }
     } catch (error) {
       toast.error("Something went wrong!");
@@ -243,41 +258,6 @@ export function SettlementForm() {
                           value={category.id?.toString() || ""}
                         >
                           {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="clientId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Client:</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value?.toString()}
-                    defaultValue={field.value?.toString()}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select a client"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {banks.map((bank) => (
-                        <SelectItem
-                          key={bank.id}
-                          value={bank.id?.toString() || ""}
-                        >
-                          {bank.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

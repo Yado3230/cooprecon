@@ -1,17 +1,17 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Import, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Heading } from "@/components/ui/heading";
 import DataTable from "react-data-table-component";
 import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
 import { ReconciliationModal } from "@/components/modals/reconciliation-modal";
-import { ReconProcessTracker, TransactionFile } from "@/types/types";
-import {
-  getReconsilationApprocalTracker,
-  reconTrackerApproval,
-} from "@/actions/header-template.action";
+import { ProcessingResponse, ReconProcessTracker } from "@/types/types";
+import { reconTrackerApproval } from "@/actions/header-template.action";
 import toast from "react-hot-toast";
+import { ProcessModal } from "@/components/modals/process-modal";
+import { useProcessModal } from "@/hooks/use-process-modal";
+import { getReconcilationDetails } from "@/actions/processing-action";
 
 interface ClientReconciliationProps {
   data: ReconProcessTracker[];
@@ -25,29 +25,13 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
   setUpdated,
 }) => {
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
-  const [expandedData, setExpandedData] = useState<TransactionFile[]>([]);
+  const [selectedDate, setSelectedDate] = useState("");
 
   const reconciliationModal = useReconciliationModal();
+  const processModal = useProcessModal();
   const clientId =
     typeof window !== "undefined" && localStorage.getItem("clientId");
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchExpandedData = async () => {
-      try {
-        const response = await getReconsilationApprocalTracker(
-          Number(expandedRowId)
-        ); // Call your API function here
-        setExpandedData(response);
-        console.log(response);
-      } catch (error) {
-        console.error("Error fetching expanded data:", error);
-      }
-    };
-    if (expandedRowId) {
-      fetchExpandedData();
-    }
-  }, [expandedRowId]);
 
   const columns = [
     {
@@ -86,22 +70,22 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
     {
       name: "Process",
       selector: (row: {
+        date(date: any): unknown;
+        id: any;
         reconFileApprovalTrackers: any;
         status: any;
         approvals: any;
         processingStartedAt: any;
       }) =>
-        row.processingStartedAt ? (
-          row.processingStartedAt
-        ) : row.reconFileApprovalTrackers
-            .map(
-              (item: { requiredApprovals: any; approvalCount: any }) =>
-                item.requiredApprovals !== item.approvalCount
-            )
-            .includes(true) ? (
+        row.reconFileApprovalTrackers
+          .map(
+            (item: { requiredApprovals: any; approvalCount: any }) =>
+              item.requiredApprovals !== item.approvalCount
+          )
+          .includes(true) ? (
           <Button
             className="w-full my-1"
-            onClick={() => toast.success("details")}
+            onClick={() => processModal.onOpen()}
             variant="default"
             disabled
             size="sm"
@@ -111,7 +95,11 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         ) : row.status === "PENDING" ? (
           <Button
             className="w-full my-1"
-            onClick={() => toast.success("details")}
+            onClick={() => {
+              // @ts-ignore
+              setSelectedDate(row.date);
+              processModal.onOpen();
+            }}
             variant="default"
             size="sm"
           >
@@ -120,7 +108,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         ) : (
           <Button
             className="w-full my-1"
-            onClick={() => toast.success("details")}
+            onClick={() => processModal.onOpen()}
             variant="default"
             disabled
             size="sm"
@@ -138,11 +126,20 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
     },
     {
       name: "actions",
-      selector: () => {
+      selector: (row: {
+        processingEndedAt: any;
+        processingStartedAt: any;
+        id: any;
+      }) => {
         return (
           <Button
             className="w-full my-1"
-            onClick={() => toast.success("details")}
+            onClick={() => router.push(`/users/details/${row.id}`)}
+            disabled={
+              row.processingEndedAt ||
+              row.processingStartedAt === undefined ||
+              row.processingStartedAt === null
+            }
             variant="secondary"
             size="sm"
           >
@@ -166,11 +163,11 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         selector: (row: { fileType: any }) => row.fileType,
         sortable: true,
       },
-      {
-        name: "File Name",
-        selector: (row: { fileName: any }) => row.fileName,
-        sortable: true,
-      },
+      // {
+      //   name: "File Name",
+      //   selector: (row: { fileName: any }) => row.fileName,
+      //   sortable: true,
+      // },
       {
         name: "Transaction Number",
         selector: (row: { totalTransactionNumber: any }) =>
@@ -209,12 +206,15 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
             <Button
               className="w-full my-1"
               onClick={async () => {
-                setUpdated(!updated);
-                const res = await reconTrackerApproval(Number(row.id));
-                if (res) {
-                  toast.success("approved");
-                } else {
-                  toast.error("failed");
+                try {
+                  const res = await reconTrackerApproval(Number(row.id));
+                  if (res) {
+                    toast.success("approved");
+                  }
+                } catch (error) {
+                  toast.error("Failed to approve");
+                } finally {
+                  setUpdated(!updated);
                 }
               }}
               variant="outline"
@@ -231,6 +231,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
       <div className="bg-gray-500">
         <div className="m-2 mx-2 border-x-2 border-cyan-500">
           <DataTable
+            // @ts-ignore
             columns={columnOne}
             data={data.reconFileApprovalTrackers}
             dense
@@ -242,6 +243,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
 
   return (
     <>
+      <ProcessModal clientId={Number(clientId)} date={selectedDate} />
       <ReconciliationModal clientId={Number(clientId)} />
       <div className="flex border-b pb-2 mb-6 items-center justify-between">
         <Heading
@@ -261,12 +263,13 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
       </div>
       <div>
         <DataTable
+          // @ts-ignore
           columns={columns}
           data={data}
           pagination
           highlightOnHover
           expandableRows
-          // dense
+          dense
           expandableRowsComponent={ExpandableTableComponent}
           expandableRowExpanded={(row) => expandedRowId === row.id.toString()}
         />

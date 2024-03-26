@@ -136,7 +136,11 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
             onClick={() =>
               router.push(`/dashboard/${params.clientId}/details/${row.id}`)
             }
-            disabled={row.processingEndedAt}
+            disabled={
+              row.processingEndedAt ||
+              row.processingStartedAt === undefined ||
+              row.processingStartedAt === null
+            }
             variant="secondary"
             size="sm"
           >
@@ -160,11 +164,11 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         selector: (row: { fileType: any }) => row.fileType,
         sortable: true,
       },
-      {
-        name: "File Name",
-        selector: (row: { fileName: any }) => row.fileName,
-        sortable: true,
-      },
+      // {
+      //   name: "File Name",
+      //   selector: (row: { fileName: any }) => row.fileName,
+      //   sortable: true,
+      // },
       {
         name: "Transaction Number",
         selector: (row: { totalTransactionNumber: any }) =>

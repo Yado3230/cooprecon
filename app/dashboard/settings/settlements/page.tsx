@@ -3,21 +3,19 @@
 import { SettlementSettingResponse } from "@/types/types";
 import UserClient from "./components/client";
 import { useEffect, useState } from "react";
-import {
-  getAllSettlements,
-  getSettlementByClientId,
-} from "@/actions/settlement-action";
+import { getSettlementByClientId } from "@/actions/settlement-action";
+import { useParams } from "next/navigation";
 
 const Page = () => {
   const [settlements, setSettlements] = useState<SettlementSettingResponse[]>(
     []
   );
-  const clientId = 
-  typeof window !== "undefined" && localStorage.getItem("clientId");
+
+  const params = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getSettlementByClientId(Number(clientId));
+      const res = await getSettlementByClientId(Number(params.clientId));
       const data = res instanceof Array ? res : [];
       setSettlements(data);
     };

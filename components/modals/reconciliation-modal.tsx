@@ -120,24 +120,9 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
         return;
       }
       const headers = await parseExcelFile(file);
-      const expectedHeaders = [
-        "TRANS_REF",
-        "COMPANY_CODE",
-        "TRANS_STATUS",
-        "ATM_OR_POS",
-        "PAN_NUMBER",
-        "BIN_REFERENCE",
-        "VALUE_DATE",
-        "DEBIT_ACCT_NO",
-        "DR_CUSTOMER_ID",
-        "CREDIT_ACCT_NO",
-        "TXN_AMOUNT",
-        "MERCHANT_ID",
-        "AUTH_CODE",
-        "CARD_ACC_ID",
-        "RETRIEVAL_REF_NO",
-        "ACQ_OR_ISS",
-      ];
+      const expectedHeaders = headerTemplates.find(
+        (item) => item.templateName === values.fileType
+      )?.headers;
       // Check if headers match the expected headers
       if (JSON.stringify(headers) === JSON.stringify(expectedHeaders)) {
         setMatcherMessage("");

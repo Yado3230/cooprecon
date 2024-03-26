@@ -52,8 +52,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const params = useParams();
 
   const [updated, setUpdated] = useState(false);
-  const [dateValueColumn, setDateValue] = useState("");
-  const [txAmountColumn, setAmountValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {

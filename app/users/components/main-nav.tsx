@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DashboardIcon } from "@radix-ui/react-icons";
 import {
   BookTemplate,
   Calculator,
@@ -31,6 +32,16 @@ export const MainNav: FC<SidebarProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const routes = [
+    {
+      href: `/users/dashboard`,
+      label: "Dashboard",
+      active: pathname === `/users/dashboard`,
+      icon: (
+        <DashboardIcon
+          color={`${pathname === `/users/dashboard` ? "#0EB8D5" : "#707E94"}`}
+        />
+      ),
+    },
     {
       href: `/users`,
       label: "Reconciliation",

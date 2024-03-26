@@ -22,6 +22,8 @@ export default function SettingsAccountPage() {
     id: item.id,
     name: item.name,
     code: item.code,
+    payableAccount: item.payableAccount,
+    receivableAccount: item.receivableAccount,
     status: item.status,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,

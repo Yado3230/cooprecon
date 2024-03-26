@@ -44,6 +44,8 @@ export default function ClientSwitcher({
   className,
   items,
 }: clientSwitcherProps) {
+  const dispatch = useDispatch();
+
   const clientModal = useClientModal();
   const params = useParams();
   const router = useRouter();
@@ -68,7 +70,6 @@ export default function ClientSwitcher({
   if (!isMounted) {
     return null;
   }
-  const dispatch = useDispatch();
 
   const onProductSelect = (product: { value: string; label: string }) => {
     setOpen(false);

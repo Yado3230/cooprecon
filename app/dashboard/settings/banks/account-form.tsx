@@ -35,6 +35,22 @@ const accountFormSchema = z.object({
     .max(30, {
       message: "Name must not be longer than 30 characters.",
     }),
+  payableAccount: z
+    .string()
+    .min(1, {
+      message: "Code must be at least 1 character.",
+    })
+    .max(30, {
+      message: "Name must not be longer than 30 characters.",
+    }),
+  receivableAccount: z
+    .string()
+    .min(1, {
+      message: "Code must be at least 1 character.",
+    })
+    .max(30, {
+      message: "Name must not be longer than 30 characters.",
+    }),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
@@ -96,6 +112,32 @@ export function AccountForm() {
                 <FormLabel>Code</FormLabel>
                 <FormControl>
                   <Input placeholder="Bank code" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="payableAccount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Payable Account</FormLabel>
+                <FormControl>
+                  <Input placeholder="Payable Account" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="receivableAccount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Receivable Account</FormLabel>
+                <FormControl>
+                  <Input placeholder="Receivable Account" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

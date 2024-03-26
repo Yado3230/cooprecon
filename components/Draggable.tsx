@@ -50,7 +50,7 @@ export default function Home() {
     <main className="">
       <h1 className="text-xl font-bold text-cyan-500">List of Templates</h1>
       {people.map((person, index) => (
-        <div className="grid grid-cols-12">
+        <div key={index} className="grid grid-cols-12">
           <div
             className="relative flex items-center justify-between col-span-4 space-x-3 rounded m-1 p-2 border"
             draggable

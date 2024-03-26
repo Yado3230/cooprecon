@@ -266,7 +266,9 @@ export function DataTable<TData, TValue>({
                   onClick={() => {
                     dispatch(setClient(row._valuesCache));
                     clickable &&
-                      router.push(`/dashboard/${row._valuesCache.id}`);
+                      router.push(
+                        `/dashboard/${row._valuesCache.id}/dashboard`
+                      );
                   }}
                   data-state={row.getIsSelected() && "selected"}
                 >

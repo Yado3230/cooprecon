@@ -1,5 +1,4 @@
 "use client";
-import { Separator } from "@/components/ui/separator";
 import { AccountForm } from "@/app/users/settings/banks/account-form";
 import { BankResponse } from "@/types/types";
 import { useEffect, useState } from "react";

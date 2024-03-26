@@ -8,7 +8,7 @@ import { SettlementSettingResponse } from "@/types/types";
 import { Heading } from "@/components/ui/heading";
 import { useUserModal } from "@/hooks/use-user-modal";
 import { UserModal } from "@/components/modals/user-modal";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 // import { useSession } from "next-auth/react";
 
 interface UserClientProps {
@@ -18,13 +18,12 @@ interface UserClientProps {
 const UserClient: React.FC<UserClientProps> = ({ data }) => {
   const userModal = useUserModal();
   const router = useRouter();
-  const clientId = 
-  typeof window !== "undefined" && localStorage.getItem("clientId");
+  const params = useParams();
   // const { data: session } = useSession();
 
   return (
     <>
-      <UserModal clientId={Number(clientId)} />
+      <UserModal clientId={Number(params.clientId)} />
       <div className="flex border-b pb-2 mb-3 items-center justify-between">
         <Heading
           title={`Settlements (${data.length})`}

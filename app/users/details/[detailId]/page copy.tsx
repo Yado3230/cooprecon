@@ -106,65 +106,187 @@ const Page = () => {
           </li>
           <li className="grid grid-cols-4 border-b">
             <span className="text-gray-600 dark:text-white">
-              CHECK COOP SWITCH
+              CBS CHECK COOP SWITCH
             </span>
             <span className="text-gray-600 dark:text-white">
               {reconcilationDetails.reduce(
                 (accumulator, currentItem) =>
                   accumulator + currentItem.cbsCheckCoopSwitchCount,
                 0
-              ) +
-                reconcilationDetails.reduce(
-                  (accumulator, currentItem) =>
-                    accumulator + currentItem.ethCheckCoopSwitchCount,
-                  0
-                )}
+              )}
             </span>
             <span className="text-gray-600 dark:text-white">
-              {(
-                reconcilationDetails.reduce(
+              {reconcilationDetails
+                .reduce(
                   (accumulator, currentItem) =>
                     accumulator + currentItem.cbsCheckCoopSwitchBirrAmount,
                   0
-                ) +
-                reconcilationDetails.reduce(
-                  (accumulator, currentItem) =>
-                    accumulator + currentItem.ethCheckCoopSwitchAmount,
-                  0
                 )
-              ).toLocaleString()}{" "}
+                .toLocaleString()}{" "}
               ETB
             </span>
+            <Button
+              className="text-gray-600 w-8 h-8 whitespace-nowrap"
+              size="icon"
+              variant="outline"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-notebook-pen"
+              >
+                <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
+                <path d="M2 6h4" />
+                <path d="M2 10h4" />
+                <path d="M2 14h4" />
+                <path d="M2 18h4" />
+                <path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z" />
+              </svg>
+            </Button>
           </li>
           <li className="grid grid-cols-4 border-b">
-            <span className="text-gray-600 dark:text-white">CHECK EJ</span>{" "}
+            <span className="text-gray-600 dark:text-white">CBS CHECK EJ</span>{" "}
             <span className="text-gray-600 dark:text-white">
               {reconcilationDetails.reduce(
                 (accumulator, currentItem) =>
                   accumulator + currentItem.cbsCheckEJCount,
                 0
-              ) +
-                reconcilationDetails.reduce(
-                  (accumulator, currentItem) =>
-                    accumulator + currentItem.ethCheckEJCount,
-                  0
-                )}
+              )}
             </span>{" "}
             <span className="text-gray-600 dark:text-white">
-              {(
-                reconcilationDetails.reduce(
+              {reconcilationDetails
+                .reduce(
                   (accumulator, currentItem) =>
                     accumulator + currentItem.cbsCheckEJBirrAmount,
                   0
-                ) +
-                reconcilationDetails.reduce(
+                )
+                .toLocaleString()}{" "}
+              ETB
+            </span>
+            <Button
+              className="text-gray-600 w-8 h-8 whitespace-nowrap"
+              size="icon"
+              variant="outline"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-notebook-pen"
+              >
+                <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
+                <path d="M2 6h4" />
+                <path d="M2 10h4" />
+                <path d="M2 14h4" />
+                <path d="M2 18h4" />
+                <path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z" />
+              </svg>
+            </Button>
+          </li>
+          <li className="grid grid-cols-4 border-b">
+            <span className="text-gray-600 dark:text-white">
+              ETH CHECK COOP SWITCH
+            </span>{" "}
+            <span className="text-gray-600 dark:text-white">
+              {reconcilationDetails.reduce(
+                (accumulator, currentItem) =>
+                  accumulator + currentItem.ethCheckCoopSwitchCount,
+                0
+              )}
+            </span>{" "}
+            <span className="text-gray-600 dark:text-white">
+              {reconcilationDetails
+                .reduce(
+                  (accumulator, currentItem) =>
+                    accumulator + currentItem.ethCheckCoopSwitchAmount,
+                  0
+                )
+                .toLocaleString()}{" "}
+              ETB
+            </span>
+            <Button
+              className="text-gray-600 w-8 h-8 whitespace-nowrap"
+              size="icon"
+              variant="outline"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-notebook-pen"
+              >
+                <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
+                <path d="M2 6h4" />
+                <path d="M2 10h4" />
+                <path d="M2 14h4" />
+                <path d="M2 18h4" />
+                <path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z" />
+              </svg>
+            </Button>
+          </li>
+          <li className="grid grid-cols-4 border-b">
+            <span className="text-gray-600 dark:text-white">ETH CHECK EJ</span>{" "}
+            <span className="text-gray-600 dark:text-white">
+              {reconcilationDetails.reduce(
+                (accumulator, currentItem) =>
+                  accumulator + currentItem.ethCheckEJCount,
+                0
+              )}
+            </span>{" "}
+            <span className="text-gray-600 dark:text-white">
+              {reconcilationDetails
+                .reduce(
                   (accumulator, currentItem) =>
                     accumulator + currentItem.ethCheckEJBirrAmount,
                   0
                 )
-              ).toLocaleString()}{" "}
+                .toLocaleString()}{" "}
               ETB
             </span>
+            <Button
+              className="text-gray-600 w-8 h-8 whitespace-nowrap"
+              size="icon"
+              variant="outline"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-notebook-pen"
+              >
+                <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
+                <path d="M2 6h4" />
+                <path d="M2 10h4" />
+                <path d="M2 14h4" />
+                <path d="M2 18h4" />
+                <path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z" />
+              </svg>
+            </Button>
           </li>
         </ol>
       </div>
@@ -207,7 +329,7 @@ const Page = () => {
                   </li>
                   <li className="grid grid-cols-4 border-b">
                     <span className=" text-gray-600 dark:text-white">
-                      SETTLED:
+                      Settled:
                     </span>
                     <span className="text-gray-600 dark:text-white">
                       {item.doneCount}
@@ -216,7 +338,6 @@ const Page = () => {
                       {item.doneBirrAmount.toLocaleString()} ETB
                     </span>
                     <Button
-                      disabled
                       className="text-gray-600 w-8 h-8 whitespace-nowrap"
                       size="icon"
                       variant="outline"
@@ -244,18 +365,13 @@ const Page = () => {
                   </li>
                   <li className="grid grid-cols-4 border-b">
                     <span className="text-gray-600 dark:text-white">
-                      CHECK COOP SWITCH
+                      CBS CHECK COOP SWITCH
                     </span>
                     <span className="text-gray-600 dark:text-white">
-                      {item.cbsCheckCoopSwitchCount +
-                        item.cbsCheckCoopSwitchCount}
+                      {item.cbsCheckCoopSwitchCount}
                     </span>
                     <span className="text-gray-600 dark:text-white">
-                      {(
-                        item.cbsCheckCoopSwitchBirrAmount +
-                        item.ethCheckCoopSwitchAmount
-                      ).toLocaleString()}{" "}
-                      ETB
+                      {item.cbsCheckCoopSwitchBirrAmount.toLocaleString()} ETB
                     </span>
                     <Button
                       className="text-gray-600 w-8 h-8 whitespace-nowrap"
@@ -285,16 +401,13 @@ const Page = () => {
                   </li>
                   <li className="grid grid-cols-4 border-b">
                     <span className="text-gray-600 dark:text-white">
-                      CHECK EJ
+                      CBS CHECK EJ
                     </span>{" "}
                     <span className="text-gray-600 dark:text-white">
-                      {item.cbsCheckEJCount + item.ethCheckEJCount}
+                      {item.cbsCheckEJCount}
                     </span>{" "}
                     <span className="text-gray-600 dark:text-white">
-                      {(
-                        item.cbsCheckEJBirrAmount + item.ethCheckEJBirrAmount
-                      ).toLocaleString()}{" "}
-                      ETB
+                      {item.cbsCheckEJBirrAmount.toLocaleString()} ETB
                     </span>
                     <Button
                       className="text-gray-600 w-8 h-8 whitespace-nowrap"
@@ -305,6 +418,78 @@ const Page = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-notebook-pen"
+                      >
+                        <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
+                        <path d="M2 6h4" />
+                        <path d="M2 10h4" />
+                        <path d="M2 14h4" />
+                        <path d="M2 18h4" />
+                        <path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z" />
+                      </svg>
+                    </Button>
+                  </li>
+                  <li className="grid grid-cols-4 border-b">
+                    <span className="text-gray-600 dark:text-white">
+                      ETH CHECK COOP SWITCH
+                    </span>{" "}
+                    <span className="text-gray-600 dark:text-white">
+                      {item.ethCheckCoopSwitchCount}
+                    </span>{" "}
+                    <span className="text-gray-600 dark:text-white">
+                      {item.ethCheckCoopSwitchAmount.toLocaleString()} ETB
+                    </span>
+                    <Button
+                      className="text-gray-600 w-8 h-8 whitespace-nowrap"
+                      size="icon"
+                      variant="outline"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-notebook-pen"
+                      >
+                        <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
+                        <path d="M2 6h4" />
+                        <path d="M2 10h4" />
+                        <path d="M2 14h4" />
+                        <path d="M2 18h4" />
+                        <path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z" />
+                      </svg>
+                    </Button>
+                  </li>
+                  <li className="grid grid-cols-4 border-b">
+                    <span className="text-gray-600 dark:text-white">
+                      ETH CHECK EJ
+                    </span>{" "}
+                    <span className="text-gray-600 dark:text-white">
+                      {item.ethCheckEJCount}
+                    </span>{" "}
+                    <span className="text-gray-600 dark:text-white">
+                      {item.ethCheckEJBirrAmount.toLocaleString()} ETB
+                    </span>
+                    <Button
+                      className="text-gray-600 whitespace-nowrap"
+                      size="icon"
+                      variant="outline"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"

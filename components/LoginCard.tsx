@@ -56,9 +56,9 @@ function LoginCard() {
         const role = decodedData.role;
         login(response.access_token, response.refresh_token);
         if (role?.includes("SUPER-ADMIN")) {
-          router.push(`/dashboard`);
+          router.push(`/dashboard/dashboard`);
         } else {
-          router.push(`/users`);
+          router.push(`/users/dashboard`);
         }
         router.refresh();
         toast.success("Login success");

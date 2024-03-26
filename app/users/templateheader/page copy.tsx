@@ -15,6 +15,26 @@ import toast from "react-hot-toast";
 import ClientReconciliation from "./components/client";
 import { HeaderTemplate } from "@/types/types";
 import { ClientColumn } from "./components/columns";
+import { Heading } from "@/components/ui/heading";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 interface Template {
   templateName: string;
@@ -23,6 +43,10 @@ interface Template {
   rrn: string;
 }
 
+const FormSchema = z.object({
+  email: z.string().optional(),
+});
+
 const ReconciliationExcelModalCaller: React.FC = () => {
   const [templates, setTemplates] = useState<Template[]>([
     { templateName: "", file: null, headers: [], rrn: "" },
@@ -30,13 +54,21 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const [headerTemplates, setHeaderTemplates] = useState<HeaderTemplate[] | []>(
     []
   );
+  const params = useParams();
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+
   const [updated, setUpdated] = useState(false);
-  const clientId =
-    typeof window !== "undefined" && localStorage.getItem("clientId");
+  const [dateValue, setDateValue] = useState("");
+  const [amountValue, setAmountValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getTemplateHeaderByClientId(Number(clientId));
+      const response = await getTemplateHeaderByClientId(
+        Number(params.clientId)
+      );
       const data = response instanceof Array ? response : [];
       setHeaderTemplates(data);
     };
@@ -118,14 +150,15 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     return true;
   };
 
-  const hanleSaveAll = async () => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    console.log("new one", data);
     if (!validateTemplates()) {
       toast.error("Please fill out all fields before saving.");
       return;
     }
 
     const response = await AddTemplateHeader({
-      clientId: Number(clientId),
+      clientId: params?.clientId,
       fileTemplates: templates,
     });
     if (response) {
@@ -140,12 +173,18 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const formattedclients: ClientColumn[] = headerTemplates.map((item) => ({
     id: item.id,
     templateName: item.templateName,
-    rrn: item.rrn,
+    rrnColumn: item.rrnColumn,
     createdAt: new Date(item.createdAt).toISOString().split("T")[0],
   }));
 
   return (
     <div className="grid grid-cols-5 gap-4">
+      <div className="col-span-5">
+        <Heading
+          title={`File Template`}
+          description="Manage header file template"
+        />
+      </div>
       <div className="col-span-3">
         <ClientReconciliation data={formattedclients} />
       </div>
@@ -155,7 +194,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
         </div>
         {templates.map((template, index) => (
           <div
-            className="grid gap-2 grid-cols-12 col-span-12 space-x-4"
+            className="grid gap-2 grid-cols-12 col-span-12 items-end space-x-4"
             key={index}
           >
             <div className="col-span-5">
@@ -179,7 +218,6 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                     index,
                     e.target.files ? e.target.files[0] : null
                   );
-                  console.log(e.target.files);
                 }}
               />
             </div>
@@ -199,7 +237,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                   htmlFor={`headerSelect-${index}`}
                   className="text-cyan-500 text-xl py-2 my-2"
                 >
-                  Select RRN
+                  Select Unique Key
                 </Label>
                 <div>
                   <div className="grid grid-cols-2">
@@ -231,24 +269,67 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                     ))}
                   </div>
                 </div>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-2/3 space-y-6"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <Select>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Date" />
+                            </SelectTrigger>
+                            <SelectContent className="h-72">
+                              <SelectGroup>
+                                <SelectLabel>Headers</SelectLabel>
+                                {template.headers.map((header, index3) => (
+                                  <SelectItem key={index3} value={header}>
+                                    {header}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <Select>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Amount Value" />
+                            </SelectTrigger>
+                            <SelectContent className="h-72">
+                              <SelectGroup>
+                                <SelectLabel>Headers</SelectLabel>{" "}
+                                {template.headers.map((header, index4) => (
+                                  <SelectItem key={index4} value={header}>
+                                    {header}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
               </div>
             )}
           </div>
         ))}
-        <div className="col-span-12 space-x-2 flex justify-end mt-6">
-          <Button
-            className="bg-green-500 text-white"
-            onClick={handleAddTemplate}
-          >
-            Add
-          </Button>
-          <Button
-            className="bg-cyan-500 text-white"
-            onClick={() => hanleSaveAll()}
-          >
-            Save All
-          </Button>
-        </div>
       </div>
     </div>
   );

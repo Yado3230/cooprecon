@@ -26,6 +26,10 @@ const sidebarNavItems = [
     title: "Processing Tx Type",
     href: "/dashboard/settings/processingtypes",
   },
+  {
+    title: "Settlements",
+    href: "/dashboard/settings/settlements",
+  },
 ];
 
 interface SettingsLayoutProps {

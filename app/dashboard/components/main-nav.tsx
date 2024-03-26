@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { setClient } from "@/lib/features/client/clientSlice";
 import { RootState } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { DashboardIcon } from "@radix-ui/react-icons";
 import {
   BookTemplate,
   Calculator,
@@ -41,6 +42,19 @@ export const MainNav: FC<SidebarProps> = ({
 
   const menuItems = [
     {
+      href: `/dashboard/dashboard`,
+      label: "Dashboard",
+      active: pathname === `/dashboard/dashboard`,
+      authorized: true,
+      icon: (
+        <DashboardIcon
+          color={`${
+            pathname === `/dashboard/dashboard` ? "#0EB8D5" : "#707E94"
+          }`}
+        />
+      ),
+    },
+    {
       href: `/dashboard`,
       label: "Client",
       active: pathname === `/dashboard`,
@@ -52,6 +66,7 @@ export const MainNav: FC<SidebarProps> = ({
         />
       ),
     },
+
     // {
     //   href: `/dashboard/clientapi`,
     //   label: "Client API",
@@ -161,6 +176,22 @@ export const MainNav: FC<SidebarProps> = ({
           ),
         },
         {
+          href: `/dashboard/settings/settlements`,
+          label: "Settlements",
+          active: pathname === `/dashboard/settings/settlements`,
+          authorized: true,
+          icon: (
+            <Calculator
+              size={15}
+              color={`${
+                pathname === `/dashboard/settings/settlements`
+                  ? "#fff"
+                  : "#707E94"
+              }`}
+            />
+          ),
+        },
+        {
           href: `/dashboard/settings/reconsettings`,
           label: "Recon Settings",
           active: pathname === `/dashboard/settings/reconsettings`,
@@ -195,6 +226,25 @@ export const MainNav: FC<SidebarProps> = ({
       active: pathname === `/dashboard/client`,
       authorized: true,
       items: [
+        {
+          href: `/dashboard/${activeClient.id || activeClient.value}/dashboard`,
+          label: "Dashboard",
+          active:
+            pathname ===
+            `/dashboard/${activeClient.id || activeClient.value}/dashboard`,
+          authorized: true,
+          icon: (
+            <Calculator
+              size={15}
+              color={`${
+                pathname ===
+                `/dashboard/${activeClient.id || activeClient.value}/dashboard`
+                  ? "#fff"
+                  : "#707E94"
+              }`}
+            />
+          ),
+        },
         {
           href: `/dashboard/${activeClient.id || activeClient.value}`,
           label: "Reconcilation",
@@ -319,25 +369,6 @@ export const MainNav: FC<SidebarProps> = ({
           ),
         },
         {
-          href: `/dashboard/${activeClient.id || activeClient.value}/template`,
-          label: "Template",
-          active:
-            pathname ===
-            `/dashboard/${activeClient.id || activeClient.value}/template`,
-          authorized: true,
-          icon: (
-            <BookTemplate
-              size={15}
-              color={`${
-                pathname ===
-                `/dashboard/${activeClient.id || activeClient.value}/template`
-                  ? "#0EB8D5"
-                  : "#707E94"
-              }`}
-            />
-          ),
-        },
-        {
           href: `/dashboard/${activeClient.id || activeClient.value}/reports`,
           label: "Reports",
           active:
@@ -345,12 +376,12 @@ export const MainNav: FC<SidebarProps> = ({
             `/dashboard/${activeClient.id || activeClient.value}/reports`,
           authorized: true,
           icon: (
-            <Calculator
+            <BookTemplate
               size={15}
               color={`${
                 pathname ===
                 `/dashboard/${activeClient.id || activeClient.value}/reports`
-                  ? "#fff"
+                  ? "#0EB8D5"
                   : "#707E94"
               }`}
             />
@@ -395,7 +426,7 @@ export const MainNav: FC<SidebarProps> = ({
         className={cn("flex flex-col justify-center space-y-2 mt-3", className)}
       >
         <div className="font-semibold opacity-50">Menu</div>
-        {menuItems.map((route) => (
+        {menuItems.map((route, ind) => (
           // <div
           //   className="flex px-2 items-center space-x-2"
           //   onClick={() => dispatch(setClient(""))}
@@ -415,6 +446,7 @@ export const MainNav: FC<SidebarProps> = ({
           //   </Link>
           // </div>
           <div
+            key={ind}
             className={`${!route.authorized && "cursor-not-allowed"}`}
             title={`${!route.authorized && "Not Authorized"}`}
           >
@@ -446,7 +478,8 @@ export const MainNav: FC<SidebarProps> = ({
             </Button>
           </div>
         ))}
-        {activeClient &&
+        {activeClient.length !== 0 &&
+          activeClient !== undefined &&
           clientItems.map((route, index) => (
             <div key={index}>
               <div

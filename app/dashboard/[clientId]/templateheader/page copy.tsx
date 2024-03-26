@@ -173,7 +173,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const formattedclients: ClientColumn[] = headerTemplates.map((item) => ({
     id: item.id,
     templateName: item.templateName,
-    rrn: item.rrn,
+    rrnColumn: item.rrnColumn,
     createdAt: new Date(item.createdAt).toISOString().split("T")[0],
   }));
 
