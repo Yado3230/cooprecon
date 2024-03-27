@@ -1,7 +1,12 @@
+import {
+  ReconciliationFileCBS,
+  ReconciliationFileCBSData,
+  ReconciliationFileETHSWITCH,
+  ReconciliationFileETHSWITCHData,
+} from "@/types/types";
 import { Reconciliation } from "@prisma/client";
 import { useParams } from "next/navigation";
 
-const URL = `/api`;
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllReconciliations = async (
@@ -21,6 +26,36 @@ export const getReconsiliation = async (
 ): Promise<Reconciliation> => {
   try {
     const res = await fetch(`${URL}/${id}`);
+    return res.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
+
+export const getCBSReconciliationFileDetail = async (
+  date: string,
+  bank: string
+): Promise<ReconciliationFileCBSData> => {
+  try {
+    const res = await fetch(
+      `${API_URL}api/v1/reconciliation/files?fileOwner=CBS&date=${date}&reconProcessingStatus=CHECK_COOP_SWITCH&bank=${bank}&size=100000`
+    );
+    return res.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error to handle it in the caller
+  }
+};
+
+export const getSwitchReconciliationFileDetail = async (
+  date: string,
+  bank: string
+): Promise<ReconciliationFileETHSWITCHData> => {
+  try {
+    const res = await fetch(
+      `${API_URL}api/v1/reconciliation/files?fileOwner=ETH-SWITCH&date=${date}&reconProcessingStatus=CHECK_COOP_SWITCH&bank=${bank}&size=100000`
+    );
     return res.json();
   } catch (error) {
     console.error("Error:", error);

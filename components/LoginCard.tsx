@@ -22,6 +22,8 @@ import { Login } from "@/types/types";
 import { useAuth } from "@/app/api/auth/contexts/AuthContext";
 import { getMe, logUser } from "@/actions/user-actions";
 import Jwt, { JwtPayload } from "jsonwebtoken";
+import { useDispatch } from "react-redux";
+import { setClient } from "@/lib/features/client/clientSlice";
 
 const formSchema = z.object({
   username: z.string().min(1),
@@ -34,6 +36,7 @@ function LoginCard() {
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const form = useForm<LevelFormValues>({
     resolver: zodResolver(formSchema),
@@ -57,6 +60,7 @@ function LoginCard() {
         login(response.access_token, response.refresh_token);
         if (role?.includes("SUPER-ADMIN")) {
           router.push(`/dashboard/dashboard`);
+          dispatch(setClient(""));
         } else {
           router.push(`/users/dashboard`);
         }

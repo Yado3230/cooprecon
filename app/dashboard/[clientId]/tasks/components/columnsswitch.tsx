@@ -7,9 +7,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { labels } from "../data/data";
 import { Task } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
-import { ReconciliationFileCBS } from "@/types/types";
+import {
+  ReconciliationFileCBS,
+  ReconciliationFileETHSWITCH,
+} from "@/types/types";
 
-export const columns: ColumnDef<ReconciliationFileCBS>[] = [
+export const columnsswitch: ColumnDef<ReconciliationFileETHSWITCH>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -35,9 +38,9 @@ export const columns: ColumnDef<ReconciliationFileCBS>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "retrievalReferenceNumber",
+    accessorKey: "refNum37",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="retrievalReferenceNumber" />
+      <DataTableColumnHeader column={column} title="refNum37" />
     ),
     cell: ({ row }) => {
       const label = labels.find((label) => label.value === row.original.status);
@@ -50,7 +53,7 @@ export const columns: ColumnDef<ReconciliationFileCBS>[] = [
             </span>
           )}
           <div className="w-[120px] font-medium">
-            {row.getValue("retrievalReferenceNumber")}
+            {row.getValue("refNum37")}
           </div>
         </div>
       );
@@ -79,39 +82,39 @@ export const columns: ColumnDef<ReconciliationFileCBS>[] = [
   //   enableHiding: false,
   // },
   {
-    accessorKey: "debitAccountNumber",
+    accessorKey: "acquirer",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="debitAccountNumber" />
+      <DataTableColumnHeader column={column} title="acquirer" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px] text-sm">
-        {row.getValue("debitAccountNumber")}
+      <div className="w-[200px] whitespace-nowrap text-sm">
+        {row.getValue("acquirer")}
       </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "creditAccountNumber",
+    accessorKey: "issuer",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="creditAccountNumber" />
+      <DataTableColumnHeader column={column} title="issuer" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px] text-sm">
-        {row.getValue("creditAccountNumber")}
+      <div className="w-[200px] whitespace-nowrap text-sm">
+        {row.getValue("issuer")}
       </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "transactionAmount",
+    accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="transactionAmount" />
+      <DataTableColumnHeader column={column} title="amount" />
     ),
     cell: ({ row }) => (
       <div className="w-[110px] text-sm flex items-center justify-between">
-        <span>{row.getValue("transactionAmount")}</span>
+        <span>{row.getValue("amount")}</span>
         <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-1 py-0.5 rounded">
           ETB
         </span>

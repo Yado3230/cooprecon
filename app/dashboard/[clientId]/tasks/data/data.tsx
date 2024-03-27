@@ -11,16 +11,12 @@ import {
 
 export const labels = [
   {
-    value: "CBS",
-    label: "CBS",
+    value: "CHECK_COOP_SWITCH",
+    label: "CHECK_COOP_SWITCH",
   },
   {
-    value: "ETH-SWITCH",
-    label: "ETH-SWITCH",
-  },
-  {
-    value: "COOP-SWITCH",
-    label: "COOP-SWITCH",
+    value: "CHECK_EJ_FILE",
+    label: "CHECK_EJ_FILE",
   },
 ];
 

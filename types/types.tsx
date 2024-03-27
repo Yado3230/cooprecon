@@ -200,3 +200,42 @@ export type ProcessingResponse = {
   cbsCheckCoopSwitchCount: number;
   cbsCheckCoopSwitchBirrAmount: number;
 };
+
+export type ReconciliationFileETHSWITCH = {
+  date: string;
+  amount: number | string;
+  addedAt: string;
+  transactionDescription: string;
+  transactionDate: string;
+  acquirer: string;
+  issuer: string;
+  id: number;
+  transferredToOtherDay: boolean;
+  refNum37: string;
+  cardNumber: string;
+  status: "PENDING" | "DONE" | "CHECK_EJ_FILE" | "MANUAL" | "CHECK_COOP_SWITCH";
+  updatedAt: string;
+  transactionTime: "09:46:28";
+  reconType: "REMOTE_ON_US";
+};
+
+export type ReconciliationFileCBS = {
+  date: string;
+  addedAt: Date;
+  debitAccountNumber: string;
+  transactionAmount: string;
+  id: number;
+  retrievalReferenceNumber: string;
+  panNumber: string;
+  valueDate: string;
+  status: "PENDING" | "DONE" | "CHECK_EJ_FILE" | "MANUAL" | "CHECK_COOP_SWITCH";
+  updatedAt: Date;
+};
+
+export type ReconciliationFileCBSData = {
+  data: ReconciliationFileCBS[];
+};
+
+export type ReconciliationFileETHSWITCHData = {
+  data: ReconciliationFileETHSWITCH[];
+};

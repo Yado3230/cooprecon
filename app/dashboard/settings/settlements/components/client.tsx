@@ -35,7 +35,7 @@ const UserClient: React.FC<UserClientProps> = ({ data }) => {
           <Button
             size="sm"
             className="bg-cyan-500"
-            onClick={() => router.push(`/users/settings/settlements/new`)}
+            onClick={() => router.push(`/dashboard/settings/settlements/new`)}
           >
             <Plus className="mr-2 h-4 w-4" />
             Add New
