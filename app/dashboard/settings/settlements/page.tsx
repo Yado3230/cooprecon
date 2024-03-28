@@ -20,7 +20,7 @@ const Page = () => {
       setSettlements(data);
     };
     fetchData();
-  }, []);
+  }, [params.clientId]);
 
   const formattedclients: SettlementSettingResponse[] = settlements.map(
     (item) => ({

@@ -6,7 +6,7 @@ import Sidebar from "./components/sidebar";
 import { useAuth } from "../api/auth/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
   params: { clientId },
 }: {

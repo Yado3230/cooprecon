@@ -22,7 +22,7 @@ const Page = ({ params }: { params: { clientId: string } }) => {
       setReconcilationTracker(data);
     };
     fetchData();
-  }, [updated]);
+  }, [updated, params.clientId]);
 
   const formattedclients: ReconProcessTracker[] = reconcilationTracker.map(
     (item) => ({

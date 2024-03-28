@@ -12,8 +12,8 @@ const Page = () => {
   const [settlements, setSettlements] = useState<SettlementSettingResponse[]>(
     []
   );
-  const clientId = 
-  typeof window !== "undefined" && localStorage.getItem("clientId");
+  const clientId =
+    typeof window !== "undefined" && localStorage.getItem("clientId");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +22,7 @@ const Page = () => {
       setSettlements(data);
     };
     fetchData();
-  }, []);
+  }, [clientId]);
 
   const formattedclients: SettlementSettingResponse[] = settlements.map(
     (item) => ({

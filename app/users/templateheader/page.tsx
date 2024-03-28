@@ -61,7 +61,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
       setHeaderTemplates(data);
     };
     fetchData();
-  }, [updated]);
+  }, [updated, clientId]);
 
   console.log(templates);
 

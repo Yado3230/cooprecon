@@ -17,7 +17,7 @@ const Page = () => {
       setUsers(data);
     };
     fetchData();
-  }, []);
+  }, [clientId]);
 
   const formattedclients: UserResponse[] = users.map((item) => ({
     userId: item.userId,

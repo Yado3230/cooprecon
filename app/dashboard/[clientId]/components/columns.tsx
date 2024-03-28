@@ -3,38 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ReconProcessTracker } from "@/types/types";
-import { useReconciliationModalExisting } from "@/hooks/use-reconciliation-modal-esisting";
-
-const ReconProcessCell = ({ row }: any) => {
-  const reconciliationModal = useReconciliationModalExisting();
-
-  return (
-    <div>
-      <div>
-        {!row.original.ethSwitchFile ? (
-          <Button
-            className="w-full"
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              localStorage.setItem("fileUploadDate", row.original.date);
-              localStorage.setItem("fileTypeProps", "ETH-SWITCH");
-              reconciliationModal.onOpen();
-            }}
-          >
-            Upload File
-          </Button>
-        ) : (
-          <div className="w-full">
-            <span>{row.original.ethSwitchFile}</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
 export const columns: ColumnDef<ReconProcessTracker>[] = [
   {
@@ -93,7 +62,6 @@ export const columns: ColumnDef<ReconProcessTracker>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <ReconProcessCell row={row} />,
   },
   {
     accessorKey: "coopswitch",
@@ -152,31 +120,6 @@ export const columns: ColumnDef<ReconProcessTracker>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "status",
-  //   cell: ({ row }) => {
-  //     const status = statuses.find(
-  //       (status) => status.value === row.getValue("status")
-  //     );
-
-  //     if (!status) {
-  //       return null;
-  //     }
-
-  //     return (
-  //       <div
-  //         className={`flex w-[100px] items-center`}
-  //         style={{ color: status.color }}
-  //       >
-  //         {status.icon && <status.icon className="mr-2 h-4 w-4" />}
-  //         <span>{status.label}</span>
-  //       </div>
-  //     );
-  //   },
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id));
-  //   },
-  // },
   {
     accessorKey: "processingStartedAt",
     header: ({ column }) => {

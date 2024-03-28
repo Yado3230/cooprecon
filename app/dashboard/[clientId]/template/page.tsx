@@ -30,7 +30,7 @@ const FormSchema = z.object({
   }),
 });
 
-async function SelectForm() {
+function SelectForm() {
   const [clients, setClients] = useState<Client[]>([]);
 
   useEffect(() => {

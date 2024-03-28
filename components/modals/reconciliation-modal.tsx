@@ -73,7 +73,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
       setHeaderTemplates(data);
     };
     fetchData();
-  }, []);
+  }, [clientId]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

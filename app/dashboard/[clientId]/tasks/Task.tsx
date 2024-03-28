@@ -38,7 +38,7 @@ const TaskPage: FC<TaskPagePropsType> = ({ bank, date }) => {
       setSwitchRecon(data2);
     };
     fetchData();
-  }, []);
+  }, [date, bank]);
 
   return (
     <>

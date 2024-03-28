@@ -1,11 +1,10 @@
 "use client";
 import { getClientById } from "@/actions/client.action";
-import { ReconciliationModalExisting } from "@/components/modals/reconciliation-modal-existing";
 import { setClient } from "@/lib/features/client/clientSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
   params: { clientId },
 }: {
@@ -19,11 +18,10 @@ export default async function RootLayout({
       dispatch(setClient(res));
     };
     fetchData();
-  }, [clientId]);
+  }, [clientId, dispatch]);
 
   return (
     <div>
-      <ReconciliationModalExisting clientId={Number(clientId)} />
       {children}
     </div>
   );
