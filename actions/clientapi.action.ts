@@ -1,6 +1,6 @@
-import { ClientAPI } from "@prisma/client";
+import { Client } from "@/types/types";
 
-export const getAllClientApis = async (): Promise<ClientAPI[]> => {
+export const getAllClientApis = async (): Promise<Client[]> => {
   try {
     const res = await fetch(`/api/clientapi`);
     return res.json();
@@ -10,7 +10,7 @@ export const getAllClientApis = async (): Promise<ClientAPI[]> => {
   }
 };
 
-export const AddClientApi = async (data: any): Promise<ClientAPI> => {
+export const AddClientApi = async (data: any): Promise<Client> => {
   try {
     const response = await fetch(`/api/clientapi`, {
       method: "POST",

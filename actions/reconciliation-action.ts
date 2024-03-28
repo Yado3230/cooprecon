@@ -4,14 +4,13 @@ import {
   ReconciliationFileETHSWITCH,
   ReconciliationFileETHSWITCHData,
 } from "@/types/types";
-import { Reconciliation } from "@prisma/client";
 import { useParams } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllReconciliations = async (
   clientId: String
-): Promise<Reconciliation[]> => {
+): Promise<any[]> => {
   try {
     const res = await fetch(`${URL}/${clientId}/reconciliations`);
     return res.json();
@@ -23,7 +22,7 @@ export const getAllReconciliations = async (
 
 export const getReconsiliation = async (
   id: string
-): Promise<Reconciliation> => {
+): Promise<any> => {
   try {
     const res = await fetch(`${URL}/${id}`);
     return res.json();
@@ -63,7 +62,7 @@ export const getSwitchReconciliationFileDetail = async (
   }
 };
 
-export const AddReconciliation = async (data: any): Promise<Reconciliation> => {
+export const AddReconciliation = async (data: any): Promise<any> => {
   const params = useParams();
 
   // console.log(id, data);
@@ -91,8 +90,8 @@ export const AddReconciliation = async (data: any): Promise<Reconciliation> => {
 
 export const updateCategory = async (
   id: string,
-  data: Reconciliation
-): Promise<Reconciliation> => {
+  data: any
+): Promise<any> => {
   // console.log(id, data);
   try {
     console.log("URL", URL);
