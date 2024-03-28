@@ -4,7 +4,7 @@ import {
   getProcessTrackerById,
   getReconcilationDetails,
 } from "@/actions/processing-action";
-import TaskPage from "@/app/dashboard/[clientId]/tasks/page";
+import TaskPage from "@/app/dashboard/[clientId]/tasks/Task";
 import { Button } from "@/components/ui/button";
 import {
   Select,

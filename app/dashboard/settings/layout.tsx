@@ -46,9 +46,6 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col space-y-4 w-full">
-          {/* <aside className="-mx-4 w-full">
-            <SidebarNav items={sidebarNavItems} />
-          </aside> */}
           <div className="flex-1">{children}</div>
         </div>
       </div>

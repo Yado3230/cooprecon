@@ -15,10 +15,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { addBank } from "@/actions/bank.action";
 import toast from "react-hot-toast";
+import { addServiceStation } from "@/actions/service-station.action";
 
 const accountFormSchema = z.object({
+  accountNo: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .max(30, {
+      message: "Name must not be longer than 30 characters.",
+    }),
   name: z
     .string()
     .min(2, {
@@ -27,7 +35,31 @@ const accountFormSchema = z.object({
     .max(30, {
       message: "Name must not be longer than 30 characters.",
     }),
-  code: z
+  product: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .max(30, {
+      message: "Name must not be longer than 30 characters.",
+    }),
+  ccy: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .max(30, {
+      message: "Name must not be longer than 30 characters.",
+    }),
+  accountOfficer: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .max(30, {
+      message: "Name must not be longer than 30 characters.",
+    }),
+  district: z
     .string()
     .min(1, {
       message: "Code must be at least 1 character.",
@@ -35,7 +67,7 @@ const accountFormSchema = z.object({
     .max(30, {
       message: "Name must not be longer than 30 characters.",
     }),
-  payableAccount: z
+  terminalId: z
     .string()
     .min(1, {
       message: "Code must be at least 1 character.",
@@ -43,7 +75,7 @@ const accountFormSchema = z.object({
     .max(30, {
       message: "Name must not be longer than 30 characters.",
     }),
-  receivableAccount: z
+  machineType: z
     .string()
     .min(1, {
       message: "Code must be at least 1 character.",
@@ -51,6 +83,7 @@ const accountFormSchema = z.object({
     .max(30, {
       message: "Name must not be longer than 30 characters.",
     }),
+  clientId: z.coerce.number().default(54),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
@@ -72,7 +105,7 @@ export function AccountForm() {
     try {
       setLoading(true);
 
-      const response = await addBank(data);
+      const response = await addServiceStation(data);
       if (response) {
         toast.success("Bank Created");
         window.location.reload();
@@ -93,12 +126,25 @@ export function AccountForm() {
         >
           <FormField
             control={form.control}
+            name="accountNo"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Account No</FormLabel>
+                <FormControl>
+                  <Input placeholder="Account No" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Bank name" {...field} />
+                  <Input placeholder="Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -106,12 +152,12 @@ export function AccountForm() {
           />
           <FormField
             control={form.control}
-            name="code"
+            name="product"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Code</FormLabel>
+                <FormLabel>Product</FormLabel>
                 <FormControl>
-                  <Input placeholder="Bank code" {...field} />
+                  <Input placeholder="Product" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -119,12 +165,12 @@ export function AccountForm() {
           />
           <FormField
             control={form.control}
-            name="payableAccount"
+            name="ccy"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Payable Account</FormLabel>
+                <FormLabel>CCY</FormLabel>
                 <FormControl>
-                  <Input placeholder="Payable Account" {...field} />
+                  <Input placeholder="CCY" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -132,12 +178,51 @@ export function AccountForm() {
           />
           <FormField
             control={form.control}
-            name="receivableAccount"
+            name="accountOfficer"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Receivable Account</FormLabel>
+                <FormLabel>Account Officer</FormLabel>
                 <FormControl>
-                  <Input placeholder="Receivable Account" {...field} />
+                  <Input placeholder="Account Officer" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="district"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>District</FormLabel>
+                <FormControl>
+                  <Input placeholder="District" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="terminalId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Terminal ID</FormLabel>
+                <FormControl>
+                  <Input placeholder="Terminal ID" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="machineType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Machine Type</FormLabel>
+                <FormControl>
+                  <Input placeholder="Machine Type" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

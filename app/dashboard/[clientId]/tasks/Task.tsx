@@ -16,15 +16,12 @@ import { columnsswitch } from "./components/columnsswitch";
 
 // Simulate a database read for tasks
 
-interface TaskPageProps {
+interface TaskPagePropsType {
   bank: string;
   date: string;
 }
 
-const TaskPage: FC<TaskPageProps> = ({ bank, date }) => {
-  // const clientId =
-  //   typeof window !== "undefined" && localStorage.getItem("clientId");
-
+const TaskPage: FC<TaskPagePropsType> = ({ bank, date }) => {
   const [switchRecon, setSwitchRecon] = useState<ReconciliationFileETHSWITCH[]>(
     []
   );

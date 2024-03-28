@@ -1,13 +1,11 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../api/auth/contexts/AuthContext";
 import Navbar from "./components/navbar";
-// import { useEffect, useState } from "react";
 import Sidebar from "./components/sidebar";
 import Head from "next/head";
-import { useEffect } from "react";
-import { setClient } from "@/lib/features/client/clientSlice";
-import { RootState } from "@/lib/store";
+import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
 
 export default function RootLayout({
@@ -15,39 +13,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const dispatch = useDispatch();
+  const [domLoaded, setDomLoaded] = useState(false);
 
-  const activeClient = useSelector(
-    (state: RootState) => state.client.activeClient
-  );
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
 
-  // useEffect(() => {
-  //   dispatch(setClient(""));
-  // }, []);
-  // console.log("from client", activeClient);
-  // const [domLoaded, setDomLoaded] = useState(false);
+  const { accessToken } = useAuth();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   setDomLoaded(true);
-  // }, []);
+  useEffect(() => {
+    if (!domLoaded) {
+      return;
+    }
 
-  // const { accessToken } = useAuth();
-  // const router = useRouter();
+    if (!accessToken) {
+      // router.push("/");
+    }
+  }, [domLoaded, accessToken, router]);
 
-  // useEffect(() => {
-  //   if (!domLoaded) {
-  //     return;
-  //   }
-
-  //   if (!accessToken) {
-  //     // Redirect to login page if not authenticated
-  //     router.push("/");
-  //   }
-  // }, [domLoaded, accessToken, router]);
-
-  // if (!domLoaded) {
-  //   return null;
-  // }
+  if (!domLoaded) {
+    return null;
+  }
 
   return (
     <>

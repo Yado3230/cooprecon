@@ -38,7 +38,6 @@ export const MainNav: FC<SidebarProps> = ({
     (state: RootState) => state.client.activeClient
   );
   const dispatch = useDispatch();
-  const params = useParams();
 
   const menuItems = [
     {
@@ -185,6 +184,22 @@ export const MainNav: FC<SidebarProps> = ({
               size={15}
               color={`${
                 pathname === `/dashboard/settings/settlements`
+                  ? "#fff"
+                  : "#707E94"
+              }`}
+            />
+          ),
+        },
+        {
+          href: `/dashboard/settings/servicestations`,
+          label: "Service Stations",
+          active: pathname === `/dashboard/settings/servicestations`,
+          authorized: true,
+          icon: (
+            <Calculator
+              size={15}
+              color={`${
+                pathname === `/dashboard/settings/servicestations`
                   ? "#fff"
                   : "#707E94"
               }`}

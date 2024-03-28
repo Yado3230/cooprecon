@@ -1,42 +1,44 @@
 "use client";
-import { Separator } from "@/components/ui/separator";
-import { AccountForm } from "@/app/users/settings/banks/account-form";
+
 import UserClient from "./components/client";
-import { BankResponse } from "@/types/types";
+import { ServiceStationResponse } from "@/types/types";
 import { useEffect, useState } from "react";
-import { getAllBanks } from "@/actions/bank.action";
+import { getAllServiceStations } from "@/actions/service-station.action";
+import { AccountForm } from "./account-form";
 
 export default function SettingsAccountPage() {
-  const [banks, setBanks] = useState<BankResponse[]>([]);
+  const [serviceStations, setServiceStations] = useState<
+    ServiceStationResponse[]
+  >([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllBanks();
+      const res = await getAllServiceStations();
       const data = res instanceof Array ? res : [];
-      setBanks(data);
+      setServiceStations(data);
     };
     fetchData();
   }, []);
 
-  const formattedclients: BankResponse[] = banks.map((item) => ({
-    id: item.id,
-    name: item.name,
-    code: item.code,
-    payableAccount: item.payableAccount,
-    receivableAccount: item.receivableAccount,
-    status: item.status,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-  }));
+  const formattedclients: ServiceStationResponse[] = serviceStations.map(
+    (item) => ({
+      id: item.id,
+      name: item.name,
+      product: item.product,
+      ccy: item.ccy,
+      accountOfficer: item.accountOfficer,
+      accountNo: item.accountNo,
+      machineType: item.machineType,
+      terminalId: item.terminalId,
+      district: item.district,
+      status: item.status,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    })
+  );
+
   return (
     <div className="space-y-6 w-full">
-      {/* <div>
-        <h3 className="text-lg font-medium">Bank</h3>
-        <p className="text-sm text-muted-foreground">
-          Update banks settings. add new bank.
-        </p>
-      </div>
-      <Separator /> */}
       <div className="grid grid-cols-5 w-full gap-8">
         <UserClient data={formattedclients} />
         <AccountForm />

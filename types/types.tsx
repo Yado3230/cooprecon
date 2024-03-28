@@ -239,3 +239,30 @@ export type ReconciliationFileCBSData = {
 export type ReconciliationFileETHSWITCHData = {
   data: ReconciliationFileETHSWITCH[];
 };
+
+export type ServiceStationRequest = {
+  accountNo: string;
+  name: string;
+  product: string;
+  ccy: string;
+  accountOfficer: string;
+  district: string;
+  terminalId: string;
+  machineType: string;
+  clientId: number;
+};
+
+export type ServiceStationResponse = {
+  id: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  accountNo: string;
+  name: string;
+  product: string;
+  ccy: string;
+  accountOfficer: string;
+  district: string;
+  terminalId: string;
+  machineType: "NCR" | "CRM";
+};

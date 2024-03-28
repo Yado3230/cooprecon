@@ -12,13 +12,13 @@ import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { BankResponse } from "@/types/types";
+import { BankResponse, ServiceStationResponse } from "@/types/types";
 import { useRouter } from "next/navigation";
 // import { deleteUser } from "@/actions/user-action";
 import { useUserModal } from "@/hooks/use-user-modal";
 
 interface CellActionProps {
-  data: BankResponse;
+  data: ServiceStationResponse;
 }
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onCopy = (id: string) => {
