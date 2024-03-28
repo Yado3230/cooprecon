@@ -28,8 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Client, ClientAPI } from "@prisma/client";
 import { AddClientApi } from "@/actions/clientapi.action";
+import { Client } from "@/types/types";
 
 const formSchema = z.object({
   clientId: z.string().min(1),
@@ -39,7 +39,7 @@ const formSchema = z.object({
 });
 
 interface ChallengeFormProps {
-  initialData: ClientAPI | null;
+  initialData: any | null;
   clients: Client[];
 }
 

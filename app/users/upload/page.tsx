@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { Reconciliation } from "@prisma/client";
 import ExcelFileUploader from "@/components/imports/reconciliation/ExcelFileUploader";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
@@ -10,7 +9,7 @@ import { Button } from "@/components/ui/button";
 const ReconciliationExcelModalCaller: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [dataSubmitted, setDataSubmitted] = useState<boolean>(false);
-  const [uploadedData, setUploadedData] = useState<Reconciliation[]>([]);
+  const [uploadedData, setUploadedData] = useState<any[]>([]);
   const [uploadState, setUploadState] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [successful, setSuccessful] = useState<number>(0);
@@ -24,7 +23,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setUploadedData([]);
   };
 
-  const handleDataUpload = (data: Reconciliation[]) => {
+  const handleDataUpload = (data: any[]) => {
     setUploadedData(data);
     setUploadState(true);
   };
@@ -33,7 +32,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setDataSubmitted(true);
     setUploadState(false);
 
-    async function fetchData(item: Reconciliation) {
+    async function fetchData(item: any) {
       try {
         await axios.post(`/api/${params.clientId}/reconciliations`, item);
         setSuccessful(successful + 1);

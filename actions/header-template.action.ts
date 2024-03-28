@@ -4,7 +4,6 @@ import {
   NewReconProcessTracker,
   TransactionFile,
 } from "@/types/types";
-import { Client } from "@prisma/client";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 

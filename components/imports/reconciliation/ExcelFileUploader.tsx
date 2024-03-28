@@ -1,16 +1,15 @@
 import React, { useState, ChangeEvent } from "react";
 import * as XLSX from "xlsx";
 import { Input } from "semantic-ui-react";
-import { Reconciliation } from "@prisma/client";
 
 interface ExcelFileUploaderProps {
-  onDataUpload: (data: Reconciliation[]) => void;
+  onDataUpload: (data: any[]) => void;
 }
 
 const ExcelFileUploader: React.FC<ExcelFileUploaderProps> = ({
   onDataUpload,
 }) => {
-  const [excelData, setExcelData] = useState<Reconciliation[]>([]);
+  const [excelData, setExcelData] = useState<any[]>([]);
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
