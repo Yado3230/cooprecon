@@ -5,6 +5,7 @@ import { ServiceStationResponse } from "@/types/types";
 import { useEffect, useState } from "react";
 import { getAllServiceStations } from "@/actions/service-station.action";
 import { AccountForm } from "./account-form";
+import { ServiceStationModal } from "@/components/modals/service-station-modal";
 
 export default function SettingsAccountPage() {
   const [serviceStations, setServiceStations] = useState<
@@ -39,9 +40,8 @@ export default function SettingsAccountPage() {
 
   return (
     <div className="space-y-6 w-full">
-      <div className="grid grid-cols-5 w-full gap-8">
+      <div className="flex w-full gap-8">
         <UserClient data={formattedclients} />
-        <AccountForm />
       </div>
     </div>
   );

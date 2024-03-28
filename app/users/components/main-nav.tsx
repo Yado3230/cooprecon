@@ -134,6 +134,22 @@ export const MainNav: FC<SidebarProps> = ({
             />
           ),
         },
+        {
+          href: `/users/settings/servicestations`,
+          label: "Service Stations",
+          active: pathname === `/users/settings/servicestations`,
+          authorized: true,
+          icon: (
+            <Calculator
+              size={15}
+              color={`${
+                pathname === `/users/settings/servicestations`
+                  ? "#fff"
+                  : "#707E94"
+              }`}
+            />
+          ),
+        },
       ],
       icon: (
         <BookTemplate
