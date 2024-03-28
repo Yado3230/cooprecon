@@ -18,6 +18,10 @@ const sidebarNavItems = [
     title: "Settlement",
     href: "/users/settings/settlements",
   },
+  {
+    title: "Service Stations",
+    href: "/users/settings/servicestations",
+  },
 ];
 
 interface SettingsLayoutProps {

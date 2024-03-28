@@ -28,7 +28,7 @@ export default function RootLayout({
     }
 
     if (!accessToken) {
-      // router.push("/");
+      router.push("/");
     }
   }, [domLoaded, accessToken, router]);
 
