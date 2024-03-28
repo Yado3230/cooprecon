@@ -22,19 +22,20 @@ export default async function RootLayout({
   const { accessToken } = useAuth();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!domLoaded) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!domLoaded) {
+      return;
+    }
 
-  //   if (!accessToken) {
-  //     router.push("/");
-  //   }
-  // }, [domLoaded, accessToken, router]);
+    if (!accessToken) {
+      router.push("/");
+    }
+  }, [domLoaded, accessToken, router]);
 
-  // if (!domLoaded) {
-  //   return null;
-  // }
+  if (!domLoaded) {
+    return null;
+  }
+
   return (
     <div>
       <Navbar />
