@@ -65,47 +65,6 @@ export const MainNav: FC<SidebarProps> = ({
         />
       ),
     },
-
-    // {
-    //   href: `/dashboard/clientapi`,
-    //   label: "Client API",
-    //   active: pathname === `/dashboard/clientapi`,
-    //   authorized: true,
-    //   icon: (
-    //     <Link2Icon
-    //       size={15}
-    //       color={`${
-    //         pathname === `/dashboard/clientapi` ? "#0EB8D5" : "#707E94"
-    //       }`}
-    //     />
-    //   ),
-    // },
-    // {
-    //   href: `/dashboard/operations`,
-    //   label: "Operations",
-    //   active: pathname === `/dashboard/operations`,
-    //   authorized: true,
-    //   icon: (
-    //     <FileJson
-    //       size={15}
-    //       color={`${
-    //         pathname === `/dashboard/operations` ? "#0EB8D5" : "#707E94"
-    //       }`}
-    //     />
-    //   ),
-    // },
-    // {
-    //   href: `/dashboard/template`,
-    //   label: "Template",
-    //   active: pathname === `/dashboard/template`,
-    //   authorized: true,
-    //   icon: (
-    //     <BookTemplate
-    //       size={15}
-    //       color={`${pathname === `/dashboard` ? "#0EB8D5" : "#707E94"}`}
-    //     />
-    //   ),
-    // },
   ];
   const settings = [
     {
@@ -337,6 +296,31 @@ export const MainNav: FC<SidebarProps> = ({
               color={`${
                 pathname ===
                 `/dashboard/${activeClient.id || activeClient.value}/users`
+                  ? "#fff"
+                  : "#707E94"
+              }`}
+            />
+          ),
+        },
+        {
+          href: `/dashboard/${
+            activeClient.id || activeClient.value
+          }/servicestations`,
+          label: "Service Station",
+          active:
+            pathname ===
+            `/dashboard/${
+              activeClient.id || activeClient.value
+            }/servicestations`,
+          authorized: true,
+          icon: (
+            <Calculator
+              size={15}
+              color={`${
+                pathname ===
+                `/dashboard/${
+                  activeClient.id || activeClient.value
+                }/servicestations`
                   ? "#fff"
                   : "#707E94"
               }`}
