@@ -113,10 +113,10 @@ export const ClientModal = () => {
       onClose={clientModal.onClose}
     >
       <div>
-        <div className="spaye-y-4 py-2 pb-4">
+        <div className="spaye-y-4 py-2 pb-4 w-full">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex items-center justify-center w-[400px] mb-2">
+              <div className="flex items-center justify-center w-full mb-2">
                 <label
                   htmlFor="dropzone-file"
                   className="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer h-36 bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"

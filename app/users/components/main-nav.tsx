@@ -31,6 +31,8 @@ export const MainNav: FC<SidebarProps> = ({
   const [isOpen, setIsOpen] = useState("");
   const router = useRouter();
   const pathname = usePathname();
+  const role = typeof window !== "undefined" && localStorage.getItem("role");
+
   const routes = [
     {
       href: `/users/dashboard`,

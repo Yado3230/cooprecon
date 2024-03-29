@@ -133,7 +133,7 @@ export const ServiceStationModal: FC<UserModalProps> = ({ clientId }) => {
       isOpen={serviceStationModal.isOpen}
       onClose={serviceStationModal.onClose}
     >
-      <div className="col-span-2">
+      <div className="col-span-2 w-full">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

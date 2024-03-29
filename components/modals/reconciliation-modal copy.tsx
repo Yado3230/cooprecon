@@ -84,7 +84,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
       onClose={reconciliationModal.onClose}
     >
       <div>
-        <div className="spaye-y-4 py-2 pb-4">
+        <div className="spaye-y-4 py-2 pb-4 w-full">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FormField

@@ -161,7 +161,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
       isOpen={reconciliationModal.isOpen}
       onClose={reconciliationModal.onClose}
     >
-      <div className="spaye-y-4 py-2 pb-4 w-[400px]">
+      <div className="spaye-y-4 py-2 pb-4 w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField

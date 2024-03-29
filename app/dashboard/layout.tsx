@@ -20,6 +20,8 @@ export default function RootLayout({
   }, []);
 
   const { accessToken } = useAuth();
+  const role = typeof window !== "undefined" && localStorage.getItem("role");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -27,10 +29,10 @@ export default function RootLayout({
       return;
     }
 
-    if (!accessToken) {
+    if (!accessToken || role === "SUPER-ADMIN") {
       router.push("/");
     }
-  }, [domLoaded, accessToken, router]);
+  }, [domLoaded, accessToken, router, role]);
 
   if (!domLoaded) {
     return null;
