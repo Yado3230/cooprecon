@@ -29,7 +29,7 @@ export default function RootLayout({
       return;
     }
 
-    if (!accessToken || role === "SUPER-ADMIN") {
+    if (!accessToken || role !== "SUPER-ADMIN") {
       router.push("/");
     }
   }, [domLoaded, accessToken, router, role]);
