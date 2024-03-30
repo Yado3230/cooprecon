@@ -27,7 +27,7 @@ const Navbar = () => {
           <div className="flex items-center justify-start space-x-2">
             <div>
               <Image
-                src="/images/coop-logo.png"
+                src="/images/coop-logo.jpg"
                 width={90}
                 height={40}
                 alt="img"
