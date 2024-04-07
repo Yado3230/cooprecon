@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,6 +40,7 @@ type LevelFormValues = z.infer<typeof formSchema>;
 function LoginCard() {
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -120,8 +121,10 @@ function LoginCard() {
                   </div>
                   <div className="p-10">
                     <span className="text-4xl italic">"</span>
-                    <h3 className=" text-xl font-bold flex justify-center items-center">
-                      Reconciliation for cooperative bank of oromia.
+                    <h3 className=" text-medium font-bold flex justify-center items-center">
+                      Say goodbye to messy spreadsheets and endless paperwork
+                      with our reconciliation app! Easily match and verify
+                      financial transactions, saving time and reducing errors.
                     </h3>
                     <span className="float-right text-4xl italic">"</span>
                   </div>
@@ -156,7 +159,7 @@ function LoginCard() {
                                     <Input
                                       type="text"
                                       className="ring-1"
-                                      placeholder="johndoe@example.com"
+                                      placeholder="username"
                                       disabled={loading}
                                       {...field}
                                     />

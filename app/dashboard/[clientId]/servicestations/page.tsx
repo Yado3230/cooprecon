@@ -3,16 +3,22 @@
 import UserClient from "./components/client";
 import { ServiceStationResponse } from "@/types/types";
 import { useEffect, useState } from "react";
-import { getAllServiceStations } from "@/actions/service-station.action";
+import {
+  getAllServiceStations,
+  getServiceStationsByClientId,
+} from "@/actions/service-station.action";
+import { useParams } from "next/navigation";
 
 export default function SettingsAccountPage() {
   const [serviceStations, setServiceStations] = useState<
     ServiceStationResponse[]
   >([]);
 
+  const params = useParams();
+
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllServiceStations();
+      const res = await getServiceStationsByClientId(Number(params.clientId));
       const data = res instanceof Array ? res : [];
       setServiceStations(data);
     };

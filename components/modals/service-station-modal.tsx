@@ -116,7 +116,7 @@ export const ServiceStationModal: FC<UserModalProps> = ({ clientId }) => {
 
       const response = await addServiceStation(data);
       if (response) {
-        toast.success("Bank Created");
+        toast.success("Service Station Created");
         window.location.reload();
       }
     } catch (error) {

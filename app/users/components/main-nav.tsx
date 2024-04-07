@@ -182,10 +182,13 @@ export const MainNav: FC<SidebarProps> = ({
           key={route.href}
           onClick={() => router.push(route.href)}
         >
-          <span className="">{route?.icon}</span>
-          <Link href={route.href}>{route.label}</Link>
+          <span>{route?.icon}</span>
+          <Link className="" href={route.href}>
+            {route.label}
+          </Link>
         </Button>
       ))}
+
       {settings.map((route, index) => (
         <div key={index}>
           <div

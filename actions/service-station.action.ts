@@ -23,7 +23,7 @@ export const getServiceStationsByClientId = async (
 ): Promise<ServiceStationResponse[]> => {
   try {
     const res = await fetch(
-      `${API_URL}api/v1/client/self-service-stations/${clientId}`
+      `${API_URL}api/v1/client/self-service-stations?clientId=${clientId}`
     );
     return res.json();
   } catch (error) {
