@@ -31,6 +31,9 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
   const processModal = useProcessModal();
   const clientId =
     typeof window !== "undefined" && localStorage.getItem("clientId");
+
+  const role = typeof window !== "undefined" && localStorage.getItem("role");
+
   const router = useRouter();
 
   const columns = [
@@ -100,6 +103,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
               setSelectedDate(row.date);
               processModal.onOpen();
             }}
+            disabled={!(role === "CLIENT-ADMIN" || role === "RECON-PROCESSOR")}
             variant="default"
             size="sm"
           >
@@ -163,11 +167,6 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         selector: (row: { fileType: any }) => row.fileType,
         sortable: true,
       },
-      // {
-      //   name: "File Name",
-      //   selector: (row: { fileName: any }) => row.fileName,
-      //   sortable: true,
-      // },
       {
         name: "Transaction Number",
         selector: (row: { totalTransactionNumber: any }) =>
@@ -253,6 +252,7 @@ const ClientReconciliation: React.FC<ClientReconciliationProps> = ({
         <div>
           <Button
             size="sm"
+            disabled={role === "REPORT VIEWER"}
             className="bg-cyan-500"
             onClick={() => reconciliationModal.onOpen()}
           >

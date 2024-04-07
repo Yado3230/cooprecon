@@ -61,7 +61,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [matcherMessage, setMatcherMessage] = useState("");
-  const [headerStartsAt, setHeaderStartsAt] = useState(1);
+  const [headerRowNumber, setheaderRowNumber] = useState(1);
 
   const [headerTemplates, setHeaderTemplates] = useState<HeaderTemplate[] | []>(
     []
@@ -92,7 +92,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
           //   @ts-ignore
           const range = XLSX.utils.decode_range(sheet["!ref"]);
           for (let C = range.s.c; C <= range.e.c; ++C) {
-            const cellAddress = { c: C, r: headerStartsAt - 1 }; // cell address, subtract 1 because index starts from 0
+            const cellAddress = { c: C, r: headerRowNumber - 1 }; // cell address, subtract 1 because index starts from 0
             const cellRef = XLSX.utils.encode_cell(cellAddress); // construct A1 reference for cell
             const cell = sheet[cellRef]; // actual cell
             if (cell && cell.v) {
@@ -144,7 +144,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
         const formData = new FormData();
         formData.append("date", dateString);
         formData.append("fileType", values.fileType);
-        formData.append("headerStartsAt", headerStartsAt.toString());
+        formData.append("headerRowNumber", headerRowNumber.toString());
         formData.append("file", file);
         const response = await UploadExcelFile(formData);
         if (response) {
@@ -256,9 +256,9 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
                 type="number"
                 id={`headerstarts`}
                 placeholder="Name"
-                value={headerStartsAt}
+                value={headerRowNumber}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setHeaderStartsAt(Number(e.target.value))
+                  setheaderRowNumber(Number(e.target.value))
                 }
               />
             </div>

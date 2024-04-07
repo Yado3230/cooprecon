@@ -33,7 +33,7 @@ interface Template {
   rrnColumn: string;
   dateValueColumn: string;
   txAmountColumn: string;
-  headerStartsAt: number;
+  headerRowNumber: number;
 }
 
 const ReconciliationExcelModalCaller: React.FC = () => {
@@ -42,7 +42,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
       templateName: "",
       file: null,
       headers: [],
-      headerStartsAt: 1,
+      headerRowNumber: 1,
       rrnColumn: "",
       txAmountColumn: "",
       dateValueColumn: "",
@@ -80,7 +80,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     if (file) {
       const headers = await parseExcelFile(
         file,
-        updatedTemplates[index].headerStartsAt
+        updatedTemplates[index].headerRowNumber
       );
       updatedTemplates[index].headers = headers.filter((item) => item !== "");
     }
@@ -99,12 +99,12 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setTemplates(updatedTemplates);
   };
 
-  const handleHeaderStartsAtChange = (
+  const handleheaderRowNumberChange = (
     index: number,
-    headerStartsAt: number
+    headerRowNumber: number
   ) => {
     const updatedTemplates = [...templates];
-    updatedTemplates[index].headerStartsAt = headerStartsAt;
+    updatedTemplates[index].headerRowNumber = headerRowNumber;
     setTemplates(updatedTemplates);
   };
 
@@ -124,7 +124,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
         rrnColumn: "",
         txAmountColumn: "",
         dateValueColumn: "",
-        headerStartsAt: 1,
+        headerRowNumber: 1,
       },
     ]);
   };
@@ -137,7 +137,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
 
   const parseExcelFile = async (
     file: File,
-    headerStartsAt: number
+    headerRowNumber: number
   ): Promise<string[]> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -150,7 +150,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
           //   @ts-ignore
           const range = XLSX.utils.decode_range(sheet["!ref"]);
           for (let C = range.s.c; C <= range.e.c; ++C) {
-            const cellAddress = { c: C, r: headerStartsAt - 1 }; // cell address, subtract 1 because index starts from 0
+            const cellAddress = { c: C, r: headerRowNumber - 1 }; // cell address, subtract 1 because index starts from 0
             const cellRef = XLSX.utils.encode_cell(cellAddress); // construct A1 reference for cell
             const cell = sheet[cellRef]; // actual cell
             if (cell && cell.v) {
@@ -203,7 +203,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
           rrnColumn: "",
           txAmountColumn: "",
           dateValueColumn: "",
-          headerStartsAt: 1,
+          headerRowNumber: 1,
         },
       ]);
     } else {
@@ -255,9 +255,9 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                 type="number"
                 id={`Starts-At`}
                 placeholder="Name"
-                value={template.headerStartsAt}
+                value={template.headerRowNumber}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleHeaderStartsAtChange(index, Number(e.target.value))
+                  handleheaderRowNumberChange(index, Number(e.target.value))
                 }
               />
             </div>
