@@ -24,6 +24,11 @@ import { getMe, logUser } from "@/actions/user-actions";
 import Jwt, { JwtPayload } from "jsonwebtoken";
 import { useDispatch } from "react-redux";
 import { setClient } from "@/lib/features/client/clientSlice";
+import { Loader } from "./ui/loader";
+
+import logo2 from "./../public/images/coop-logo.png";
+import cmsLogo from "./../public/images/coop-logo.jpg";
+import Image from "next/image";
 
 const formSchema = z.object({
   username: z.string().min(1),
@@ -45,6 +50,8 @@ function LoginCard() {
       password: "",
     },
   });
+
+  const [message, setMessage] = useState("");
 
   const onSubmit = async (data: Login) => {
     localStorage.removeItem("access_token");
@@ -71,12 +78,15 @@ function LoginCard() {
       console.error("Error is this:", error.message);
 
       if (error.message === "Please check your username and password.") {
+        setMessage("Invalid username or password");
         toast.error("Invalid username or password");
       } else if (
         error.message === "Network error: Unable to connect to the server."
       ) {
+        setMessage("Network error: Unable to connect to the server");
         toast.error("Network error: Unable to connect to the server");
       } else {
+        setMessage("Something went wrong!");
         toast.error("Something went wrong!");
       }
     } finally {
@@ -85,104 +95,139 @@ function LoginCard() {
   };
 
   return (
-    <div className="w-full max-w-xl mt-8 xl:w-5/12">
-      {/* <div>here{searchParams?.message && <h2>{searchParams.message}</h2>}</div> */}
-      <div className="p-6 bg-white rounded shadow border border-gray-100 sm:p-10 dark:bg-gray-800">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 w-full"
-          >
-            <div className="space-y-4 md:space-y-4">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Sign in to your account
-              </h1>
-              <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Username:</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          className="ring-1"
-                          placeholder="johndoe@example.com"
-                          disabled={loading}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password:</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          className="ring-1"
-                          placeholder="••••••••"
-                          disabled={loading}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="terms" />
-                  <label
-                    htmlFor="terms"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Remember me
-                  </label>
+    <>
+      <div>
+        {loading && (
+          <div className="fixed right-1/2 top-1/2 z-[100]">
+            <Loader />
+          </div>
+        )}
+
+        <section className={`dark:bg-gray-900 ${loading && "opacity-50"}`}>
+          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ">
+            <div className="flex w-full items-center justify-center">
+              <div className="w-full flex justify-center">
+                <div className="w-full bg-gradient-to-r text-white bg-gray-400 to-cyan-400 from-blue-500 dark:from-gray-00 dark:to-gray-600 hidden md:block rounded-l-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                  <div className="flex items-center justify-center p-8">
+                    <Image src={logo2} alt="logo" width={90} />
+                    <div className="flex flex-col text-white font-bold ml-5 text-sm">
+                      <span>Baankii Hojii Gamtaa Oromiyaa</span>
+                      <span>የኦሮሚያ ኅብረት ሥራ ባንክ</span>
+                    </div>
+                  </div>
+                  <div className="flex-1 items-center  justify-center text-xl font-bold px-16 py-3">
+                    <span>COOP RECONCILIATION</span>
+                  </div>
+                  <div className="p-10">
+                    <span className="text-4xl italic">"</span>
+                    <h3 className=" text-xl font-bold flex justify-center items-center">
+                      Reconciliation for cooperative bank of oromia.
+                    </h3>
+                    <span className="float-right text-4xl italic">"</span>
+                  </div>
                 </div>
-                <Link
-                  href={"/auth/forgotpassword"}
-                  className="text-sm font-medium text-cyan-500 hover:underline dark:text-cyan-500"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-              <Button
-                disabled={loading}
-                type="submit"
-                className={"w-full text-white"}
-              >
-                SIGN IN
-              </Button>
-              {/* <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don&apos;t have an account yet?
-                <Link
-                  href={"/auth/registration"}
-                  className="font-medium ml-2 text-cyan-500 hover:underline dark:text-cyan-500"
-                >
-                  Sign up
-                </Link>
-              </p> */}
-              <div className="form-group">
-                <div
-                  className={"hidden alert alert-success"}
-                  role="alert"
-                ></div>
+                <div className="w-full bg-white rounded-r-lg shadow border dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                  <div className="flex items-center justify-center mt-4">
+                    <Image src={cmsLogo} alt="logo" width={150} />
+                  </div>
+                  <div className="space-y-4 md:space-y-6 sm:p-8">
+                    <h1 className="text-xl font-bold leading-tight tracking-tight text-cyan-900 md:text-2xl dark:text-white">
+                      Sign in to your account
+                    </h1>
+                    {message && (
+                      <span className="text-red-500 border rounded-lg bg-red-50 flex px-2 py-3">
+                        {message}
+                      </span>
+                    )}
+                    <Form {...form}>
+                      <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-8 w-full"
+                      >
+                        <div className="space-y-4 md:space-y-4">
+                          <div className="space-y-2">
+                            <FormField
+                              control={form.control}
+                              name="username"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Username:</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      className="ring-1"
+                                      placeholder="johndoe@example.com"
+                                      disabled={loading}
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <FormField
+                              control={form.control}
+                              name="password"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Password:</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="password"
+                                      className="ring-1"
+                                      placeholder="••••••••"
+                                      disabled={loading}
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <Checkbox id="terms" />
+                              <label
+                                htmlFor="terms"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Remember me
+                              </label>
+                            </div>
+                            <Link
+                              href={"/auth/forgotpassword"}
+                              className="text-sm font-medium text-cyan-500 hover:underline dark:text-cyan-500"
+                            >
+                              Forgot password?
+                            </Link>
+                          </div>
+                          <Button
+                            disabled={loading}
+                            type="submit"
+                            className={"w-full bg-cyan-500 text-white"}
+                          >
+                            SIGN IN
+                          </Button>
+                          <div className="form-group">
+                            <div
+                              className={"hidden alert alert-success"}
+                              role="alert"
+                            ></div>
+                          </div>
+                        </div>
+                      </form>
+                    </Form>
+                  </div>
+                </div>
               </div>
             </div>
-          </form>
-        </Form>
+          </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 }
 

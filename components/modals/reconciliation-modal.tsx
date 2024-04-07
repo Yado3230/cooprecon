@@ -44,6 +44,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import toast from "react-hot-toast";
+import { Label } from "../ui/label";
 const formSchema = z.object({
   date: z.date(),
   fileType: z.string(),
@@ -58,9 +59,9 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
 }) => {
   const reconciliationModal = useReconciliationModal();
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [matcherMessage, setMatcherMessage] = useState("");
+  const [headerStartsAt, setHeaderStartsAt] = useState(1);
 
   const [headerTemplates, setHeaderTemplates] = useState<HeaderTemplate[] | []>(
     []
@@ -77,12 +78,6 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValues: {
-    //   date: null,
-    //   cbs: "",
-    //   eth: "",
-    //   coop: "",
-    // },
   });
 
   const parseExcelFile = async (file: File): Promise<string[]> => {
@@ -97,10 +92,14 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
           //   @ts-ignore
           const range = XLSX.utils.decode_range(sheet["!ref"]);
           for (let C = range.s.c; C <= range.e.c; ++C) {
-            const cellAddress = { c: C, r: range.s.r }; // cell address
+            const cellAddress = { c: C, r: headerStartsAt - 1 }; // cell address, subtract 1 because index starts from 0
             const cellRef = XLSX.utils.encode_cell(cellAddress); // construct A1 reference for cell
             const cell = sheet[cellRef]; // actual cell
-            headers.push(cell.v);
+            if (cell && cell.v) {
+              headers.push(cell.v);
+            } else {
+              headers.push(""); // Placeholder for empty cells
+            }
           }
           resolve(headers);
         } else {
@@ -120,11 +119,21 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
         return;
       }
       const headers = await parseExcelFile(file);
-      const expectedHeaders = headerTemplates.find(
-        (item) => item.templateName === values.fileType
-      )?.headers;
+      const expectedHeaders = headerTemplates
+        .find((item) => item.templateName === values.fileType)
+        ?.headers.filter((item) => item !== "");
+
+      console.log("expected", expectedHeaders);
+      console.log(
+        "headers",
+        headers.filter((item) => item !== "")
+      );
+
       // Check if headers match the expected headers
-      if (JSON.stringify(headers) === JSON.stringify(expectedHeaders)) {
+      if (
+        JSON.stringify(headers.filter((item) => item !== "")) ===
+        JSON.stringify(expectedHeaders)
+      ) {
         setMatcherMessage("");
         console.log(values);
         const date = values.date;
@@ -135,6 +144,7 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
         const formData = new FormData();
         formData.append("date", dateString);
         formData.append("fileType", values.fileType);
+        formData.append("headerStartsAt", headerStartsAt.toString());
         formData.append("file", file);
         const response = await UploadExcelFile(formData);
         if (response) {
@@ -240,6 +250,18 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
                 </FormItem>
               )}
             />
+            <div className="col-span-6">
+              <Label htmlFor={`headerstarts`}>Header Starts At</Label>
+              <Input
+                type="number"
+                id={`headerstarts`}
+                placeholder="Name"
+                value={headerStartsAt}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setHeaderStartsAt(Number(e.target.value))
+                }
+              />
+            </div>
             <FormItem>
               <FormLabel>Excel File:</FormLabel>
               <FormControl>
