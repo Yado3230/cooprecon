@@ -21,8 +21,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useReconciliationModal } from "@/hooks/use-reconciliation-modal";
-import { useParams, useRouter } from "next/navigation";
 import {
   Popover,
   PopoverContent,
@@ -35,7 +33,7 @@ import {
   UploadExcelFile,
   getTemplateHeaderByClientId,
 } from "@/actions/header-template.action";
-import { HeaderTemplate } from "@/types/types";
+import { HeaderTemplate, ServiceStationResponse } from "@/types/types";
 import {
   Select,
   SelectContent,
@@ -44,28 +42,39 @@ import {
   SelectValue,
 } from "../ui/select";
 import toast from "react-hot-toast";
-import { Label } from "../ui/label";
+import { useEJModal } from "@/hooks/use-ej-modal";
+import { getServiceStationsByClientId } from "@/actions/service-station.action";
 const formSchema = z.object({
   date: z.date(),
-  fileType: z.string(),
+  station: z.coerce.number(),
 });
 
 interface ReconciliationModalProps {
   clientId: number;
 }
 
-export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
-  clientId,
-}) => {
-  const reconciliationModal = useReconciliationModal();
+export const EJModal: React.FC<ReconciliationModalProps> = ({ clientId }) => {
+  const reconciliationModal = useEJModal();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [matcherMessage, setMatcherMessage] = useState("");
-  const [headerRowNumber, setheaderRowNumber] = useState(1);
 
   const [headerTemplates, setHeaderTemplates] = useState<HeaderTemplate[] | []>(
     []
   );
+
+  const [serviceStations, setServiceStations] = useState<
+    ServiceStationResponse[]
+  >([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getServiceStationsByClientId(Number(clientId));
+      const data = res instanceof Array ? res : [];
+      setServiceStations(data);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,36 +89,6 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
     resolver: zodResolver(formSchema),
   });
 
-  const parseExcelFile = async (file: File): Promise<string[]> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = e.target?.result;
-        if (data) {
-          const workbook = XLSX.read(data, { type: "array" });
-          const sheet = workbook.Sheets[workbook.SheetNames[0]];
-          const headers: string[] = [];
-          //   @ts-ignore
-          const range = XLSX.utils.decode_range(sheet["!ref"]);
-          for (let C = range.s.c; C <= range.e.c; ++C) {
-            const cellAddress = { c: C, r: headerRowNumber - 1 }; // cell address, subtract 1 because index starts from 0
-            const cellRef = XLSX.utils.encode_cell(cellAddress); // construct A1 reference for cell
-            const cell = sheet[cellRef]; // actual cell
-            if (cell && cell.v) {
-              headers.push(cell.v);
-            } else {
-              headers.push(""); // Placeholder for empty cells
-            }
-          }
-          resolve(headers);
-        } else {
-          reject(new Error("Failed to read file."));
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
@@ -118,43 +97,21 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
         toast.error("Please select File");
         return;
       }
-      const headers = await parseExcelFile(file);
-      const expectedHeaders = headerTemplates
-        .find((item) => item.templateName === values.fileType)
-        ?.headers.filter((item) => item !== "");
 
-      console.log("expected", expectedHeaders);
-      console.log(
-        "headers",
-        headers.filter((item) => item !== "")
-      );
+      setMatcherMessage("");
+      const date = values.date;
+      const dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
 
-      // Check if headers match the expected headers
-      if (
-        JSON.stringify(headers.filter((item) => item !== "")) ===
-        JSON.stringify(expectedHeaders)
-      ) {
-        setMatcherMessage("");
-        console.log(values);
-        const date = values.date;
-        const dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-
-        const formData = new FormData();
-        formData.append("date", dateString);
-        formData.append("fileType", values.fileType);
-        formData.append("headerRowNumber", headerRowNumber.toString());
-        formData.append("file", file);
-        const response = await UploadExcelFile(formData);
-        if (response) {
-          toast.success("File Uploaded");
-          window.location.reload();
-        }
-        // reconciliationModal.onClose();
-      } else {
-        setMatcherMessage("File headers do not match expected headers");
-        console.log("File headers do not match expected headers.");
+      const formData = new FormData();
+      formData.append("date", dateString);
+      formData.append("station", values.station.toString());
+      formData.append("file", file);
+      const response = await UploadExcelFile(formData);
+      if (response) {
+        toast.success("File Uploaded");
+        window.location.reload();
       }
     } catch (error) {
       console.error(error);
@@ -166,8 +123,8 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
 
   return (
     <Modal
-      title="Add Reconciliation"
-      description="Add a new reconciliation"
+      title="Upload EJ File"
+      description="Add new EJ File"
       isOpen={reconciliationModal.isOpen}
       onClose={reconciliationModal.onClose}
     >
@@ -217,10 +174,10 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
             />
             <FormField
               control={form.control}
-              name="fileType"
+              name="station"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>File Type:</FormLabel>
+                  <FormLabel>Station:</FormLabel>
                   <Select
                     disabled={loading}
                     onValueChange={field?.onChange || ""}
@@ -231,17 +188,17 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
-                          placeholder="Select a file type"
+                          placeholder="Select service station"
                         />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {headerTemplates.map((role) => (
+                      {serviceStations.map((station) => (
                         <SelectItem
-                          key={role.id}
-                          value={role.templateName || ""}
+                          key={station.id}
+                          value={station.accountOfficer || ""}
                         >
-                          {role.templateName}
+                          {station.accountOfficer}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -250,22 +207,9 @@ export const ReconciliationModal: React.FC<ReconciliationModalProps> = ({
                 </FormItem>
               )}
             />
-            <div className="col-span-6">
-              <Label htmlFor={`headerstarts`}>Header Starts At</Label>
-              <Input
-                type="number"
-                id={`headerstarts`}
-                placeholder="Name"
-                value={headerRowNumber}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setheaderRowNumber(Number(e.target.value))
-                }
-              />
-            </div>
             <FormItem>
-              <FormLabel>Excel File:</FormLabel>
+              <FormLabel>Upload File:</FormLabel>
               <FormControl>
-                {/* <Input id="picture" type="file" {...field} /> */}
                 <Input
                   id={`templateFile`}
                   type="file"

@@ -15,7 +15,8 @@ export default function RootLayout({
   useEffect(() => {
     const fetchData = async () => {
       const res = await getClientById(Number(clientId));
-      dispatch(setClient(res));
+      console.log(res);
+      res && dispatch(setClient(res));
     };
     fetchData();
   }, [clientId, dispatch]);

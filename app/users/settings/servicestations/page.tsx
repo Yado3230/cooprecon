@@ -3,18 +3,19 @@
 import UserClient from "./components/client";
 import { ServiceStationResponse } from "@/types/types";
 import { useEffect, useState } from "react";
-import { getAllServiceStations } from "@/actions/service-station.action";
-import { AccountForm } from "./account-form";
-import { ServiceStationModal } from "@/components/modals/service-station-modal";
+import { getServiceStationsByClientId } from "@/actions/service-station.action";
 
 export default function SettingsAccountPage() {
   const [serviceStations, setServiceStations] = useState<
     ServiceStationResponse[]
   >([]);
 
+  const clientId =
+    typeof window !== "undefined" && localStorage.getItem("clientId");
+
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllServiceStations();
+      const res = await getServiceStationsByClientId(Number(clientId));
       const data = res instanceof Array ? res : [];
       setServiceStations(data);
     };

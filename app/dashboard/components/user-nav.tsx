@@ -16,6 +16,9 @@ import { useRouter } from "next/navigation";
 
 export function UserNav() {
   const router = useRouter();
+
+  const role = typeof window !== "undefined" && localStorage.getItem("role");
+
   return (
     <div className="">
       <DropdownMenu>
@@ -30,11 +33,9 @@ export function UserNav() {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {/* {data?.user?.name} */}yared
-              </p>
+              <p className="text-sm font-medium leading-none">{role || ""}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {/* {data?.user?.email} */}admin@coop.com
+                Cooperative bank of Oromia
               </p>
             </div>
           </DropdownMenuLabel>

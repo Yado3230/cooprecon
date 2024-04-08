@@ -38,6 +38,11 @@ export const MainNav: FC<SidebarProps> = ({
       href: `/users/dashboard`,
       label: "Dashboard",
       active: pathname === `/users/dashboard`,
+      authorized:
+        role === "CLIENT-ADMIN" ||
+        role === "FILE-MANAGER" ||
+        role === "RECON-PROCESSOR" ||
+        role === "REPORT-VIEWER",
       icon: (
         <DashboardIcon
           color={`${pathname === `/users/dashboard` ? "#0EB8D5" : "#707E94"}`}
@@ -48,6 +53,11 @@ export const MainNav: FC<SidebarProps> = ({
       href: `/users`,
       label: "Reconciliation",
       active: pathname === `/users`,
+      authorized:
+        role === "CLIENT-ADMIN" ||
+        role === "FILE-MANAGER" ||
+        role === "RECON-PROCESSOR" ||
+        role === "REPORT-VIEWER",
       icon: (
         <User2
           size={15}
@@ -57,8 +67,9 @@ export const MainNav: FC<SidebarProps> = ({
     },
     {
       href: `/users/templateheader`,
-      label: "Header Template",
+      label: "File Template",
       active: pathname === `/users/templateheader`,
+      authorized: role === "CLIENT-ADMIN" || role === "FILE-MANAGER",
       icon: (
         <Link2Icon
           size={15}
@@ -72,6 +83,7 @@ export const MainNav: FC<SidebarProps> = ({
       href: `/users/users`,
       label: "Users",
       active: pathname === `/users/users`,
+      authorized: role === "CLIENT-ADMIN",
       icon: (
         <User
           size={15}
@@ -79,21 +91,11 @@ export const MainNav: FC<SidebarProps> = ({
         />
       ),
     },
-    // {
-    //   href: `/users/settings`,
-    //   label: "Settings",
-    //   active: pathname === `/users/settings`,
-    //   icon: (
-    //     <User
-    //       size={15}
-    //       color={`${pathname === `/users/settings` ? "#0EB8D5" : "#707E94"}`}
-    //     />
-    //   ),
-    // },
     {
       href: `/users/reports`,
       label: "Reports",
       active: pathname === `/users/reports`,
+      authorized: role === "CLIENT-ADMIN" || role === "REPORT-VIEWER",
       icon: (
         <BookTemplate
           size={15}
@@ -126,7 +128,7 @@ export const MainNav: FC<SidebarProps> = ({
           href: `/users/settings/settlements`,
           label: "Settlements",
           active: pathname === `/users/settings/settlements`,
-          authorized: true,
+          authorized: role === "CLIENT-ADMIN",
           icon: (
             <Calculator
               size={15}
@@ -140,7 +142,7 @@ export const MainNav: FC<SidebarProps> = ({
           href: `/users/settings/servicestations`,
           label: "Service Stations",
           active: pathname === `/users/settings/servicestations`,
-          authorized: true,
+          authorized: role === "CLIENT-ADMIN",
           icon: (
             <Calculator
               size={15}
@@ -170,21 +172,23 @@ export const MainNav: FC<SidebarProps> = ({
     >
       <div className="font-semibold">Menu</div>
       {routes.map((route) => (
-        <div className="flex p-1 items-center space-x-2" key={route.href}>
-          <span className="">{route?.icon}</span>
-          <Link
-            href={route.href}
-            className={cn(
-              "text-base font-medium transition-colors hover:text-primary",
-              route.active
-                ? "text-cyan-500 dark:text-white"
-                : "text-muted-foreground"
-            )}
-          >
+        <Button
+          variant="outline"
+          disabled={!route.authorized}
+          className={cn(
+            " w-full flex px-1 text-base items-center justify-start border-none hover:text-cyan-500 rounded py-1 space-x-2",
+            route.active ? "text-cyan-500" : "text-muted-foreground"
+          )}
+          key={route.href}
+          onClick={() => router.push(route.href)}
+        >
+          <span>{route?.icon}</span>
+          <Link className="" href={route.href}>
             {route.label}
           </Link>
-        </div>
+        </Button>
       ))}
+
       {settings.map((route, index) => (
         <div key={index}>
           <div
@@ -194,7 +198,7 @@ export const MainNav: FC<SidebarProps> = ({
             <Button
               variant="outline"
               className={cn(
-                " w-full flex px-2 items-center justify-start border-none hover:text-cyan-500 rounded py-1 space-x-2",
+                " w-full flex px-1 items-center justify-start border-none hover:text-cyan-500 rounded py-1 space-x-2",
                 route.active
                   ? "text-white bg-cyan-500 hover:text-white hover:bg-cyan-500"
                   : "text-muted-foreground"
@@ -243,6 +247,7 @@ export const MainNav: FC<SidebarProps> = ({
                 <Button
                   variant="outline"
                   size="sm"
+                  disabled={!route.authorized}
                   className={cn(
                     " w-full flex px-1 my-2 items-center justify-start border-none hover:text-cyan-500 rounded py-1 space-x-2",
                     route.active ? "text-cyan-500" : "text-muted-foreground"

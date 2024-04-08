@@ -33,6 +33,7 @@ interface Template {
   rrnColumn: string;
   dateValueColumn: string;
   txAmountColumn: string;
+  headerRowNumber: number;
 }
 
 const ReconciliationExcelModalCaller: React.FC = () => {
@@ -41,6 +42,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
       templateName: "",
       file: null,
       headers: [],
+      headerRowNumber: 1,
       rrnColumn: "",
       txAmountColumn: "",
       dateValueColumn: "",
@@ -76,8 +78,11 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     const updatedTemplates = [...templates];
     updatedTemplates[index].file = file;
     if (file) {
-      const headers = await parseExcelFile(file);
-      updatedTemplates[index].headers = headers;
+      const headers = await parseExcelFile(
+        file,
+        updatedTemplates[index].headerRowNumber
+      );
+      updatedTemplates[index].headers = headers.filter((item) => item !== "");
     }
     setTemplates(updatedTemplates);
   };
@@ -91,6 +96,15 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const handleDateValueSelect = (index: number, dateValue: string) => {
     const updatedTemplates = [...templates];
     updatedTemplates[index].dateValueColumn = dateValue;
+    setTemplates(updatedTemplates);
+  };
+
+  const handleheaderRowNumberChange = (
+    index: number,
+    headerRowNumber: number
+  ) => {
+    const updatedTemplates = [...templates];
+    updatedTemplates[index].headerRowNumber = headerRowNumber;
     setTemplates(updatedTemplates);
   };
 
@@ -110,6 +124,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
         rrnColumn: "",
         txAmountColumn: "",
         dateValueColumn: "",
+        headerRowNumber: 1,
       },
     ]);
   };
@@ -120,7 +135,10 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setTemplates(updatedTemplates);
   };
 
-  const parseExcelFile = async (file: File): Promise<string[]> => {
+  const parseExcelFile = async (
+    file: File,
+    headerRowNumber: number
+  ): Promise<string[]> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -132,10 +150,14 @@ const ReconciliationExcelModalCaller: React.FC = () => {
           //   @ts-ignore
           const range = XLSX.utils.decode_range(sheet["!ref"]);
           for (let C = range.s.c; C <= range.e.c; ++C) {
-            const cellAddress = { c: C, r: range.s.r }; // cell address
+            const cellAddress = { c: C, r: headerRowNumber - 1 }; // cell address, subtract 1 because index starts from 0
             const cellRef = XLSX.utils.encode_cell(cellAddress); // construct A1 reference for cell
             const cell = sheet[cellRef]; // actual cell
-            headers.push(cell.v);
+            if (cell && cell.v) {
+              headers.push(cell.v);
+            } else {
+              headers.push(""); // Placeholder for empty cells
+            }
           }
           resolve(headers);
         } else {
@@ -181,6 +203,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
           rrnColumn: "",
           txAmountColumn: "",
           dateValueColumn: "",
+          headerRowNumber: 1,
         },
       ]);
     } else {
@@ -212,10 +235,10 @@ const ReconciliationExcelModalCaller: React.FC = () => {
         </div>
         {templates.map((template, index) => (
           <div
-            className="grid gap-2 grid-cols-12 col-span-12 items-end space-x-4"
+            className="grid gap-2 grid-cols-12 col-span-12 items-end "
             key={index}
           >
-            <div className="col-span-5">
+            <div className="col-span-6">
               <Label htmlFor={`templateName-${index}`}>Template Name</Label>
               <Input
                 id={`templateName-${index}`}
@@ -223,6 +246,18 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                 value={template.templateName}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleTemplateNameChange(index, e.target.value)
+                }
+              />
+            </div>
+            <div className="col-span-6">
+              <Label htmlFor={`templateName-${index}`}>Header Starts At</Label>
+              <Input
+                type="number"
+                id={`Starts-At`}
+                placeholder="Name"
+                value={template.headerRowNumber}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  handleheaderRowNumberChange(index, Number(e.target.value))
                 }
               />
             </div>
@@ -259,32 +294,34 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                 </Label>
                 <div>
                   <div className="grid grid-cols-2">
-                    {template.headers.map((header, index2) => (
-                      <div key={index2} className="">
-                        <div className="flex items-center space-x-2">
-                          {/* <RadioGroupItem value={header} id="r1" />
+                    {template.headers
+                      .filter((item) => item !== "")
+                      .map((header, index2) => (
+                        <div key={index2} className="">
+                          <div className="flex items-center space-x-2">
+                            {/* <RadioGroupItem value={header} id="r1" />
                           <Label htmlFor="r1">{header}</Label> */}
-                          <div className="flex items-center mb-4">
-                            <input
-                              id={`default-radio-${index2 + 1}`}
-                              type="radio"
-                              value={header}
-                              name={`header`}
-                              onChange={(e) =>
-                                handleKeySelect(index, e.target.value)
-                              }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                            <label
-                              htmlFor={`default-radio-${index + 1}`}
-                              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                            >
-                              {header}
-                            </label>
+                            <div className="flex items-center mb-4">
+                              <input
+                                id={`default-radio-${index2 + 1}`}
+                                type="radio"
+                                value={header}
+                                name={`header`}
+                                onChange={(e) =>
+                                  handleKeySelect(index, e.target.value)
+                                }
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                              />
+                              <label
+                                htmlFor={`default-radio-${index + 1}`}
+                                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                              >
+                                {header}
+                              </label>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
                 <div className="grid grid-cols-2 w-full space-x-4">
@@ -299,11 +336,13 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                     <SelectContent className="h-72">
                       <SelectGroup>
                         <SelectLabel>Headers</SelectLabel>
-                        {template.headers.map((header, index3) => (
-                          <SelectItem key={index3} value={header}>
-                            {header}
-                          </SelectItem>
-                        ))}
+                        {template.headers
+                          .filter((item) => item !== "")
+                          .map((header, index3) => (
+                            <SelectItem key={index3} value={header}>
+                              {header}
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -318,11 +357,13 @@ const ReconciliationExcelModalCaller: React.FC = () => {
                     <SelectContent className="h-72">
                       <SelectGroup>
                         <SelectLabel>Headers</SelectLabel>{" "}
-                        {template.headers.map((header, index4) => (
-                          <SelectItem key={index4} value={header}>
-                            {header}
-                          </SelectItem>
-                        ))}
+                        {template.headers
+                          .filter((item) => item !== "")
+                          .map((header, index4) => (
+                            <SelectItem key={index4} value={header}>
+                              {header}
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

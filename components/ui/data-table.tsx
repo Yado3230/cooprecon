@@ -24,14 +24,10 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
 import { useParams, useRouter } from "next/navigation";
 import { Input } from "./input";
-import { Button } from "./button";
 import axios from "axios";
-// import { Loader } from "lucide-react";
-import Loading from "@/app/loading";
 import { setClient } from "@/lib/features/client/clientSlice";
 import { useDispatch } from "react-redux";
 
@@ -264,7 +260,7 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   className={`${clickable && "cursor-pointer"}`}
                   onClick={() => {
-                    dispatch(setClient(row._valuesCache));
+                    clickable && dispatch(setClient(row._valuesCache));
                     clickable &&
                       router.push(
                         `/dashboard/${row._valuesCache.id}/dashboard`
