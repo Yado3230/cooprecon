@@ -13,9 +13,16 @@ export const getAllFileTypes = async (): Promise<FileType[]> => {
 };
 
 export const AddFileType = async (data: FileTypeRequest): Promise<FileType> => {
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
+
   try {
     const response = await fetch(`${API_URL}api/v1/file-types`, {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     });
 
@@ -32,9 +39,16 @@ export const AddFileType = async (data: FileTypeRequest): Promise<FileType> => {
 };
 
 export const EditFileType = async (data: FileType[]): Promise<any> => {
+  const token =
+    typeof window !== "undefined" && localStorage.getItem("access_token");
+
   try {
-    const response = await fetch(`${API_URL}api/v1/file-types`, {
+    const response = await fetch(`${API_URL}api/v1/file-types/change-order`, {
       method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     });
 

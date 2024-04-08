@@ -108,9 +108,10 @@ export const EJModal: React.FC<ReconciliationModalProps> = ({ clientId }) => {
       formData.append("date", dateString);
       formData.append("station", values.station.toString());
       formData.append("file", file);
-      const response = await UploadExcelFile(formData);
+      // const response = await UploadExcelFile(formData);
+      const response = true;
       if (response) {
-        toast.success("File Uploaded");
+        toast.success("Coming Soon");
         window.location.reload();
       }
     } catch (error) {
