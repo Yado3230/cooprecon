@@ -13,7 +13,7 @@ import {
 } from "@/actions/header-template.action";
 import toast from "react-hot-toast";
 import ClientReconciliation from "./components/client";
-import { HeaderTemplate } from "@/types/types";
+import { FileType, HeaderTemplate } from "@/types/types";
 import { ClientColumn } from "./components/columns";
 import { Heading } from "@/components/ui/heading";
 import {
@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getAllFileTypes } from "@/actions/file-type.acion";
 
 interface Template {
   templateName: string;
@@ -34,6 +35,7 @@ interface Template {
   dateValueColumn: string;
   txAmountColumn: string;
   headerRowNumber: number;
+  fileTypeId: number;
 }
 
 const ReconciliationExcelModalCaller: React.FC = () => {
@@ -44,6 +46,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
       headers: [],
       headerRowNumber: 1,
       rrnColumn: "",
+      fileTypeId: 0,
       txAmountColumn: "",
       dateValueColumn: "",
     },
@@ -54,6 +57,16 @@ const ReconciliationExcelModalCaller: React.FC = () => {
   const params = useParams();
 
   const [updated, setUpdated] = useState(false);
+  const [fileType, setFileType] = useState<FileType[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAllFileTypes();
+      const data = res instanceof Array ? res : [];
+      setFileType(data);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,6 +106,12 @@ const ReconciliationExcelModalCaller: React.FC = () => {
     setTemplates(updatedTemplates);
   };
 
+  const handleFileTypeSelect = (index: number, fileTypeId: number) => {
+    const updatedTemplates = [...templates];
+    updatedTemplates[index].fileTypeId = fileTypeId;
+    setTemplates(updatedTemplates);
+  };
+
   const handleDateValueSelect = (index: number, dateValue: string) => {
     const updatedTemplates = [...templates];
     updatedTemplates[index].dateValueColumn = dateValue;
@@ -125,6 +144,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
         txAmountColumn: "",
         dateValueColumn: "",
         headerRowNumber: 1,
+        fileTypeId: 1,
       },
     ]);
   };
@@ -204,6 +224,7 @@ const ReconciliationExcelModalCaller: React.FC = () => {
           txAmountColumn: "",
           dateValueColumn: "",
           headerRowNumber: 1,
+          fileTypeId: 1,
         },
       ]);
     } else {
@@ -238,6 +259,28 @@ const ReconciliationExcelModalCaller: React.FC = () => {
             className="grid gap-2 grid-cols-12 col-span-12 items-end "
             key={index}
           >
+            <div className="col-span-6">
+              <Label htmlFor={`templateName-${index}`}>File Type</Label>
+              <Select
+                onValueChange={(value) =>
+                  handleFileTypeSelect(index, Number(value))
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a Date" />
+                </SelectTrigger>
+                <SelectContent className="h-72">
+                  <SelectGroup>
+                    <SelectLabel>File Types</SelectLabel>
+                    {fileType.map((fileType, index3) => (
+                      <SelectItem key={index3} value={fileType.id.toString()}>
+                        {fileType.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="col-span-6">
               <Label htmlFor={`templateName-${index}`}>Template Name</Label>
               <Input

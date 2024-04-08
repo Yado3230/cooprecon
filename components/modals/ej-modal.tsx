@@ -192,7 +192,7 @@ export const EJModal: React.FC<ReconciliationModalProps> = ({ clientId }) => {
                         />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="h-72">
                       {serviceStations.map((station) => (
                         <SelectItem
                           key={station.id}
