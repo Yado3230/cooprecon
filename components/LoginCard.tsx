@@ -120,13 +120,13 @@ function LoginCard() {
                     <span>COOP RECONCILIATION</span>
                   </div>
                   <div className="p-10">
-                    <span className="text-4xl italic">"</span>
+                    <span className="text-4xl italic">&quot;</span>
                     <h3 className=" text-medium font-bold flex justify-center items-center">
                       Say goodbye to messy spreadsheets and endless paperwork
                       with our reconciliation app! Easily match and verify
                       financial transactions, saving time and reducing errors.
                     </h3>
-                    <span className="float-right text-4xl italic">"</span>
+                    <span className="float-right text-4xl italic">&quot;</span>
                   </div>
                 </div>
                 <div className="w-full bg-white rounded-r-lg shadow border dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
