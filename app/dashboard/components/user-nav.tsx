@@ -33,12 +33,9 @@ export function UserNav() {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {/* {data?.user?.name} */}
-                {role || ""}
-              </p>
+              <p className="text-sm font-medium leading-none">{role || ""}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {/* {data?.user?.email} */}Cooperative bank of Oromia
+                Cooperative bank of Oromia
               </p>
             </div>
           </DropdownMenuLabel>

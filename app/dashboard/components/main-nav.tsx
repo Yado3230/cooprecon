@@ -265,6 +265,31 @@ export const MainNav: FC<SidebarProps> = ({
         {
           href: `/dashboard/${
             activeClient.id || activeClient.value
+          }/electronicjournal`,
+          label: "EJ File",
+          active:
+            pathname ===
+            `/dashboard/${
+              activeClient.id || activeClient.value
+            }/electronicjournal`,
+          authorized: true,
+          icon: (
+            <Calculator
+              size={15}
+              color={`${
+                pathname ===
+                `/dashboard/${
+                  activeClient.id || activeClient.value
+                }/electronicjournal`
+                  ? "#fff"
+                  : "#707E94"
+              }`}
+            />
+          ),
+        },
+        {
+          href: `/dashboard/${
+            activeClient.id || activeClient.value
           }/clientinfo`,
           label: "Client Info",
           active:
