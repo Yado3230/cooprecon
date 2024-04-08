@@ -35,6 +35,8 @@ export default function Home() {
     const fetchData = async () => {
       const res = await getAllFileTypes();
       const data = res instanceof Array ? res : [];
+      // Sort the data by the order property
+      data.sort((a, b) => a.order - b.order);
       setFileType(data);
     };
     fetchData();
@@ -89,7 +91,7 @@ export default function Home() {
           {fileType.map((person, index) => (
             <div key={index} className="grid grid-cols-12">
               <div
-                className="relative flex items-center justify-between col-span-4 space-x-3 rounded m-1 p-2 border"
+                className="relative flex items-center justify-between col-span-12 space-x-3 rounded m-1 p-2 border"
                 draggable
                 onDragStart={() => (dragPerson.current = index)}
                 onDragEnter={() => (draggedOverPerson.current = index)}

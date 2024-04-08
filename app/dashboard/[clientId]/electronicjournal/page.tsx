@@ -14,16 +14,16 @@ export default function SettingsAccountPage() {
     ServiceStationResponse[]
   >([]);
 
-  const params = useParams();
+  // const params = useParams();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await getServiceStationsByClientId(Number(params.clientId));
-      const data = res instanceof Array ? res : [];
-      setServiceStations(data);
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await getServiceStationsByClientId(Number(params.clientId));
+  //     const data = res instanceof Array ? res : [];
+  //     setServiceStations(data);
+  //   };
+  //   fetchData();
+  // }, []);
 
   const formattedclients: ServiceStationResponse[] = serviceStations.map(
     (item) => ({
