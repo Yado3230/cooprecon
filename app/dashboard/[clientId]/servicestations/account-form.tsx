@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { addServiceStation } from "@/actions/service-station.action";
+import { useParams } from "next/navigation";
 
 const accountFormSchema = z.object({
   accountNo: z
@@ -100,12 +101,23 @@ export function AccountForm() {
     defaultValues,
   });
   const [loading, setLoading] = useState(false);
+  const params = useParams();
 
   async function onSubmit(data: AccountFormValues) {
     try {
       setLoading(true);
 
-      const response = await addServiceStation(data);
+      const response = await addServiceStation({
+        accountNo: data.accountNo,
+        name: data.name,
+        product: data.product,
+        ccy: data.ccy,
+        accountOfficer: data.accountOfficer,
+        district: data.district,
+        terminalId: data.terminalId,
+        machineType: data.machineType,
+        clientId: Number(params.clientId),
+      });
       if (response) {
         toast.success("Bank Created");
         window.location.reload();

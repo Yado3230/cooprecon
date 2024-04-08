@@ -94,6 +94,9 @@ const defaultValues: Partial<AccountFormValues> = {
   // dob: new Date("2023-01-23"),
 };
 
+const clientId =
+  typeof window !== "undefined" && localStorage.getItem("clientId");
+
 export function AccountForm() {
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
@@ -105,7 +108,17 @@ export function AccountForm() {
     try {
       setLoading(true);
 
-      const response = await addServiceStation(data);
+      const response = await addServiceStation({
+        accountNo: data.accountNo,
+        name: data.name,
+        product: data.product,
+        ccy: data.ccy,
+        accountOfficer: data.accountOfficer,
+        district: data.district,
+        terminalId: data.terminalId,
+        machineType: data.machineType,
+        clientId: Number(clientId),
+      });
       if (response) {
         toast.success("Bank Created");
         window.location.reload();
