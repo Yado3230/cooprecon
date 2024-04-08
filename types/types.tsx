@@ -152,6 +152,17 @@ export interface ProcessingTransactionTypeResponse {
   name: string;
 }
 
+export interface FileType {
+  id: number;
+  name: string;
+  order: number;
+  selected: boolean;
+}
+
+export interface FileTypeRequest {
+  name: string;
+}
+
 export interface ProcessingTransactionTypeRequest {
   name: string;
 }
